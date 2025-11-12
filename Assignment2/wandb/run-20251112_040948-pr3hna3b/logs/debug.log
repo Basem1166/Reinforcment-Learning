@@ -1,0 +1,26 @@
+2025-11-12 04:09:48,712 INFO    MainThread:16668 [wandb_setup.py:_flush():80] Current SDK version is 0.23.0
+2025-11-12 04:09:48,712 INFO    MainThread:16668 [wandb_setup.py:_flush():80] Configure stats pid to 16668
+2025-11-12 04:09:48,712 INFO    MainThread:16668 [wandb_setup.py:_flush():80] Loading settings from C:\Users\Basem Elgalfy\.config\wandb\settings
+2025-11-12 04:09:48,713 INFO    MainThread:16668 [wandb_setup.py:_flush():80] Loading settings from D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\wandb\settings
+2025-11-12 04:09:48,713 INFO    MainThread:16668 [wandb_setup.py:_flush():80] Loading settings from environment variables
+2025-11-12 04:09:48,713 INFO    MainThread:16668 [wandb_init.py:setup_run_log_directory():713] Logging user logs to D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\wandb\run-20251112_040948-pr3hna3b\logs\debug.log
+2025-11-12 04:09:48,714 INFO    MainThread:16668 [wandb_init.py:setup_run_log_directory():714] Logging internal logs to D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\wandb\run-20251112_040948-pr3hna3b\logs\debug-internal.log
+2025-11-12 04:09:48,714 INFO    MainThread:16668 [wandb_init.py:init():840] calling init triggers
+2025-11-12 04:09:48,715 INFO    MainThread:16668 [wandb_init.py:init():845] wandb.init called with sweep_config: {}
+config: {'run_name': 'DDQN-Acrobot-v1', 'env': 'Acrobot-v1', 'ddqn': True, 'num_episodes': 1000, 'num_test_episodes': 100, 'target_update_freq': 1, 'lr': 0.0002, 'gamma': 0.99, 'epsilon_decay': 0.995, 'epsilon_min': 0.0001, 'memory_size': 500000, 'batch_size': 64, 'layer1_size': 256, 'layer2_size': 512, '_wandb': {}}
+2025-11-12 04:09:48,715 INFO    MainThread:16668 [wandb_init.py:init():888] starting backend
+2025-11-12 04:09:49,027 INFO    MainThread:16668 [wandb_init.py:init():891] sending inform_init request
+2025-11-12 04:09:49,046 INFO    MainThread:16668 [wandb_init.py:init():899] backend started and connected
+2025-11-12 04:09:49,071 INFO    MainThread:16668 [wandb_init.py:init():969] updated telemetry
+2025-11-12 04:09:49,109 INFO    MainThread:16668 [wandb_init.py:init():993] communicating run to backend with 90.0 second timeout
+2025-11-12 04:09:49,710 INFO    MainThread:16668 [wandb_init.py:init():1040] starting run threads in backend
+2025-11-12 04:09:49,807 INFO    MainThread:16668 [wandb_run.py:_console_start():2504] atexit reg
+2025-11-12 04:09:49,808 INFO    MainThread:16668 [wandb_run.py:_redirect():2352] redirect: wrap_raw
+2025-11-12 04:09:49,808 INFO    MainThread:16668 [wandb_run.py:_redirect():2421] Wrapping output streams.
+2025-11-12 04:09:49,808 INFO    MainThread:16668 [wandb_run.py:_redirect():2444] Redirects installed.
+2025-11-12 04:09:49,811 INFO    MainThread:16668 [wandb_init.py:init():1080] run started, returning control to user process
+2025-11-12 04:19:13,985 INFO    MainThread:16668 [wandb_run.py:_finish():2270] finishing run basem_elgalfy-cairo-university/cmps458-assignment2/pr3hna3b
+2025-11-12 04:19:13,986 INFO    MainThread:16668 [wandb_run.py:_atexit_cleanup():2469] got exitcode: 0
+2025-11-12 04:19:13,987 INFO    MainThread:16668 [wandb_run.py:_restore():2451] restore
+2025-11-12 04:19:13,987 INFO    MainThread:16668 [wandb_run.py:_restore():2457] restore done
+2025-11-12 04:19:16,489 INFO    MainThread:16668 [wandb_run.py:_footer_sync_info():3853] logging synced files

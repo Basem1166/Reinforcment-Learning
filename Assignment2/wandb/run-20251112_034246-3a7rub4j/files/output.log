@@ -1,0 +1,67 @@
+--- Starting Training Loop ---
+Ep: 0 | Reward: 11.00 | Duration: 11 | Avg Loss: 0.0000 | Epsilon: 1.000
+--- Episode 2: Target network updated. ---
+--- Episode 4: Target network updated. ---
+--- Episode 6: Target network updated. ---
+--- Episode 8: Target network updated. ---
+Ep: 10 | Reward: 21.00 | Duration: 21 | Avg Loss: 0.2417 | Epsilon: 0.904
+--- Episode 10: Target network updated. ---
+--- Episode 12: Target network updated. ---
+--- Episode 14: Target network updated. ---
+--- Episode 16: Target network updated. ---
+--- Episode 18: Target network updated. ---
+Ep: 20 | Reward: 13.00 | Duration: 13 | Avg Loss: 0.8285 | Epsilon: 0.818
+--- Episode 20: Target network updated. ---
+--- Episode 22: Target network updated. ---
+--- Episode 24: Target network updated. ---
+--- Episode 26: Target network updated. ---
+--- Episode 28: Target network updated. ---
+Ep: 30 | Reward: 13.00 | Duration: 13 | Avg Loss: 2.7258 | Epsilon: 0.740
+--- Episode 30: Target network updated. ---
+--- Episode 32: Target network updated. ---
+--- Episode 34: Target network updated. ---
+--- Episode 36: Target network updated. ---
+--- Episode 38: Target network updated. ---
+Ep: 40 | Reward: 11.00 | Duration: 11 | Avg Loss: 4.7440 | Epsilon: 0.669
+--- Episode 40: Target network updated. ---
+--- Episode 42: Target network updated. ---
+--- Episode 44: Target network updated. ---
+--- Episode 46: Target network updated. ---
+--- Episode 48: Target network updated. ---
+Ep: 50 | Reward: 13.00 | Duration: 13 | Avg Loss: 10.7354 | Epsilon: 0.605
+--- Episode 50: Target network updated. ---
+--- Episode 52: Target network updated. ---
+--- Episode 54: Target network updated. ---
+--- Episode 56: Target network updated. ---
+--- Episode 58: Target network updated. ---
+Ep: 60 | Reward: 15.00 | Duration: 15 | Avg Loss: 17.9056 | Epsilon: 0.547
+--- Episode 60: Target network updated. ---
+--- Episode 62: Target network updated. ---
+--- Episode 64: Target network updated. ---
+--- Episode 66: Target network updated. ---
+--- Episode 68: Target network updated. ---
+Ep: 70 | Reward: 10.00 | Duration: 10 | Avg Loss: 34.3555 | Epsilon: 0.495
+--- Episode 70: Target network updated. ---
+--- Episode 72: Target network updated. ---
+--- Episode 74: Target network updated. ---
+--- Episode 76: Target network updated. ---
+--- Episode 78: Target network updated. ---
+Ep: 80 | Reward: 10.00 | Duration: 10 | Avg Loss: 59.9504 | Epsilon: 0.448
+--- Episode 80: Target network updated. ---
+--- Episode 82: Target network updated. ---
+--- Episode 84: Target network updated. ---
+--- Episode 86: Target network updated. ---
+--- Episode 88: Target network updated. ---
+Ep: 90 | Reward: 11.00 | Duration: 11 | Avg Loss: 87.3838 | Epsilon: 0.405
+--- Episode 90: Target network updated. ---
+--- Episode 92: Target network updated. ---
+--- Episode 94: Target network updated. ---
+--- Episode 96: Target network updated. ---
+--- Episode 98: Target network updated. ---
+--- Training Complete. ---
+--- Running 100 Test Episodes ---
+Test Episode Durations: [10, 9, 8, 9, 10, 10, 10, 9, 11, 9, 10, 10, 9, 10, 9, 8, 10, 10, 9, 9, 10, 9, 9, 9, 9, 10, 10, 10, 10, 9, 9, 10, 8, 8, 9, 9, 10, 9, 9, 9, 10, 10, 10, 9, 9, 11, 10, 9, 9, 10, 9, 8, 11, 9, 8, 10, 9, 11, 9, 10, 9, 9, 9, 9, 10, 10, 9, 10, 10, 10, 10, 9, 10, 10, 9, 9, 10, 9, 10, 8, 9, 9, 10, 9, 8, 10, 8, 8, 9, 10, 9, 9, 10, 9, 10, 8, 9, 9, 10, 10]
+--- Test results saved to: results\DDQN-CartPole-v1-Script-3-Params_test_results.csv ---
+--- Recording Video ---
+C:\Users\Basem Elgalfy\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\gymnasium\wrappers\rendering.py:293: UserWarning: [33mWARN: Overwriting existing videos at D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\videos folder (try specifying a different `video_folder` for the `RecordVideo` wrapper if this is not desired)[0m
+  logger.warn(

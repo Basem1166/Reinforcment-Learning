@@ -1,0 +1,167 @@
+--- Starting Training Loop ---
+Ep: 0 | Reward: 14.00 | Duration: 14 | Avg Loss: 0.0000 | Epsilon: 1.000
+Ep: 10 | Reward: 22.00 | Duration: 22 | Avg Loss: 0.0022 | Epsilon: 0.951
+--- Episode 10: Target network updated. ---
+Ep: 20 | Reward: 27.00 | Duration: 27 | Avg Loss: 0.0117 | Epsilon: 0.905
+--- Episode 20: Target network updated. ---
+Ep: 30 | Reward: 24.00 | Duration: 24 | Avg Loss: 0.0416 | Epsilon: 0.860
+--- Episode 30: Target network updated. ---
+Ep: 40 | Reward: 43.00 | Duration: 43 | Avg Loss: 0.0590 | Epsilon: 0.818
+--- Episode 40: Target network updated. ---
+Ep: 50 | Reward: 42.00 | Duration: 42 | Avg Loss: 0.0781 | Epsilon: 0.778
+--- Episode 50: Target network updated. ---
+Ep: 60 | Reward: 20.00 | Duration: 20 | Avg Loss: 0.0644 | Epsilon: 0.740
+--- Episode 60: Target network updated. ---
+Ep: 70 | Reward: 41.00 | Duration: 41 | Avg Loss: 0.1152 | Epsilon: 0.704
+--- Episode 70: Target network updated. ---
+Ep: 80 | Reward: 15.00 | Duration: 15 | Avg Loss: 0.1569 | Epsilon: 0.670
+--- Episode 80: Target network updated. ---
+Ep: 90 | Reward: 110.00 | Duration: 110 | Avg Loss: 0.1238 | Epsilon: 0.637
+--- Episode 90: Target network updated. ---
+Ep: 100 | Reward: 119.00 | Duration: 119 | Avg Loss: 0.1368 | Epsilon: 0.606
+--- Episode 100: Target network updated. ---
+Ep: 110 | Reward: 22.00 | Duration: 22 | Avg Loss: 0.1363 | Epsilon: 0.576
+--- Episode 110: Target network updated. ---
+Ep: 120 | Reward: 110.00 | Duration: 110 | Avg Loss: 0.1393 | Epsilon: 0.548
+--- Episode 120: Target network updated. ---
+Ep: 130 | Reward: 20.00 | Duration: 20 | Avg Loss: 0.1689 | Epsilon: 0.521
+--- Episode 130: Target network updated. ---
+Ep: 140 | Reward: 154.00 | Duration: 154 | Avg Loss: 0.1317 | Epsilon: 0.496
+--- Episode 140: Target network updated. ---
+Ep: 150 | Reward: 168.00 | Duration: 168 | Avg Loss: 0.1684 | Epsilon: 0.471
+--- Episode 150: Target network updated. ---
+Ep: 160 | Reward: 47.00 | Duration: 47 | Avg Loss: 0.1670 | Epsilon: 0.448
+--- Episode 160: Target network updated. ---
+Ep: 170 | Reward: 120.00 | Duration: 120 | Avg Loss: 0.1317 | Epsilon: 0.427
+--- Episode 170: Target network updated. ---
+Ep: 180 | Reward: 114.00 | Duration: 114 | Avg Loss: 0.1755 | Epsilon: 0.406
+--- Episode 180: Target network updated. ---
+Ep: 190 | Reward: 12.00 | Duration: 12 | Avg Loss: 0.1598 | Epsilon: 0.386
+--- Episode 190: Target network updated. ---
+Ep: 200 | Reward: 111.00 | Duration: 111 | Avg Loss: 0.1695 | Epsilon: 0.367
+--- Episode 200: Target network updated. ---
+Ep: 210 | Reward: 11.00 | Duration: 11 | Avg Loss: 0.2673 | Epsilon: 0.349
+--- Episode 210: Target network updated. ---
+Ep: 220 | Reward: 26.00 | Duration: 26 | Avg Loss: 0.1652 | Epsilon: 0.332
+--- Episode 220: Target network updated. ---
+Ep: 230 | Reward: 15.00 | Duration: 15 | Avg Loss: 0.2418 | Epsilon: 0.316
+--- Episode 230: Target network updated. ---
+Ep: 240 | Reward: 26.00 | Duration: 26 | Avg Loss: 0.2855 | Epsilon: 0.300
+--- Episode 240: Target network updated. ---
+Ep: 250 | Reward: 112.00 | Duration: 112 | Avg Loss: 0.2730 | Epsilon: 0.286
+--- Episode 250: Target network updated. ---
+Ep: 260 | Reward: 125.00 | Duration: 125 | Avg Loss: 0.2627 | Epsilon: 0.272
+--- Episode 260: Target network updated. ---
+Ep: 270 | Reward: 123.00 | Duration: 123 | Avg Loss: 0.2988 | Epsilon: 0.258
+--- Episode 270: Target network updated. ---
+Ep: 280 | Reward: 15.00 | Duration: 15 | Avg Loss: 0.1739 | Epsilon: 0.246
+--- Episode 280: Target network updated. ---
+Ep: 290 | Reward: 127.00 | Duration: 127 | Avg Loss: 0.2390 | Epsilon: 0.234
+--- Episode 290: Target network updated. ---
+Ep: 300 | Reward: 124.00 | Duration: 124 | Avg Loss: 0.2550 | Epsilon: 0.222
+--- Episode 300: Target network updated. ---
+Ep: 310 | Reward: 131.00 | Duration: 131 | Avg Loss: 0.2547 | Epsilon: 0.211
+--- Episode 310: Target network updated. ---
+Ep: 320 | Reward: 138.00 | Duration: 138 | Avg Loss: 0.2475 | Epsilon: 0.201
+--- Episode 320: Target network updated. ---
+Ep: 330 | Reward: 183.00 | Duration: 183 | Avg Loss: 0.2922 | Epsilon: 0.191
+--- Episode 330: Target network updated. ---
+Ep: 340 | Reward: 52.00 | Duration: 52 | Avg Loss: 0.2519 | Epsilon: 0.182
+--- Episode 340: Target network updated. ---
+Ep: 350 | Reward: 193.00 | Duration: 193 | Avg Loss: 0.2521 | Epsilon: 0.173
+--- Episode 350: Target network updated. ---
+Ep: 360 | Reward: 258.00 | Duration: 258 | Avg Loss: 0.2782 | Epsilon: 0.165
+--- Episode 360: Target network updated. ---
+Ep: 370 | Reward: 114.00 | Duration: 114 | Avg Loss: 0.2707 | Epsilon: 0.157
+--- Episode 370: Target network updated. ---
+Ep: 380 | Reward: 106.00 | Duration: 106 | Avg Loss: 0.2580 | Epsilon: 0.149
+--- Episode 380: Target network updated. ---
+Ep: 390 | Reward: 102.00 | Duration: 102 | Avg Loss: 0.2673 | Epsilon: 0.142
+--- Episode 390: Target network updated. ---
+Ep: 400 | Reward: 107.00 | Duration: 107 | Avg Loss: 0.2620 | Epsilon: 0.135
+--- Episode 400: Target network updated. ---
+Ep: 410 | Reward: 113.00 | Duration: 113 | Avg Loss: 0.3167 | Epsilon: 0.128
+--- Episode 410: Target network updated. ---
+Ep: 420 | Reward: 120.00 | Duration: 120 | Avg Loss: 0.3143 | Epsilon: 0.122
+--- Episode 420: Target network updated. ---
+Ep: 430 | Reward: 180.00 | Duration: 180 | Avg Loss: 0.2583 | Epsilon: 0.116
+--- Episode 430: Target network updated. ---
+Ep: 440 | Reward: 500.00 | Duration: 500 | Avg Loss: 0.2608 | Epsilon: 0.110
+--- Episode 440: Target network updated. ---
+Ep: 450 | Reward: 110.00 | Duration: 110 | Avg Loss: 0.3093 | Epsilon: 0.105
+--- Episode 450: Target network updated. ---
+Ep: 460 | Reward: 16.00 | Duration: 16 | Avg Loss: 0.0441 | Epsilon: 0.100
+--- Episode 460: Target network updated. ---
+Ep: 470 | Reward: 194.00 | Duration: 194 | Avg Loss: 0.2602 | Epsilon: 0.095
+--- Episode 470: Target network updated. ---
+Ep: 480 | Reward: 139.00 | Duration: 139 | Avg Loss: 0.2940 | Epsilon: 0.090
+--- Episode 480: Target network updated. ---
+Ep: 490 | Reward: 190.00 | Duration: 190 | Avg Loss: 0.2856 | Epsilon: 0.086
+--- Episode 490: Target network updated. ---
+Ep: 500 | Reward: 127.00 | Duration: 127 | Avg Loss: 0.2791 | Epsilon: 0.082
+--- Episode 500: Target network updated. ---
+Ep: 510 | Reward: 164.00 | Duration: 164 | Avg Loss: 0.2912 | Epsilon: 0.078
+--- Episode 510: Target network updated. ---
+Ep: 520 | Reward: 300.00 | Duration: 300 | Avg Loss: 0.2439 | Epsilon: 0.074
+--- Episode 520: Target network updated. ---
+Ep: 530 | Reward: 216.00 | Duration: 216 | Avg Loss: 0.2818 | Epsilon: 0.070
+--- Episode 530: Target network updated. ---
+Ep: 540 | Reward: 121.00 | Duration: 121 | Avg Loss: 0.2711 | Epsilon: 0.067
+--- Episode 540: Target network updated. ---
+Ep: 550 | Reward: 223.00 | Duration: 223 | Avg Loss: 0.2285 | Epsilon: 0.063
+--- Episode 550: Target network updated. ---
+Ep: 560 | Reward: 102.00 | Duration: 102 | Avg Loss: 0.2393 | Epsilon: 0.060
+--- Episode 560: Target network updated. ---
+Ep: 570 | Reward: 128.00 | Duration: 128 | Avg Loss: 0.2687 | Epsilon: 0.057
+--- Episode 570: Target network updated. ---
+Ep: 580 | Reward: 240.00 | Duration: 240 | Avg Loss: 0.2250 | Epsilon: 0.055
+--- Episode 580: Target network updated. ---
+Ep: 590 | Reward: 208.00 | Duration: 208 | Avg Loss: 0.2202 | Epsilon: 0.052
+--- Episode 590: Target network updated. ---
+Ep: 600 | Reward: 131.00 | Duration: 131 | Avg Loss: 0.2253 | Epsilon: 0.049
+--- Episode 600: Target network updated. ---
+Ep: 610 | Reward: 151.00 | Duration: 151 | Avg Loss: 0.2433 | Epsilon: 0.047
+--- Episode 610: Target network updated. ---
+Ep: 620 | Reward: 162.00 | Duration: 162 | Avg Loss: 0.1973 | Epsilon: 0.045
+--- Episode 620: Target network updated. ---
+Ep: 630 | Reward: 226.00 | Duration: 226 | Avg Loss: 0.2294 | Epsilon: 0.043
+--- Episode 630: Target network updated. ---
+Ep: 640 | Reward: 241.00 | Duration: 241 | Avg Loss: 0.2145 | Epsilon: 0.040
+--- Episode 640: Target network updated. ---
+Ep: 650 | Reward: 500.00 | Duration: 500 | Avg Loss: 0.2332 | Epsilon: 0.038
+--- Episode 650: Target network updated. ---
+Ep: 660 | Reward: 168.00 | Duration: 168 | Avg Loss: 0.1932 | Epsilon: 0.037
+--- Episode 660: Target network updated. ---
+Ep: 670 | Reward: 172.00 | Duration: 172 | Avg Loss: 0.2545 | Epsilon: 0.035
+--- Episode 670: Target network updated. ---
+Ep: 680 | Reward: 500.00 | Duration: 500 | Avg Loss: 0.2458 | Epsilon: 0.033
+--- Episode 680: Target network updated. ---
+Ep: 690 | Reward: 40.00 | Duration: 40 | Avg Loss: 0.2206 | Epsilon: 0.031
+--- Episode 690: Target network updated. ---
+Ep: 700 | Reward: 110.00 | Duration: 110 | Avg Loss: 0.2113 | Epsilon: 0.030
+--- Episode 700: Target network updated. ---
+Ep: 710 | Reward: 139.00 | Duration: 139 | Avg Loss: 0.1712 | Epsilon: 0.028
+--- Episode 710: Target network updated. ---
+Ep: 720 | Reward: 123.00 | Duration: 123 | Avg Loss: 0.2343 | Epsilon: 0.027
+--- Episode 720: Target network updated. ---
+Ep: 730 | Reward: 125.00 | Duration: 125 | Avg Loss: 0.2309 | Epsilon: 0.026
+--- Episode 730: Target network updated. ---
+Ep: 740 | Reward: 500.00 | Duration: 500 | Avg Loss: 0.2187 | Epsilon: 0.024
+--- Episode 740: Target network updated. ---
+Ep: 750 | Reward: 500.00 | Duration: 500 | Avg Loss: 0.2056 | Epsilon: 0.023
+--- Episode 750: Target network updated. ---
+Ep: 760 | Reward: 500.00 | Duration: 500 | Avg Loss: 0.1857 | Epsilon: 0.022
+--- Episode 760: Target network updated. ---
+Ep: 770 | Reward: 500.00 | Duration: 500 | Avg Loss: 0.1740 | Epsilon: 0.021
+--- Episode 770: Target network updated. ---
+Ep: 780 | Reward: 500.00 | Duration: 500 | Avg Loss: 0.1617 | Epsilon: 0.020
+--- Episode 780: Target network updated. ---
+Ep: 790 | Reward: 500.00 | Duration: 500 | Avg Loss: 0.1377 | Epsilon: 0.019
+--- Episode 790: Target network updated. ---
+--- Training Complete. ---
+--- Running 100 Test Episodes ---
+Test Episode Durations: [500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500]
+--- Test results saved to: results\DDQN-CartPole-v1-Stable_test_results.csv ---
+--- Recording Video ---
+C:\Users\Basem Elgalfy\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\gymnasium\wrappers\rendering.py:293: UserWarning: [33mWARN: Overwriting existing videos at D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\videos folder (try specifying a different `video_folder` for the `RecordVideo` wrapper if this is not desired)[0m
+  logger.warn(

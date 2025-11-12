@@ -1,0 +1,77 @@
+_wandb:
+    value:
+        cli_version: 0.23.0
+        e:
+            3tlh1ts0xxhlzjxbishu1hzj4t9r6kc6:
+                args:
+                    - --config
+                    - configs/dqn_cartpole.json
+                codePath: Assignment2\main.py
+                codePathLocal: main.py
+                cpu_count: 4
+                cpu_count_logical: 8
+                cudaVersion: "12.6"
+                disk:
+                    /:
+                        total: "1000202039296"
+                        used: "900435410944"
+                email: basem_elgalfy@yahoo.com
+                executable: C:\Users\Basem Elgalfy\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\python.exe
+                git:
+                    commit: 28e16676f8a87f306033b1da4ce0f2ba3d6d2071
+                    remote: https://github.com/Basem1166/Reinforcment-Learning.git
+                gpu: NVIDIA GeForce GTX 1070
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Pascal
+                      cudaCores: 1920
+                      memoryTotal: "8589934592"
+                      name: NVIDIA GeForce GTX 1070
+                      uuid: GPU-b2372aee-db4a-1f4a-cce6-1d00b714862f
+                host: DESKTOP-JVMVDPN
+                memory:
+                    total: "17115594752"
+                os: Windows-10-10.0.19045-SP0
+                program: D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\main.py
+                python: CPython 3.10.11
+                root: D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2
+                startedAt: "2025-11-11T22:13:52.822964Z"
+                writerId: 3tlh1ts0xxhlzjxbishu1hzj4t9r6kc6
+        m: []
+        python_version: 3.10.11
+        t:
+            "1":
+                - 1
+            "2":
+                - 1
+            "3":
+                - 13
+                - 16
+            "4": 3.10.11
+            "5": 0.23.0
+            "8":
+                - 3
+            "12": 0.23.0
+            "13": windows-amd64
+batch_size:
+    value: 128
+ddqn:
+    value: false
+env:
+    value: CartPole-v1
+epsilon_decay:
+    value: 1000
+epsilon_min:
+    value: 0.01
+gamma:
+    value: 0.99
+lr:
+    value: 0.0001
+memory_size:
+    value: 10000
+num_episodes:
+    value: 600
+run_name:
+    value: DQN-CartPole-v1-Optimized
+target_update_freq:
+    value: 10

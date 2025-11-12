@@ -1,0 +1,95 @@
+--- Starting Training ---
+Episode    0 | Reward:  -200.0 | Duration:  200 | Avg Loss: 0.01697 | Epsilon: 0.991
+Episode 0: Target network updated.
+Episode 10: Target network updated.
+Episode 20: Target network updated.
+Episode 30: Target network updated.
+Episode 40: Target network updated.
+Episode 50: Target network updated.
+Episode 60: Target network updated.
+Episode 70: Target network updated.
+Episode 80: Target network updated.
+Episode 90: Target network updated.
+Episode  100 | Reward:  -200.0 | Duration:  200 | Avg Loss: 0.04810 | Epsilon: 0.396
+Episode 100: Target network updated.
+Episode 110: Target network updated.
+Episode 120: Target network updated.
+Episode 130: Target network updated.
+Episode 140: Target network updated.
+Episode 150: Target network updated.
+Episode 160: Target network updated.
+Episode 170: Target network updated.
+Episode 180: Target network updated.
+Episode 190: Target network updated.
+Episode  200 | Reward:  -200.0 | Duration:  200 | Avg Loss: 0.08692 | Epsilon: 0.177
+Episode 200: Target network updated.
+Episode 210: Target network updated.
+Episode 220: Target network updated.
+Episode 230: Target network updated.
+Episode 240: Target network updated.
+Episode 250: Target network updated.
+Episode 260: Target network updated.
+Episode 270: Target network updated.
+Episode 280: Target network updated.
+Episode 290: Target network updated.
+Episode  300 | Reward:  -133.0 | Duration:  133 | Avg Loss: 0.08902 | Epsilon: 0.099
+Episode 300: Target network updated.
+Episode 310: Target network updated.
+Episode 320: Target network updated.
+Episode 330: Target network updated.
+Episode 340: Target network updated.
+Episode 350: Target network updated.
+Episode 360: Target network updated.
+Episode 370: Target network updated.
+Episode 380: Target network updated.
+Episode 390: Target network updated.
+Episode  400 | Reward:  -142.0 | Duration:  142 | Avg Loss: 0.03665 | Epsilon: 0.073
+Episode 400: Target network updated.
+Episode 410: Target network updated.
+Episode 420: Target network updated.
+Episode 430: Target network updated.
+Episode 440: Target network updated.
+Episode 450: Target network updated.
+Episode 460: Target network updated.
+Episode 470: Target network updated.
+Episode 480: Target network updated.
+Episode 490: Target network updated.
+Episode  500 | Reward:  -140.0 | Duration:  140 | Avg Loss: 0.01890 | Epsilon: 0.060
+Episode 500: Target network updated.
+Episode 510: Target network updated.
+Episode 520: Target network updated.
+Episode 530: Target network updated.
+Episode 540: Target network updated.
+Episode 550: Target network updated.
+Episode 560: Target network updated.
+Episode 570: Target network updated.
+Episode 580: Target network updated.
+Episode 590: Target network updated.
+Episode  600 | Reward:  -200.0 | Duration:  200 | Avg Loss: 0.08688 | Epsilon: 0.055
+Episode 600: Target network updated.
+Episode 610: Target network updated.
+Episode 620: Target network updated.
+Episode 630: Target network updated.
+Episode 640: Target network updated.
+Episode 650: Target network updated.
+Episode 660: Target network updated.
+Episode 670: Target network updated.
+Episode 680: Target network updated.
+Episode 690: Target network updated.
+Episode  700 | Reward:  -148.0 | Duration:  148 | Avg Loss: 0.14015 | Epsilon: 0.052
+Episode 700: Target network updated.
+Episode 710: Target network updated.
+Episode 720: Target network updated.
+Episode 730: Target network updated.
+Episode 740: Target network updated.
+Episode 750: Target network updated.
+Episode 760: Target network updated.
+Episode 770: Target network updated.
+Traceback (most recent call last):
+  File "D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\main.py", line 165, in <module>
+    action = agent.policy_net(state_tensor).max(1)[1].item()
+  File "D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\main.py", line 79, in main
+    while not done:
+  File "D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\model.py", line 58, in push
+    def push(self, *args):
+KeyboardInterrupt

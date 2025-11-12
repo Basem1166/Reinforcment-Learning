@@ -1,0 +1,26 @@
+2025-11-12 01:08:40,134 INFO    MainThread:10788 [wandb_setup.py:_flush():80] Current SDK version is 0.23.0
+2025-11-12 01:08:40,134 INFO    MainThread:10788 [wandb_setup.py:_flush():80] Configure stats pid to 10788
+2025-11-12 01:08:40,134 INFO    MainThread:10788 [wandb_setup.py:_flush():80] Loading settings from C:\Users\Basem Elgalfy\.config\wandb\settings
+2025-11-12 01:08:40,134 INFO    MainThread:10788 [wandb_setup.py:_flush():80] Loading settings from D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\wandb\settings
+2025-11-12 01:08:40,135 INFO    MainThread:10788 [wandb_setup.py:_flush():80] Loading settings from environment variables
+2025-11-12 01:08:40,135 INFO    MainThread:10788 [wandb_init.py:setup_run_log_directory():713] Logging user logs to D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\wandb\run-20251112_010840-93seqoqc\logs\debug.log
+2025-11-12 01:08:40,136 INFO    MainThread:10788 [wandb_init.py:setup_run_log_directory():714] Logging internal logs to D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\wandb\run-20251112_010840-93seqoqc\logs\debug-internal.log
+2025-11-12 01:08:40,136 INFO    MainThread:10788 [wandb_init.py:init():840] calling init triggers
+2025-11-12 01:08:40,137 INFO    MainThread:10788 [wandb_init.py:init():845] wandb.init called with sweep_config: {}
+config: {'run_name': 'DQN-CartPole-v1-Optimized', 'env': 'CartPole-v1', 'ddqn': False, 'num_episodes': 600, 'target_update_freq': 10, 'lr': 0.0001, 'gamma': 0.99, 'epsilon_decay': 1000, 'epsilon_min': 0.01, 'memory_size': 10000, 'batch_size': 128, '_wandb': {}}
+2025-11-12 01:08:40,137 INFO    MainThread:10788 [wandb_init.py:init():888] starting backend
+2025-11-12 01:08:40,441 INFO    MainThread:10788 [wandb_init.py:init():891] sending inform_init request
+2025-11-12 01:08:40,471 INFO    MainThread:10788 [wandb_init.py:init():899] backend started and connected
+2025-11-12 01:08:40,501 INFO    MainThread:10788 [wandb_init.py:init():969] updated telemetry
+2025-11-12 01:08:40,538 INFO    MainThread:10788 [wandb_init.py:init():993] communicating run to backend with 90.0 second timeout
+2025-11-12 01:08:41,157 INFO    MainThread:10788 [wandb_init.py:init():1040] starting run threads in backend
+2025-11-12 01:08:41,250 INFO    MainThread:10788 [wandb_run.py:_console_start():2504] atexit reg
+2025-11-12 01:08:41,251 INFO    MainThread:10788 [wandb_run.py:_redirect():2352] redirect: wrap_raw
+2025-11-12 01:08:41,251 INFO    MainThread:10788 [wandb_run.py:_redirect():2421] Wrapping output streams.
+2025-11-12 01:08:41,251 INFO    MainThread:10788 [wandb_run.py:_redirect():2444] Redirects installed.
+2025-11-12 01:08:41,253 INFO    MainThread:10788 [wandb_init.py:init():1080] run started, returning control to user process
+2025-11-12 01:08:42,347 INFO    MainThread:10788 [wandb_run.py:_finish():2270] finishing run basem_elgalfy-cairo-university/cmps458-assignment2/93seqoqc
+2025-11-12 01:08:42,347 INFO    MainThread:10788 [wandb_run.py:_atexit_cleanup():2469] got exitcode: 0
+2025-11-12 01:08:42,348 INFO    MainThread:10788 [wandb_run.py:_restore():2451] restore
+2025-11-12 01:08:42,348 INFO    MainThread:10788 [wandb_run.py:_restore():2457] restore done
+2025-11-12 01:08:43,478 INFO    MainThread:10788 [wandb_run.py:_footer_sync_info():3853] logging synced files

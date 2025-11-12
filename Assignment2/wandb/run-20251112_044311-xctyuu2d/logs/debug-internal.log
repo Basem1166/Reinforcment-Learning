@@ -1,0 +1,12 @@
+{"time":"2025-11-12T04:43:11.3274155+03:00","level":"INFO","msg":"stream: starting","core version":"0.23.0"}
+{"time":"2025-11-12T04:43:11.7197918+03:00","level":"INFO","msg":"stream: created new stream","id":"xctyuu2d"}
+{"time":"2025-11-12T04:43:11.7197918+03:00","level":"INFO","msg":"handler: started","stream_id":"xctyuu2d"}
+{"time":"2025-11-12T04:43:11.7208217+03:00","level":"INFO","msg":"stream: started","id":"xctyuu2d"}
+{"time":"2025-11-12T04:43:11.7208217+03:00","level":"INFO","msg":"writer: started","stream_id":"xctyuu2d"}
+{"time":"2025-11-12T04:43:11.7208217+03:00","level":"INFO","msg":"sender: started","stream_id":"xctyuu2d"}
+{"time":"2025-11-12T04:53:28.4635316+03:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-11-12T04:53:28.7354997+03:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-11-12T04:53:28.742133+03:00","level":"INFO","msg":"stream: closing","id":"xctyuu2d"}
+{"time":"2025-11-12T04:53:28.742133+03:00","level":"INFO","msg":"handler: closed","stream_id":"xctyuu2d"}
+{"time":"2025-11-12T04:53:28.7431318+03:00","level":"INFO","msg":"sender: closed","stream_id":"xctyuu2d"}
+{"time":"2025-11-12T04:53:28.7431318+03:00","level":"INFO","msg":"stream: closed","id":"xctyuu2d"}

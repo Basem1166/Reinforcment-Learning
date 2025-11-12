@@ -1,0 +1,68 @@
+--- Starting Training ---
+Episode 0: Target network updated.
+Episode 10: Target network updated.
+Episode 20: Target network updated.
+Episode 30: Target network updated.
+Episode 40: Target network updated.
+Episode 50: Target network updated.
+Episode 60: Target network updated.
+Episode 70: Target network updated.
+Episode 80: Target network updated.
+Episode 90: Target network updated.
+Episode 100: Target network updated.
+Episode 110: Target network updated.
+Episode 120: Target network updated.
+Episode 130: Target network updated.
+Episode 140: Target network updated.
+Episode 150: Target network updated.
+Episode 160: Target network updated.
+Episode 170: Target network updated.
+Episode 180: Target network updated.
+Episode 190: Target network updated.
+Episode 200: Target network updated.
+Episode 210: Target network updated.
+Episode 220: Target network updated.
+Episode 230: Target network updated.
+Episode 240: Target network updated.
+Episode 250: Target network updated.
+Episode 260: Target network updated.
+Episode 270: Target network updated.
+Episode 280: Target network updated.
+Episode 290: Target network updated.
+Episode 300: Target network updated.
+Episode 310: Target network updated.
+Episode 320: Target network updated.
+Episode 330: Target network updated.
+Episode 340: Target network updated.
+Episode 350: Target network updated.
+Episode 360: Target network updated.
+Episode 370: Target network updated.
+Episode 380: Target network updated.
+Episode 390: Target network updated.
+Episode 400: Target network updated.
+Episode 410: Target network updated.
+Episode 420: Target network updated.
+Episode 430: Target network updated.
+Episode 440: Target network updated.
+Episode 450: Target network updated.
+Episode 460: Target network updated.
+Episode 470: Target network updated.
+Episode 480: Target network updated.
+Episode 490: Target network updated.
+Episode 500: Target network updated.
+Episode 510: Target network updated.
+Episode 520: Target network updated.
+Episode 530: Target network updated.
+Episode 540: Target network updated.
+Episode 550: Target network updated.
+Episode 560: Target network updated.
+Episode 570: Target network updated.
+Episode 580: Target network updated.
+Episode 590: Target network updated.
+--- Training Complete ---
+--- Running 100 Test Episodes ---
+Average test duration: 174.97
+--- Recording Video ---
+C:\Users\Basem Elgalfy\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\gymnasium\wrappers\rendering.py:293: UserWarning: [33mWARN: Overwriting existing videos at D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\videos folder (try specifying a different `video_folder` for the `RecordVideo` wrapper if this is not desired)[0m
+  logger.warn(
+Video saved to 'videos' folder.

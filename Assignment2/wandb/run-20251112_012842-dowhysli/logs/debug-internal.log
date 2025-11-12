@@ -1,0 +1,12 @@
+{"time":"2025-11-12T01:28:43.1012393+03:00","level":"INFO","msg":"stream: starting","core version":"0.23.0"}
+{"time":"2025-11-12T01:28:44.2602322+03:00","level":"INFO","msg":"stream: created new stream","id":"dowhysli"}
+{"time":"2025-11-12T01:28:44.2602322+03:00","level":"INFO","msg":"handler: started","stream_id":"dowhysli"}
+{"time":"2025-11-12T01:28:44.2623489+03:00","level":"INFO","msg":"stream: started","id":"dowhysli"}
+{"time":"2025-11-12T01:28:44.2623489+03:00","level":"INFO","msg":"writer: started","stream_id":"dowhysli"}
+{"time":"2025-11-12T01:28:44.2623489+03:00","level":"INFO","msg":"sender: started","stream_id":"dowhysli"}
+{"time":"2025-11-12T01:42:11.9674259+03:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-11-12T01:42:12.3786706+03:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-11-12T01:42:12.3867499+03:00","level":"INFO","msg":"stream: closing","id":"dowhysli"}
+{"time":"2025-11-12T01:42:12.3867499+03:00","level":"INFO","msg":"handler: closed","stream_id":"dowhysli"}
+{"time":"2025-11-12T01:42:12.3867499+03:00","level":"INFO","msg":"sender: closed","stream_id":"dowhysli"}
+{"time":"2025-11-12T01:42:12.3867499+03:00","level":"INFO","msg":"stream: closed","id":"dowhysli"}

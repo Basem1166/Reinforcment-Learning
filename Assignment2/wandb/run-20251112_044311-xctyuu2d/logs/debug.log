@@ -1,0 +1,26 @@
+2025-11-12 04:43:11,013 INFO    MainThread:18972 [wandb_setup.py:_flush():80] Current SDK version is 0.23.0
+2025-11-12 04:43:11,013 INFO    MainThread:18972 [wandb_setup.py:_flush():80] Configure stats pid to 18972
+2025-11-12 04:43:11,013 INFO    MainThread:18972 [wandb_setup.py:_flush():80] Loading settings from C:\Users\Basem Elgalfy\.config\wandb\settings
+2025-11-12 04:43:11,013 INFO    MainThread:18972 [wandb_setup.py:_flush():80] Loading settings from D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\wandb\settings
+2025-11-12 04:43:11,013 INFO    MainThread:18972 [wandb_setup.py:_flush():80] Loading settings from environment variables
+2025-11-12 04:43:11,014 INFO    MainThread:18972 [wandb_init.py:setup_run_log_directory():713] Logging user logs to D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\wandb\run-20251112_044311-xctyuu2d\logs\debug.log
+2025-11-12 04:43:11,014 INFO    MainThread:18972 [wandb_init.py:setup_run_log_directory():714] Logging internal logs to D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\wandb\run-20251112_044311-xctyuu2d\logs\debug-internal.log
+2025-11-12 04:43:11,014 INFO    MainThread:18972 [wandb_init.py:init():840] calling init triggers
+2025-11-12 04:43:11,014 INFO    MainThread:18972 [wandb_init.py:init():845] wandb.init called with sweep_config: {}
+config: {'run_name': 'DDQN-Pendulum-v1-Discretized', 'env': 'Pendulum-v1', 'env_kwargs': {'g': 10.0}, 'ddqn': True, 'num_episodes': 1000, 'num_test_episodes': 100, 'target_update_freq': 1, 'lr': 0.001, 'gamma': 0.99, 'epsilon_decay': 0.995, 'epsilon_min': 0.02, 'memory_size': 50000, 'batch_size': 64, 'layer1_size': 128, 'layer2_size': 128, 'discrete_actions': 11, '_wandb': {}}
+2025-11-12 04:43:11,014 INFO    MainThread:18972 [wandb_init.py:init():888] starting backend
+2025-11-12 04:43:11,308 INFO    MainThread:18972 [wandb_init.py:init():891] sending inform_init request
+2025-11-12 04:43:11,324 INFO    MainThread:18972 [wandb_init.py:init():899] backend started and connected
+2025-11-12 04:43:11,349 INFO    MainThread:18972 [wandb_init.py:init():969] updated telemetry
+2025-11-12 04:43:11,390 INFO    MainThread:18972 [wandb_init.py:init():993] communicating run to backend with 90.0 second timeout
+2025-11-12 04:43:12,007 INFO    MainThread:18972 [wandb_init.py:init():1040] starting run threads in backend
+2025-11-12 04:43:12,145 INFO    MainThread:18972 [wandb_run.py:_console_start():2504] atexit reg
+2025-11-12 04:43:12,145 INFO    MainThread:18972 [wandb_run.py:_redirect():2352] redirect: wrap_raw
+2025-11-12 04:43:12,145 INFO    MainThread:18972 [wandb_run.py:_redirect():2421] Wrapping output streams.
+2025-11-12 04:43:12,145 INFO    MainThread:18972 [wandb_run.py:_redirect():2444] Redirects installed.
+2025-11-12 04:43:12,150 INFO    MainThread:18972 [wandb_init.py:init():1080] run started, returning control to user process
+2025-11-12 04:53:27,272 INFO    MainThread:18972 [wandb_run.py:_finish():2270] finishing run basem_elgalfy-cairo-university/cmps458-assignment2/xctyuu2d
+2025-11-12 04:53:27,273 INFO    MainThread:18972 [wandb_run.py:_atexit_cleanup():2469] got exitcode: 0
+2025-11-12 04:53:27,274 INFO    MainThread:18972 [wandb_run.py:_restore():2451] restore
+2025-11-12 04:53:27,274 INFO    MainThread:18972 [wandb_run.py:_restore():2457] restore done
+2025-11-12 04:53:28,740 INFO    MainThread:18972 [wandb_run.py:_footer_sync_info():3853] logging synced files

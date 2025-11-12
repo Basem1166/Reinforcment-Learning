@@ -1,0 +1,16 @@
+{
+  "run_name": "DQN-CartPole-v1-Stable-Decay",
+  "env": "CartPole-v1",
+  "ddqn": false,
+  "num_episodes": 800,
+  "num_test_episodes": 100,
+  "target_update_freq": 10,
+  "lr": 0.00025,
+  "gamma": 0.99,
+  "epsilon_decay": 0.995,
+  "epsilon_min": 0.01,
+  "memory_size": 100000,
+  "batch_size": 64,
+  "layer1_size": 256,
+  "layer2_size": 256
+}

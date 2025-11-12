@@ -1,0 +1,16 @@
+{
+  "run_name": "DDQN-Acrobot-v1",
+  "env": "Acrobot-v1",
+  "ddqn": true,
+  "num_episodes": 1000,
+  "num_test_episodes": 100,
+  "target_update_freq": 1,
+  "lr": 0.0002,
+  "gamma": 0.99,
+  "epsilon_decay": 0.995,
+  "epsilon_min": 0.0001,
+  "memory_size": 500000,
+  "batch_size": 64,
+  "layer1_size": 256,
+  "layer2_size": 512
+}

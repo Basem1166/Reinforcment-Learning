@@ -1,0 +1,668 @@
+--- Starting Training ---
+Episode    0 | Reward:    13.0 | Duration:   13 | Avg Loss: 0.00000 | Epsilon: 0.988
+Episode 0: Target network updated.
+Episode    1 | Reward:    13.0 | Duration:   13 | Avg Loss: 0.00000 | Epsilon: 0.976
+Episode    2 | Reward:    16.0 | Duration:   16 | Avg Loss: 0.00000 | Epsilon: 0.960
+Episode    3 | Reward:    41.0 | Duration:   41 | Avg Loss: 0.00000 | Epsilon: 0.922
+Episode    4 | Reward:    13.0 | Duration:   13 | Avg Loss: 0.00000 | Epsilon: 0.910
+Episode    5 | Reward:    31.0 | Duration:   31 | Avg Loss: 0.00000 | Epsilon: 0.883
+Episode    6 | Reward:    61.0 | Duration:   61 | Avg Loss: 0.37387 | Epsilon: 0.831
+Episode    7 | Reward:    43.0 | Duration:   43 | Avg Loss: 0.17922 | Epsilon: 0.797
+Episode    8 | Reward:    55.0 | Duration:   55 | Avg Loss: 0.06689 | Epsilon: 0.754
+Episode    9 | Reward:    13.0 | Duration:   13 | Avg Loss: 0.02614 | Epsilon: 0.745
+Episode   10 | Reward:    31.0 | Duration:   31 | Avg Loss: 0.01868 | Epsilon: 0.722
+Episode 10: Target network updated.
+Episode   11 | Reward:    40.0 | Duration:   40 | Avg Loss: 0.31829 | Epsilon: 0.695
+Episode   12 | Reward:    46.0 | Duration:   46 | Avg Loss: 0.06667 | Epsilon: 0.664
+Episode   13 | Reward:    17.0 | Duration:   17 | Avg Loss: 0.04191 | Epsilon: 0.653
+Episode   14 | Reward:     9.0 | Duration:    9 | Avg Loss: 0.04424 | Epsilon: 0.647
+Episode   15 | Reward:    15.0 | Duration:   15 | Avg Loss: 0.03978 | Epsilon: 0.637
+Episode   16 | Reward:    14.0 | Duration:   14 | Avg Loss: 0.04428 | Epsilon: 0.629
+Episode   17 | Reward:    12.0 | Duration:   12 | Avg Loss: 0.04432 | Epsilon: 0.621
+Episode   18 | Reward:    15.0 | Duration:   15 | Avg Loss: 0.03912 | Epsilon: 0.612
+Episode   19 | Reward:    12.0 | Duration:   12 | Avg Loss: 0.03726 | Epsilon: 0.605
+Episode   20 | Reward:    16.0 | Duration:   16 | Avg Loss: 0.03702 | Epsilon: 0.596
+Episode 20: Target network updated.
+Episode   21 | Reward:    10.0 | Duration:   10 | Avg Loss: 0.53243 | Epsilon: 0.590
+Episode   22 | Reward:    10.0 | Duration:   10 | Avg Loss: 0.34820 | Epsilon: 0.584
+Episode   23 | Reward:    16.0 | Duration:   16 | Avg Loss: 0.17751 | Epsilon: 0.575
+Episode   24 | Reward:    13.0 | Duration:   13 | Avg Loss: 0.11812 | Epsilon: 0.568
+Episode   25 | Reward:    17.0 | Duration:   17 | Avg Loss: 0.11729 | Epsilon: 0.558
+Episode   26 | Reward:    12.0 | Duration:   12 | Avg Loss: 0.10122 | Epsilon: 0.552
+Episode   27 | Reward:    10.0 | Duration:   10 | Avg Loss: 0.09709 | Epsilon: 0.546
+Episode   28 | Reward:    12.0 | Duration:   12 | Avg Loss: 0.12875 | Epsilon: 0.540
+Episode   29 | Reward:    10.0 | Duration:   10 | Avg Loss: 0.11435 | Epsilon: 0.535
+Episode   30 | Reward:    10.0 | Duration:   10 | Avg Loss: 0.10630 | Epsilon: 0.529
+Episode 30: Target network updated.
+Episode   31 | Reward:    10.0 | Duration:   10 | Avg Loss: 0.58031 | Epsilon: 0.524
+Episode   32 | Reward:     8.0 | Duration:    8 | Avg Loss: 0.41092 | Epsilon: 0.520
+Episode   33 | Reward:     9.0 | Duration:    9 | Avg Loss: 0.24332 | Epsilon: 0.516
+Episode   34 | Reward:    15.0 | Duration:   15 | Avg Loss: 0.23939 | Epsilon: 0.508
+Episode   35 | Reward:    16.0 | Duration:   16 | Avg Loss: 0.17552 | Epsilon: 0.500
+Episode   36 | Reward:    10.0 | Duration:   10 | Avg Loss: 0.16299 | Epsilon: 0.495
+Episode   37 | Reward:    12.0 | Duration:   12 | Avg Loss: 0.19638 | Epsilon: 0.489
+Episode   38 | Reward:    12.0 | Duration:   12 | Avg Loss: 0.17490 | Epsilon: 0.484
+Episode   39 | Reward:    19.0 | Duration:   19 | Avg Loss: 0.16933 | Epsilon: 0.475
+Episode   40 | Reward:    11.0 | Duration:   11 | Avg Loss: 0.16479 | Epsilon: 0.470
+Episode 40: Target network updated.
+Episode   41 | Reward:    14.0 | Duration:   14 | Avg Loss: 0.56062 | Epsilon: 0.463
+Episode   42 | Reward:     9.0 | Duration:    9 | Avg Loss: 0.33465 | Epsilon: 0.459
+Episode   43 | Reward:    15.0 | Duration:   15 | Avg Loss: 0.25420 | Epsilon: 0.453
+Episode   44 | Reward:    10.0 | Duration:   10 | Avg Loss: 0.26098 | Epsilon: 0.448
+Episode   45 | Reward:    12.0 | Duration:   12 | Avg Loss: 0.24701 | Epsilon: 0.443
+Episode   46 | Reward:    11.0 | Duration:   11 | Avg Loss: 0.21859 | Epsilon: 0.438
+Episode   47 | Reward:    11.0 | Duration:   11 | Avg Loss: 0.22429 | Epsilon: 0.434
+Episode   48 | Reward:     9.0 | Duration:    9 | Avg Loss: 0.19249 | Epsilon: 0.430
+Episode   49 | Reward:     9.0 | Duration:    9 | Avg Loss: 0.25032 | Epsilon: 0.426
+Episode   50 | Reward:    13.0 | Duration:   13 | Avg Loss: 0.22538 | Epsilon: 0.421
+Episode 50: Target network updated.
+Episode   51 | Reward:    12.0 | Duration:   12 | Avg Loss: 0.65734 | Epsilon: 0.416
+Episode   52 | Reward:    10.0 | Duration:   10 | Avg Loss: 0.39807 | Epsilon: 0.412
+Episode   53 | Reward:    12.0 | Duration:   12 | Avg Loss: 0.31348 | Epsilon: 0.407
+Episode   54 | Reward:     9.0 | Duration:    9 | Avg Loss: 0.33028 | Epsilon: 0.403
+Episode   55 | Reward:    10.0 | Duration:   10 | Avg Loss: 0.31624 | Epsilon: 0.399
+Episode   56 | Reward:    10.0 | Duration:   10 | Avg Loss: 0.26170 | Epsilon: 0.396
+Episode   57 | Reward:    11.0 | Duration:   11 | Avg Loss: 0.29111 | Epsilon: 0.391
+Episode   58 | Reward:    11.0 | Duration:   11 | Avg Loss: 0.28528 | Epsilon: 0.387
+Episode   59 | Reward:    11.0 | Duration:   11 | Avg Loss: 0.22910 | Epsilon: 0.383
+Episode   60 | Reward:    13.0 | Duration:   13 | Avg Loss: 0.30390 | Epsilon: 0.378
+Episode 60: Target network updated.
+Episode   61 | Reward:    10.0 | Duration:   10 | Avg Loss: 0.70336 | Epsilon: 0.375
+Episode   62 | Reward:    11.0 | Duration:   11 | Avg Loss: 0.40054 | Epsilon: 0.371
+Episode   63 | Reward:     8.0 | Duration:    8 | Avg Loss: 0.37069 | Epsilon: 0.368
+Episode   64 | Reward:    10.0 | Duration:   10 | Avg Loss: 0.37641 | Epsilon: 0.364
+Episode   65 | Reward:    11.0 | Duration:   11 | Avg Loss: 0.27492 | Epsilon: 0.360
+Episode   66 | Reward:    16.0 | Duration:   16 | Avg Loss: 0.34101 | Epsilon: 0.355
+Episode   67 | Reward:    10.0 | Duration:   10 | Avg Loss: 0.35839 | Epsilon: 0.351
+Episode   68 | Reward:    12.0 | Duration:   12 | Avg Loss: 0.32320 | Epsilon: 0.347
+Episode   69 | Reward:    14.0 | Duration:   14 | Avg Loss: 0.31897 | Epsilon: 0.343
+Episode   70 | Reward:    11.0 | Duration:   11 | Avg Loss: 0.32278 | Epsilon: 0.339
+Episode 70: Target network updated.
+Episode   71 | Reward:    11.0 | Duration:   11 | Avg Loss: 0.69773 | Epsilon: 0.335
+Episode   72 | Reward:    11.0 | Duration:   11 | Avg Loss: 0.54338 | Epsilon: 0.332
+Episode   73 | Reward:     9.0 | Duration:    9 | Avg Loss: 0.43072 | Epsilon: 0.329
+Episode   74 | Reward:    14.0 | Duration:   14 | Avg Loss: 0.47420 | Epsilon: 0.324
+Episode   75 | Reward:    17.0 | Duration:   17 | Avg Loss: 0.41999 | Epsilon: 0.319
+Episode   76 | Reward:    13.0 | Duration:   13 | Avg Loss: 0.35179 | Epsilon: 0.315
+Episode   77 | Reward:    12.0 | Duration:   12 | Avg Loss: 0.42445 | Epsilon: 0.311
+Episode   78 | Reward:     9.0 | Duration:    9 | Avg Loss: 0.43525 | Epsilon: 0.309
+Episode   79 | Reward:    11.0 | Duration:   11 | Avg Loss: 0.32795 | Epsilon: 0.306
+Episode   80 | Reward:    12.0 | Duration:   12 | Avg Loss: 0.36453 | Epsilon: 0.302
+Episode 80: Target network updated.
+Episode   81 | Reward:     9.0 | Duration:    9 | Avg Loss: 0.82039 | Epsilon: 0.299
+Episode   82 | Reward:     9.0 | Duration:    9 | Avg Loss: 0.58223 | Epsilon: 0.297
+Episode   83 | Reward:    14.0 | Duration:   14 | Avg Loss: 0.48761 | Epsilon: 0.293
+Episode   84 | Reward:     9.0 | Duration:    9 | Avg Loss: 0.49217 | Epsilon: 0.290
+Episode   85 | Reward:    12.0 | Duration:   12 | Avg Loss: 0.40859 | Epsilon: 0.287
+Episode   86 | Reward:    10.0 | Duration:   10 | Avg Loss: 0.45061 | Epsilon: 0.284
+Episode   87 | Reward:    10.0 | Duration:   10 | Avg Loss: 0.44780 | Epsilon: 0.281
+Episode   88 | Reward:    15.0 | Duration:   15 | Avg Loss: 0.47265 | Epsilon: 0.277
+Episode   89 | Reward:    12.0 | Duration:   12 | Avg Loss: 0.45213 | Epsilon: 0.274
+Episode   90 | Reward:     9.0 | Duration:    9 | Avg Loss: 0.56528 | Epsilon: 0.272
+Episode 90: Target network updated.
+Episode   91 | Reward:    10.0 | Duration:   10 | Avg Loss: 0.82408 | Epsilon: 0.269
+Episode   92 | Reward:     9.0 | Duration:    9 | Avg Loss: 0.66108 | Epsilon: 0.267
+Episode   93 | Reward:    11.0 | Duration:   11 | Avg Loss: 0.55963 | Epsilon: 0.264
+Episode   94 | Reward:    11.0 | Duration:   11 | Avg Loss: 0.49932 | Epsilon: 0.261
+Episode   95 | Reward:     8.0 | Duration:    8 | Avg Loss: 0.61045 | Epsilon: 0.259
+Episode   96 | Reward:    15.0 | Duration:   15 | Avg Loss: 0.51536 | Epsilon: 0.256
+Episode   97 | Reward:    15.0 | Duration:   15 | Avg Loss: 0.59618 | Epsilon: 0.252
+Episode   98 | Reward:     9.0 | Duration:    9 | Avg Loss: 0.54075 | Epsilon: 0.250
+Episode   99 | Reward:    14.0 | Duration:   14 | Avg Loss: 0.50010 | Epsilon: 0.246
+Episode  100 | Reward:    12.0 | Duration:   12 | Avg Loss: 0.45951 | Epsilon: 0.244
+Episode 100: Target network updated.
+Episode  101 | Reward:    17.0 | Duration:   17 | Avg Loss: 0.76968 | Epsilon: 0.240
+Episode  102 | Reward:    16.0 | Duration:   16 | Avg Loss: 0.60419 | Epsilon: 0.236
+Episode  103 | Reward:    15.0 | Duration:   15 | Avg Loss: 0.47875 | Epsilon: 0.233
+Episode  104 | Reward:    12.0 | Duration:   12 | Avg Loss: 0.56677 | Epsilon: 0.230
+Episode  105 | Reward:    12.0 | Duration:   12 | Avg Loss: 0.56616 | Epsilon: 0.227
+Episode  106 | Reward:    23.0 | Duration:   23 | Avg Loss: 0.51468 | Epsilon: 0.222
+Episode  107 | Reward:    13.0 | Duration:   13 | Avg Loss: 0.42590 | Epsilon: 0.220
+Episode  108 | Reward:    15.0 | Duration:   15 | Avg Loss: 0.57008 | Epsilon: 0.217
+Episode  109 | Reward:    17.0 | Duration:   17 | Avg Loss: 0.56394 | Epsilon: 0.213
+Episode  110 | Reward:    10.0 | Duration:   10 | Avg Loss: 0.50647 | Epsilon: 0.211
+Episode 110: Target network updated.
+Episode  111 | Reward:    14.0 | Duration:   14 | Avg Loss: 0.77569 | Epsilon: 0.208
+Episode  112 | Reward:    14.0 | Duration:   14 | Avg Loss: 0.72855 | Epsilon: 0.206
+Episode  113 | Reward:    15.0 | Duration:   15 | Avg Loss: 0.71194 | Epsilon: 0.203
+Episode  114 | Reward:    12.0 | Duration:   12 | Avg Loss: 0.58718 | Epsilon: 0.200
+Episode  115 | Reward:    10.0 | Duration:   10 | Avg Loss: 0.71277 | Epsilon: 0.198
+Episode  116 | Reward:    14.0 | Duration:   14 | Avg Loss: 0.67117 | Epsilon: 0.196
+Episode  117 | Reward:    14.0 | Duration:   14 | Avg Loss: 0.70398 | Epsilon: 0.193
+Episode  118 | Reward:    15.0 | Duration:   15 | Avg Loss: 0.73224 | Epsilon: 0.190
+Episode  119 | Reward:    16.0 | Duration:   16 | Avg Loss: 0.67965 | Epsilon: 0.188
+Episode  120 | Reward:    14.0 | Duration:   14 | Avg Loss: 0.65164 | Epsilon: 0.185
+Episode 120: Target network updated.
+Episode  121 | Reward:    15.0 | Duration:   15 | Avg Loss: 0.79640 | Epsilon: 0.183
+Episode  122 | Reward:    17.0 | Duration:   17 | Avg Loss: 0.80277 | Epsilon: 0.180
+Episode  123 | Reward:    20.0 | Duration:   20 | Avg Loss: 0.79442 | Epsilon: 0.176
+Episode  124 | Reward:    15.0 | Duration:   15 | Avg Loss: 0.77891 | Epsilon: 0.174
+Episode  125 | Reward:    18.0 | Duration:   18 | Avg Loss: 0.72265 | Epsilon: 0.171
+Episode  126 | Reward:    12.0 | Duration:   12 | Avg Loss: 0.60944 | Epsilon: 0.169
+Episode  127 | Reward:    14.0 | Duration:   14 | Avg Loss: 0.70153 | Epsilon: 0.167
+Episode  128 | Reward:    19.0 | Duration:   19 | Avg Loss: 0.68863 | Epsilon: 0.164
+Episode  129 | Reward:    21.0 | Duration:   21 | Avg Loss: 0.76180 | Epsilon: 0.161
+Episode  130 | Reward:    23.0 | Duration:   23 | Avg Loss: 0.75395 | Epsilon: 0.157
+Episode 130: Target network updated.
+Episode  131 | Reward:    16.0 | Duration:   16 | Avg Loss: 1.00267 | Epsilon: 0.155
+Episode  132 | Reward:    22.0 | Duration:   22 | Avg Loss: 0.70135 | Epsilon: 0.152
+Episode  133 | Reward:    24.0 | Duration:   24 | Avg Loss: 0.67414 | Epsilon: 0.148
+Episode  134 | Reward:    15.0 | Duration:   15 | Avg Loss: 0.74934 | Epsilon: 0.146
+Episode  135 | Reward:    18.0 | Duration:   18 | Avg Loss: 0.79254 | Epsilon: 0.144
+Episode  136 | Reward:    16.0 | Duration:   16 | Avg Loss: 0.66572 | Epsilon: 0.142
+Episode  137 | Reward:    18.0 | Duration:   18 | Avg Loss: 0.74550 | Epsilon: 0.139
+Episode  138 | Reward:    22.0 | Duration:   22 | Avg Loss: 0.77485 | Epsilon: 0.137
+Episode  139 | Reward:    25.0 | Duration:   25 | Avg Loss: 0.81982 | Epsilon: 0.133
+Episode  140 | Reward:    26.0 | Duration:   26 | Avg Loss: 0.74323 | Epsilon: 0.130
+Episode 140: Target network updated.
+Episode  141 | Reward:    26.0 | Duration:   26 | Avg Loss: 0.90485 | Epsilon: 0.127
+Episode  142 | Reward:    19.0 | Duration:   19 | Avg Loss: 0.82159 | Epsilon: 0.125
+Episode  143 | Reward:    17.0 | Duration:   17 | Avg Loss: 0.81207 | Epsilon: 0.123
+Episode  144 | Reward:    18.0 | Duration:   18 | Avg Loss: 0.79825 | Epsilon: 0.121
+Episode  145 | Reward:    26.0 | Duration:   26 | Avg Loss: 0.84363 | Epsilon: 0.118
+Episode  146 | Reward:    31.0 | Duration:   31 | Avg Loss: 0.83142 | Epsilon: 0.115
+Episode  147 | Reward:    30.0 | Duration:   30 | Avg Loss: 0.81994 | Epsilon: 0.112
+Episode  148 | Reward:    30.0 | Duration:   30 | Avg Loss: 0.75377 | Epsilon: 0.109
+Episode  149 | Reward:    22.0 | Duration:   22 | Avg Loss: 0.78812 | Epsilon: 0.107
+Episode  150 | Reward:    22.0 | Duration:   22 | Avg Loss: 0.81225 | Epsilon: 0.105
+Episode 150: Target network updated.
+Episode  151 | Reward:    19.0 | Duration:   19 | Avg Loss: 0.92858 | Epsilon: 0.103
+Episode  152 | Reward:    21.0 | Duration:   21 | Avg Loss: 0.87711 | Epsilon: 0.101
+Episode  153 | Reward:    20.0 | Duration:   20 | Avg Loss: 0.83243 | Epsilon: 0.099
+Episode  154 | Reward:    24.0 | Duration:   24 | Avg Loss: 0.90611 | Epsilon: 0.097
+Episode  155 | Reward:    15.0 | Duration:   15 | Avg Loss: 0.87418 | Epsilon: 0.096
+Episode  156 | Reward:    28.0 | Duration:   28 | Avg Loss: 0.73287 | Epsilon: 0.093
+Episode  157 | Reward:    27.0 | Duration:   27 | Avg Loss: 0.77719 | Epsilon: 0.091
+Episode  158 | Reward:    22.0 | Duration:   22 | Avg Loss: 0.74915 | Epsilon: 0.089
+Episode  159 | Reward:    23.0 | Duration:   23 | Avg Loss: 0.78403 | Epsilon: 0.087
+Episode  160 | Reward:    33.0 | Duration:   33 | Avg Loss: 0.88823 | Epsilon: 0.085
+Episode 160: Target network updated.
+Episode  161 | Reward:    21.0 | Duration:   21 | Avg Loss: 0.92813 | Epsilon: 0.083
+Episode  162 | Reward:    34.0 | Duration:   34 | Avg Loss: 0.86353 | Epsilon: 0.081
+Episode  163 | Reward:    44.0 | Duration:   44 | Avg Loss: 0.80722 | Epsilon: 0.078
+Episode  164 | Reward:    68.0 | Duration:   68 | Avg Loss: 0.81218 | Epsilon: 0.073
+Episode  165 | Reward:    83.0 | Duration:   83 | Avg Loss: 0.88730 | Epsilon: 0.068
+Episode  166 | Reward:   110.0 | Duration:  110 | Avg Loss: 0.82745 | Epsilon: 0.062
+Episode  167 | Reward:    97.0 | Duration:   97 | Avg Loss: 0.73366 | Epsilon: 0.057
+Episode  168 | Reward:    91.0 | Duration:   91 | Avg Loss: 0.68286 | Epsilon: 0.053
+Episode  169 | Reward:   105.0 | Duration:  105 | Avg Loss: 0.73680 | Epsilon: 0.049
+Episode  170 | Reward:    94.0 | Duration:   94 | Avg Loss: 0.75039 | Epsilon: 0.046
+Episode 170: Target network updated.
+Episode  171 | Reward:   116.0 | Duration:  116 | Avg Loss: 0.74599 | Epsilon: 0.042
+Episode  172 | Reward:   119.0 | Duration:  119 | Avg Loss: 0.71589 | Epsilon: 0.038
+Episode  173 | Reward:   106.0 | Duration:  106 | Avg Loss: 0.66612 | Epsilon: 0.035
+Episode  174 | Reward:   147.0 | Duration:  147 | Avg Loss: 0.68982 | Epsilon: 0.032
+Episode  175 | Reward:   112.0 | Duration:  112 | Avg Loss: 0.64747 | Epsilon: 0.029
+Episode  176 | Reward:   131.0 | Duration:  131 | Avg Loss: 0.65724 | Epsilon: 0.027
+Episode  177 | Reward:   143.0 | Duration:  143 | Avg Loss: 0.59247 | Epsilon: 0.025
+Episode  178 | Reward:   115.0 | Duration:  115 | Avg Loss: 0.60213 | Epsilon: 0.023
+Episode  179 | Reward:   112.0 | Duration:  112 | Avg Loss: 0.61187 | Epsilon: 0.022
+Episode  180 | Reward:   123.0 | Duration:  123 | Avg Loss: 0.58563 | Epsilon: 0.020
+Episode 180: Target network updated.
+Episode  181 | Reward:   163.0 | Duration:  163 | Avg Loss: 0.60319 | Epsilon: 0.019
+Episode  182 | Reward:   153.0 | Duration:  153 | Avg Loss: 0.61063 | Epsilon: 0.018
+Episode  183 | Reward:   183.0 | Duration:  183 | Avg Loss: 0.53609 | Epsilon: 0.016
+Episode  184 | Reward:   161.0 | Duration:  161 | Avg Loss: 0.55410 | Epsilon: 0.015
+Episode  185 | Reward:   114.0 | Duration:  114 | Avg Loss: 0.52382 | Epsilon: 0.015
+Episode  186 | Reward:   106.0 | Duration:  106 | Avg Loss: 0.56887 | Epsilon: 0.014
+Episode  187 | Reward:   134.0 | Duration:  134 | Avg Loss: 0.53452 | Epsilon: 0.014
+Episode  188 | Reward:   169.0 | Duration:  169 | Avg Loss: 0.47868 | Epsilon: 0.013
+Episode  189 | Reward:   202.0 | Duration:  202 | Avg Loss: 0.48771 | Epsilon: 0.013
+Episode  190 | Reward:   204.0 | Duration:  204 | Avg Loss: 0.48490 | Epsilon: 0.012
+Episode 190: Target network updated.
+Episode  191 | Reward:   181.0 | Duration:  181 | Avg Loss: 0.46742 | Epsilon: 0.012
+Episode  192 | Reward:   179.0 | Duration:  179 | Avg Loss: 0.49412 | Epsilon: 0.011
+Episode  193 | Reward:   134.0 | Duration:  134 | Avg Loss: 0.46496 | Epsilon: 0.011
+Episode  194 | Reward:   134.0 | Duration:  134 | Avg Loss: 0.46431 | Epsilon: 0.011
+Episode  195 | Reward:   221.0 | Duration:  221 | Avg Loss: 0.45483 | Epsilon: 0.011
+Episode  196 | Reward:   137.0 | Duration:  137 | Avg Loss: 0.47206 | Epsilon: 0.011
+Episode  197 | Reward:   137.0 | Duration:  137 | Avg Loss: 0.44953 | Epsilon: 0.011
+Episode  198 | Reward:   175.0 | Duration:  175 | Avg Loss: 0.44260 | Epsilon: 0.011
+Episode  199 | Reward:   139.0 | Duration:  139 | Avg Loss: 0.44789 | Epsilon: 0.011
+Episode  200 | Reward:   181.0 | Duration:  181 | Avg Loss: 0.46362 | Epsilon: 0.010
+Episode 200: Target network updated.
+Episode  201 | Reward:   160.0 | Duration:  160 | Avg Loss: 0.46796 | Epsilon: 0.010
+Episode  202 | Reward:   152.0 | Duration:  152 | Avg Loss: 0.43293 | Epsilon: 0.010
+Episode  203 | Reward:   179.0 | Duration:  179 | Avg Loss: 0.46525 | Epsilon: 0.010
+Episode  204 | Reward:   182.0 | Duration:  182 | Avg Loss: 0.45011 | Epsilon: 0.010
+Episode  205 | Reward:   137.0 | Duration:  137 | Avg Loss: 0.43488 | Epsilon: 0.010
+Episode  206 | Reward:   127.0 | Duration:  127 | Avg Loss: 0.41146 | Epsilon: 0.010
+Episode  207 | Reward:   122.0 | Duration:  122 | Avg Loss: 0.40065 | Epsilon: 0.010
+Episode  208 | Reward:   156.0 | Duration:  156 | Avg Loss: 0.37835 | Epsilon: 0.010
+Episode  209 | Reward:   156.0 | Duration:  156 | Avg Loss: 0.39251 | Epsilon: 0.010
+Episode  210 | Reward:   128.0 | Duration:  128 | Avg Loss: 0.39779 | Epsilon: 0.010
+Episode 210: Target network updated.
+Episode  211 | Reward:   261.0 | Duration:  261 | Avg Loss: 0.41915 | Epsilon: 0.010
+Episode  212 | Reward:   140.0 | Duration:  140 | Avg Loss: 0.38140 | Epsilon: 0.010
+Episode  213 | Reward:   143.0 | Duration:  143 | Avg Loss: 0.35944 | Epsilon: 0.010
+Episode  214 | Reward:   123.0 | Duration:  123 | Avg Loss: 0.37555 | Epsilon: 0.010
+Episode  215 | Reward:   158.0 | Duration:  158 | Avg Loss: 0.39297 | Epsilon: 0.010
+Episode  216 | Reward:   115.0 | Duration:  115 | Avg Loss: 0.36880 | Epsilon: 0.010
+Episode  217 | Reward:   149.0 | Duration:  149 | Avg Loss: 0.34012 | Epsilon: 0.010
+Episode  218 | Reward:   166.0 | Duration:  166 | Avg Loss: 0.34837 | Epsilon: 0.010
+Episode  219 | Reward:   128.0 | Duration:  128 | Avg Loss: 0.33812 | Epsilon: 0.010
+Episode  220 | Reward:   137.0 | Duration:  137 | Avg Loss: 0.34208 | Epsilon: 0.010
+Episode 220: Target network updated.
+Episode  221 | Reward:   153.0 | Duration:  153 | Avg Loss: 0.33496 | Epsilon: 0.010
+Episode  222 | Reward:   138.0 | Duration:  138 | Avg Loss: 0.32104 | Epsilon: 0.010
+Episode  223 | Reward:   132.0 | Duration:  132 | Avg Loss: 0.29973 | Epsilon: 0.010
+Episode  224 | Reward:   137.0 | Duration:  137 | Avg Loss: 0.32514 | Epsilon: 0.010
+Episode  225 | Reward:   160.0 | Duration:  160 | Avg Loss: 0.28031 | Epsilon: 0.010
+Episode  226 | Reward:   137.0 | Duration:  137 | Avg Loss: 0.27118 | Epsilon: 0.010
+Episode  227 | Reward:   113.0 | Duration:  113 | Avg Loss: 0.22501 | Epsilon: 0.010
+Episode  228 | Reward:   135.0 | Duration:  135 | Avg Loss: 0.22413 | Epsilon: 0.010
+Episode  229 | Reward:   156.0 | Duration:  156 | Avg Loss: 0.23470 | Epsilon: 0.010
+Episode  230 | Reward:   128.0 | Duration:  128 | Avg Loss: 0.21057 | Epsilon: 0.010
+Episode 230: Target network updated.
+Episode  231 | Reward:   143.0 | Duration:  143 | Avg Loss: 0.20160 | Epsilon: 0.010
+Episode  232 | Reward:   127.0 | Duration:  127 | Avg Loss: 0.18300 | Epsilon: 0.010
+Episode  233 | Reward:   165.0 | Duration:  165 | Avg Loss: 0.18891 | Epsilon: 0.010
+Episode  234 | Reward:   115.0 | Duration:  115 | Avg Loss: 0.16971 | Epsilon: 0.010
+Episode  235 | Reward:   151.0 | Duration:  151 | Avg Loss: 0.19682 | Epsilon: 0.010
+Episode  236 | Reward:   133.0 | Duration:  133 | Avg Loss: 0.18871 | Epsilon: 0.010
+Episode  237 | Reward:   127.0 | Duration:  127 | Avg Loss: 0.16307 | Epsilon: 0.010
+Episode  238 | Reward:   113.0 | Duration:  113 | Avg Loss: 0.16669 | Epsilon: 0.010
+Episode  239 | Reward:   141.0 | Duration:  141 | Avg Loss: 0.16854 | Epsilon: 0.010
+Episode  240 | Reward:   129.0 | Duration:  129 | Avg Loss: 0.14604 | Epsilon: 0.010
+Episode 240: Target network updated.
+Episode  241 | Reward:   142.0 | Duration:  142 | Avg Loss: 0.20202 | Epsilon: 0.010
+Episode  242 | Reward:   132.0 | Duration:  132 | Avg Loss: 0.14058 | Epsilon: 0.010
+Episode  243 | Reward:   154.0 | Duration:  154 | Avg Loss: 0.14684 | Epsilon: 0.010
+Episode  244 | Reward:   143.0 | Duration:  143 | Avg Loss: 0.14721 | Epsilon: 0.010
+Episode  245 | Reward:   151.0 | Duration:  151 | Avg Loss: 0.16488 | Epsilon: 0.010
+Episode  246 | Reward:   133.0 | Duration:  133 | Avg Loss: 0.16668 | Epsilon: 0.010
+Episode  247 | Reward:   141.0 | Duration:  141 | Avg Loss: 0.14597 | Epsilon: 0.010
+Episode  248 | Reward:   129.0 | Duration:  129 | Avg Loss: 0.17702 | Epsilon: 0.010
+Episode  249 | Reward:   138.0 | Duration:  138 | Avg Loss: 0.15009 | Epsilon: 0.010
+Episode  250 | Reward:   144.0 | Duration:  144 | Avg Loss: 0.19601 | Epsilon: 0.010
+Episode 250: Target network updated.
+Episode  251 | Reward:   118.0 | Duration:  118 | Avg Loss: 0.18099 | Epsilon: 0.010
+Episode  252 | Reward:   162.0 | Duration:  162 | Avg Loss: 0.17170 | Epsilon: 0.010
+Episode  253 | Reward:   134.0 | Duration:  134 | Avg Loss: 0.18817 | Epsilon: 0.010
+Episode  254 | Reward:   157.0 | Duration:  157 | Avg Loss: 0.16701 | Epsilon: 0.010
+Episode  255 | Reward:   152.0 | Duration:  152 | Avg Loss: 0.17872 | Epsilon: 0.010
+Episode  256 | Reward:   144.0 | Duration:  144 | Avg Loss: 0.16124 | Epsilon: 0.010
+Episode  257 | Reward:   132.0 | Duration:  132 | Avg Loss: 0.15510 | Epsilon: 0.010
+Episode  258 | Reward:   144.0 | Duration:  144 | Avg Loss: 0.16806 | Epsilon: 0.010
+Episode  259 | Reward:   126.0 | Duration:  126 | Avg Loss: 0.16348 | Epsilon: 0.010
+Episode  260 | Reward:   159.0 | Duration:  159 | Avg Loss: 0.18627 | Epsilon: 0.010
+Episode 260: Target network updated.
+Episode  261 | Reward:   158.0 | Duration:  158 | Avg Loss: 0.18156 | Epsilon: 0.010
+Episode  262 | Reward:   155.0 | Duration:  155 | Avg Loss: 0.19868 | Epsilon: 0.010
+Episode  263 | Reward:   126.0 | Duration:  126 | Avg Loss: 0.17784 | Epsilon: 0.010
+Episode  264 | Reward:   119.0 | Duration:  119 | Avg Loss: 0.14450 | Epsilon: 0.010
+Episode  265 | Reward:   157.0 | Duration:  157 | Avg Loss: 0.17801 | Epsilon: 0.010
+Episode  266 | Reward:   117.0 | Duration:  117 | Avg Loss: 0.17208 | Epsilon: 0.010
+Episode  267 | Reward:   120.0 | Duration:  120 | Avg Loss: 0.17786 | Epsilon: 0.010
+Episode  268 | Reward:   157.0 | Duration:  157 | Avg Loss: 0.16913 | Epsilon: 0.010
+Episode  269 | Reward:   137.0 | Duration:  137 | Avg Loss: 0.20062 | Epsilon: 0.010
+Episode  270 | Reward:   145.0 | Duration:  145 | Avg Loss: 0.19909 | Epsilon: 0.010
+Episode 270: Target network updated.
+Episode  271 | Reward:   116.0 | Duration:  116 | Avg Loss: 0.14242 | Epsilon: 0.010
+Episode  272 | Reward:   134.0 | Duration:  134 | Avg Loss: 0.17215 | Epsilon: 0.010
+Episode  273 | Reward:   136.0 | Duration:  136 | Avg Loss: 0.18572 | Epsilon: 0.010
+Episode  274 | Reward:   117.0 | Duration:  117 | Avg Loss: 0.18452 | Epsilon: 0.010
+Episode  275 | Reward:   141.0 | Duration:  141 | Avg Loss: 0.15734 | Epsilon: 0.010
+Episode  276 | Reward:   135.0 | Duration:  135 | Avg Loss: 0.15538 | Epsilon: 0.010
+Episode  277 | Reward:   118.0 | Duration:  118 | Avg Loss: 0.18793 | Epsilon: 0.010
+Episode  278 | Reward:   135.0 | Duration:  135 | Avg Loss: 0.21153 | Epsilon: 0.010
+Episode  279 | Reward:   125.0 | Duration:  125 | Avg Loss: 0.16593 | Epsilon: 0.010
+Episode  280 | Reward:   129.0 | Duration:  129 | Avg Loss: 0.15906 | Epsilon: 0.010
+Episode 280: Target network updated.
+Episode  281 | Reward:   155.0 | Duration:  155 | Avg Loss: 0.18042 | Epsilon: 0.010
+Episode  282 | Reward:   144.0 | Duration:  144 | Avg Loss: 0.19607 | Epsilon: 0.010
+Episode  283 | Reward:   125.0 | Duration:  125 | Avg Loss: 0.17707 | Epsilon: 0.010
+Episode  284 | Reward:   125.0 | Duration:  125 | Avg Loss: 0.17558 | Epsilon: 0.010
+Episode  285 | Reward:   142.0 | Duration:  142 | Avg Loss: 0.21880 | Epsilon: 0.010
+Episode  286 | Reward:   139.0 | Duration:  139 | Avg Loss: 0.18075 | Epsilon: 0.010
+Episode  287 | Reward:   159.0 | Duration:  159 | Avg Loss: 0.17313 | Epsilon: 0.010
+Episode  288 | Reward:   115.0 | Duration:  115 | Avg Loss: 0.19357 | Epsilon: 0.010
+Episode  289 | Reward:   129.0 | Duration:  129 | Avg Loss: 0.17612 | Epsilon: 0.010
+Episode  290 | Reward:   113.0 | Duration:  113 | Avg Loss: 0.18429 | Epsilon: 0.010
+Episode 290: Target network updated.
+Episode  291 | Reward:   129.0 | Duration:  129 | Avg Loss: 0.21055 | Epsilon: 0.010
+Episode  292 | Reward:   151.0 | Duration:  151 | Avg Loss: 0.21794 | Epsilon: 0.010
+Episode  293 | Reward:   118.0 | Duration:  118 | Avg Loss: 0.18848 | Epsilon: 0.010
+Episode  294 | Reward:   119.0 | Duration:  119 | Avg Loss: 0.17857 | Epsilon: 0.010
+Episode  295 | Reward:   127.0 | Duration:  127 | Avg Loss: 0.18291 | Epsilon: 0.010
+Episode  296 | Reward:   124.0 | Duration:  124 | Avg Loss: 0.21972 | Epsilon: 0.010
+Episode  297 | Reward:   129.0 | Duration:  129 | Avg Loss: 0.20949 | Epsilon: 0.010
+Episode  298 | Reward:   117.0 | Duration:  117 | Avg Loss: 0.21567 | Epsilon: 0.010
+Episode  299 | Reward:   117.0 | Duration:  117 | Avg Loss: 0.21361 | Epsilon: 0.010
+Episode  300 | Reward:   127.0 | Duration:  127 | Avg Loss: 0.14725 | Epsilon: 0.010
+Episode 300: Target network updated.
+Episode  301 | Reward:   106.0 | Duration:  106 | Avg Loss: 0.21264 | Epsilon: 0.010
+Episode  302 | Reward:   143.0 | Duration:  143 | Avg Loss: 0.19183 | Epsilon: 0.010
+Episode  303 | Reward:   111.0 | Duration:  111 | Avg Loss: 0.19558 | Epsilon: 0.010
+Episode  304 | Reward:   113.0 | Duration:  113 | Avg Loss: 0.18606 | Epsilon: 0.010
+Episode  305 | Reward:   112.0 | Duration:  112 | Avg Loss: 0.19301 | Epsilon: 0.010
+Episode  306 | Reward:   115.0 | Duration:  115 | Avg Loss: 0.20021 | Epsilon: 0.010
+Episode  307 | Reward:   126.0 | Duration:  126 | Avg Loss: 0.16903 | Epsilon: 0.010
+Episode  308 | Reward:   123.0 | Duration:  123 | Avg Loss: 0.18269 | Epsilon: 0.010
+Episode  309 | Reward:   105.0 | Duration:  105 | Avg Loss: 0.21367 | Epsilon: 0.010
+Episode  310 | Reward:   131.0 | Duration:  131 | Avg Loss: 0.21114 | Epsilon: 0.010
+Episode 310: Target network updated.
+Episode  311 | Reward:   127.0 | Duration:  127 | Avg Loss: 0.21129 | Epsilon: 0.010
+Episode  312 | Reward:   149.0 | Duration:  149 | Avg Loss: 0.18581 | Epsilon: 0.010
+Episode  313 | Reward:   133.0 | Duration:  133 | Avg Loss: 0.16203 | Epsilon: 0.010
+Episode  314 | Reward:   137.0 | Duration:  137 | Avg Loss: 0.17513 | Epsilon: 0.010
+Episode  315 | Reward:   147.0 | Duration:  147 | Avg Loss: 0.20960 | Epsilon: 0.010
+Episode  316 | Reward:   131.0 | Duration:  131 | Avg Loss: 0.19815 | Epsilon: 0.010
+Episode  317 | Reward:   118.0 | Duration:  118 | Avg Loss: 0.20742 | Epsilon: 0.010
+Episode  318 | Reward:   154.0 | Duration:  154 | Avg Loss: 0.18078 | Epsilon: 0.010
+Episode  319 | Reward:   137.0 | Duration:  137 | Avg Loss: 0.19398 | Epsilon: 0.010
+Episode  320 | Reward:   122.0 | Duration:  122 | Avg Loss: 0.18206 | Epsilon: 0.010
+Episode 320: Target network updated.
+Episode  321 | Reward:   131.0 | Duration:  131 | Avg Loss: 0.20763 | Epsilon: 0.010
+Episode  322 | Reward:   115.0 | Duration:  115 | Avg Loss: 0.19021 | Epsilon: 0.010
+Episode  323 | Reward:   116.0 | Duration:  116 | Avg Loss: 0.19652 | Epsilon: 0.010
+Episode  324 | Reward:   135.0 | Duration:  135 | Avg Loss: 0.22110 | Epsilon: 0.010
+Episode  325 | Reward:   128.0 | Duration:  128 | Avg Loss: 0.20270 | Epsilon: 0.010
+Episode  326 | Reward:   103.0 | Duration:  103 | Avg Loss: 0.20996 | Epsilon: 0.010
+Episode  327 | Reward:   139.0 | Duration:  139 | Avg Loss: 0.14799 | Epsilon: 0.010
+Episode  328 | Reward:   133.0 | Duration:  133 | Avg Loss: 0.21637 | Epsilon: 0.010
+Episode  329 | Reward:   116.0 | Duration:  116 | Avg Loss: 0.18871 | Epsilon: 0.010
+Episode  330 | Reward:   130.0 | Duration:  130 | Avg Loss: 0.18632 | Epsilon: 0.010
+Episode 330: Target network updated.
+Episode  331 | Reward:   103.0 | Duration:  103 | Avg Loss: 0.18223 | Epsilon: 0.010
+Episode  332 | Reward:   125.0 | Duration:  125 | Avg Loss: 0.19556 | Epsilon: 0.010
+Episode  333 | Reward:   147.0 | Duration:  147 | Avg Loss: 0.20982 | Epsilon: 0.010
+Episode  334 | Reward:   140.0 | Duration:  140 | Avg Loss: 0.21218 | Epsilon: 0.010
+Episode  335 | Reward:   139.0 | Duration:  139 | Avg Loss: 0.16185 | Epsilon: 0.010
+Episode  336 | Reward:   114.0 | Duration:  114 | Avg Loss: 0.18810 | Epsilon: 0.010
+Episode  337 | Reward:   134.0 | Duration:  134 | Avg Loss: 0.21092 | Epsilon: 0.010
+Episode  338 | Reward:   134.0 | Duration:  134 | Avg Loss: 0.16512 | Epsilon: 0.010
+Episode  339 | Reward:   120.0 | Duration:  120 | Avg Loss: 0.16649 | Epsilon: 0.010
+Episode  340 | Reward:   127.0 | Duration:  127 | Avg Loss: 0.19791 | Epsilon: 0.010
+Episode 340: Target network updated.
+Episode  341 | Reward:   128.0 | Duration:  128 | Avg Loss: 0.19926 | Epsilon: 0.010
+Episode  342 | Reward:   132.0 | Duration:  132 | Avg Loss: 0.18205 | Epsilon: 0.010
+Episode  343 | Reward:   111.0 | Duration:  111 | Avg Loss: 0.22387 | Epsilon: 0.010
+Episode  344 | Reward:   133.0 | Duration:  133 | Avg Loss: 0.17560 | Epsilon: 0.010
+Episode  345 | Reward:   120.0 | Duration:  120 | Avg Loss: 0.22758 | Epsilon: 0.010
+Episode  346 | Reward:   135.0 | Duration:  135 | Avg Loss: 0.17351 | Epsilon: 0.010
+Episode  347 | Reward:   126.0 | Duration:  126 | Avg Loss: 0.18064 | Epsilon: 0.010
+Episode  348 | Reward:   128.0 | Duration:  128 | Avg Loss: 0.18103 | Epsilon: 0.010
+Episode  349 | Reward:   143.0 | Duration:  143 | Avg Loss: 0.20288 | Epsilon: 0.010
+Episode  350 | Reward:   137.0 | Duration:  137 | Avg Loss: 0.19251 | Epsilon: 0.010
+Episode 350: Target network updated.
+Episode  351 | Reward:   182.0 | Duration:  182 | Avg Loss: 0.20639 | Epsilon: 0.010
+Episode  352 | Reward:   144.0 | Duration:  144 | Avg Loss: 0.18701 | Epsilon: 0.010
+Episode  353 | Reward:   134.0 | Duration:  134 | Avg Loss: 0.20935 | Epsilon: 0.010
+Episode  354 | Reward:   169.0 | Duration:  169 | Avg Loss: 0.18509 | Epsilon: 0.010
+Episode  355 | Reward:   147.0 | Duration:  147 | Avg Loss: 0.16852 | Epsilon: 0.010
+Episode  356 | Reward:   170.0 | Duration:  170 | Avg Loss: 0.16107 | Epsilon: 0.010
+Episode  357 | Reward:   137.0 | Duration:  137 | Avg Loss: 0.17682 | Epsilon: 0.010
+Episode  358 | Reward:   177.0 | Duration:  177 | Avg Loss: 0.19677 | Epsilon: 0.010
+Episode  359 | Reward:   146.0 | Duration:  146 | Avg Loss: 0.19762 | Epsilon: 0.010
+Episode  360 | Reward:   156.0 | Duration:  156 | Avg Loss: 0.16976 | Epsilon: 0.010
+Episode 360: Target network updated.
+Episode  361 | Reward:   153.0 | Duration:  153 | Avg Loss: 0.18779 | Epsilon: 0.010
+Episode  362 | Reward:   154.0 | Duration:  154 | Avg Loss: 0.19698 | Epsilon: 0.010
+Episode  363 | Reward:   149.0 | Duration:  149 | Avg Loss: 0.17255 | Epsilon: 0.010
+Episode  364 | Reward:   139.0 | Duration:  139 | Avg Loss: 0.18547 | Epsilon: 0.010
+Episode  365 | Reward:   144.0 | Duration:  144 | Avg Loss: 0.18035 | Epsilon: 0.010
+Episode  366 | Reward:   154.0 | Duration:  154 | Avg Loss: 0.17620 | Epsilon: 0.010
+Episode  367 | Reward:   149.0 | Duration:  149 | Avg Loss: 0.17565 | Epsilon: 0.010
+Episode  368 | Reward:   129.0 | Duration:  129 | Avg Loss: 0.18401 | Epsilon: 0.010
+Episode  369 | Reward:   137.0 | Duration:  137 | Avg Loss: 0.16879 | Epsilon: 0.010
+Episode  370 | Reward:   156.0 | Duration:  156 | Avg Loss: 0.16393 | Epsilon: 0.010
+Episode 370: Target network updated.
+Episode  371 | Reward:   154.0 | Duration:  154 | Avg Loss: 0.16927 | Epsilon: 0.010
+Episode  372 | Reward:   155.0 | Duration:  155 | Avg Loss: 0.18265 | Epsilon: 0.010
+Episode  373 | Reward:   131.0 | Duration:  131 | Avg Loss: 0.17874 | Epsilon: 0.010
+Episode  374 | Reward:   151.0 | Duration:  151 | Avg Loss: 0.16735 | Epsilon: 0.010
+Episode  375 | Reward:   159.0 | Duration:  159 | Avg Loss: 0.14766 | Epsilon: 0.010
+Episode  376 | Reward:   133.0 | Duration:  133 | Avg Loss: 0.17092 | Epsilon: 0.010
+Episode  377 | Reward:   148.0 | Duration:  148 | Avg Loss: 0.15333 | Epsilon: 0.010
+Episode  378 | Reward:   138.0 | Duration:  138 | Avg Loss: 0.16933 | Epsilon: 0.010
+Episode  379 | Reward:   158.0 | Duration:  158 | Avg Loss: 0.15609 | Epsilon: 0.010
+Episode  380 | Reward:   152.0 | Duration:  152 | Avg Loss: 0.15646 | Epsilon: 0.010
+Episode 380: Target network updated.
+Episode  381 | Reward:   140.0 | Duration:  140 | Avg Loss: 0.17616 | Epsilon: 0.010
+Episode  382 | Reward:   138.0 | Duration:  138 | Avg Loss: 0.14094 | Epsilon: 0.010
+Episode  383 | Reward:   140.0 | Duration:  140 | Avg Loss: 0.15396 | Epsilon: 0.010
+Episode  384 | Reward:   128.0 | Duration:  128 | Avg Loss: 0.15088 | Epsilon: 0.010
+Episode  385 | Reward:   139.0 | Duration:  139 | Avg Loss: 0.14125 | Epsilon: 0.010
+Episode  386 | Reward:   127.0 | Duration:  127 | Avg Loss: 0.15930 | Epsilon: 0.010
+Episode  387 | Reward:   148.0 | Duration:  148 | Avg Loss: 0.15685 | Epsilon: 0.010
+Episode  388 | Reward:   156.0 | Duration:  156 | Avg Loss: 0.13843 | Epsilon: 0.010
+Episode  389 | Reward:   133.0 | Duration:  133 | Avg Loss: 0.15807 | Epsilon: 0.010
+Episode  390 | Reward:   147.0 | Duration:  147 | Avg Loss: 0.15767 | Epsilon: 0.010
+Episode 390: Target network updated.
+Episode  391 | Reward:   138.0 | Duration:  138 | Avg Loss: 0.16160 | Epsilon: 0.010
+Episode  392 | Reward:   132.0 | Duration:  132 | Avg Loss: 0.15580 | Epsilon: 0.010
+Episode  393 | Reward:   142.0 | Duration:  142 | Avg Loss: 0.15300 | Epsilon: 0.010
+Episode  394 | Reward:   152.0 | Duration:  152 | Avg Loss: 0.14634 | Epsilon: 0.010
+Episode  395 | Reward:   159.0 | Duration:  159 | Avg Loss: 0.14463 | Epsilon: 0.010
+Episode  396 | Reward:   141.0 | Duration:  141 | Avg Loss: 0.15388 | Epsilon: 0.010
+Episode  397 | Reward:   131.0 | Duration:  131 | Avg Loss: 0.11953 | Epsilon: 0.010
+Episode  398 | Reward:   147.0 | Duration:  147 | Avg Loss: 0.13982 | Epsilon: 0.010
+Episode  399 | Reward:   148.0 | Duration:  148 | Avg Loss: 0.12813 | Epsilon: 0.010
+Episode  400 | Reward:   135.0 | Duration:  135 | Avg Loss: 0.13035 | Epsilon: 0.010
+Episode 400: Target network updated.
+Episode  401 | Reward:   137.0 | Duration:  137 | Avg Loss: 0.14812 | Epsilon: 0.010
+Episode  402 | Reward:   118.0 | Duration:  118 | Avg Loss: 0.14486 | Epsilon: 0.010
+Episode  403 | Reward:   123.0 | Duration:  123 | Avg Loss: 0.14364 | Epsilon: 0.010
+Episode  404 | Reward:   118.0 | Duration:  118 | Avg Loss: 0.14104 | Epsilon: 0.010
+Episode  405 | Reward:   138.0 | Duration:  138 | Avg Loss: 0.14722 | Epsilon: 0.010
+Episode  406 | Reward:   136.0 | Duration:  136 | Avg Loss: 0.14219 | Epsilon: 0.010
+Episode  407 | Reward:   120.0 | Duration:  120 | Avg Loss: 0.17392 | Epsilon: 0.010
+Episode  408 | Reward:   125.0 | Duration:  125 | Avg Loss: 0.13278 | Epsilon: 0.010
+Episode  409 | Reward:   132.0 | Duration:  132 | Avg Loss: 0.15732 | Epsilon: 0.010
+Episode  410 | Reward:   125.0 | Duration:  125 | Avg Loss: 0.11101 | Epsilon: 0.010
+Episode 410: Target network updated.
+Episode  411 | Reward:   121.0 | Duration:  121 | Avg Loss: 0.14360 | Epsilon: 0.010
+Episode  412 | Reward:   125.0 | Duration:  125 | Avg Loss: 0.14449 | Epsilon: 0.010
+Episode  413 | Reward:   131.0 | Duration:  131 | Avg Loss: 0.13948 | Epsilon: 0.010
+Episode  414 | Reward:   128.0 | Duration:  128 | Avg Loss: 0.14247 | Epsilon: 0.010
+Episode  415 | Reward:   131.0 | Duration:  131 | Avg Loss: 0.15531 | Epsilon: 0.010
+Episode  416 | Reward:   135.0 | Duration:  135 | Avg Loss: 0.13178 | Epsilon: 0.010
+Episode  417 | Reward:   151.0 | Duration:  151 | Avg Loss: 0.14985 | Epsilon: 0.010
+Episode  418 | Reward:   140.0 | Duration:  140 | Avg Loss: 0.15256 | Epsilon: 0.010
+Episode  419 | Reward:   136.0 | Duration:  136 | Avg Loss: 0.15295 | Epsilon: 0.010
+Episode  420 | Reward:   136.0 | Duration:  136 | Avg Loss: 0.14059 | Epsilon: 0.010
+Episode 420: Target network updated.
+Episode  421 | Reward:   134.0 | Duration:  134 | Avg Loss: 0.13312 | Epsilon: 0.010
+Episode  422 | Reward:   134.0 | Duration:  134 | Avg Loss: 0.12541 | Epsilon: 0.010
+Episode  423 | Reward:   140.0 | Duration:  140 | Avg Loss: 0.16102 | Epsilon: 0.010
+Episode  424 | Reward:   127.0 | Duration:  127 | Avg Loss: 0.13558 | Epsilon: 0.010
+Episode  425 | Reward:   134.0 | Duration:  134 | Avg Loss: 0.14712 | Epsilon: 0.010
+Episode  426 | Reward:   141.0 | Duration:  141 | Avg Loss: 0.12327 | Epsilon: 0.010
+Episode  427 | Reward:   125.0 | Duration:  125 | Avg Loss: 0.13401 | Epsilon: 0.010
+Episode  428 | Reward:   137.0 | Duration:  137 | Avg Loss: 0.14687 | Epsilon: 0.010
+Episode  429 | Reward:   130.0 | Duration:  130 | Avg Loss: 0.13115 | Epsilon: 0.010
+Episode  430 | Reward:   125.0 | Duration:  125 | Avg Loss: 0.12293 | Epsilon: 0.010
+Episode 430: Target network updated.
+Episode  431 | Reward:   143.0 | Duration:  143 | Avg Loss: 0.14968 | Epsilon: 0.010
+Episode  432 | Reward:   135.0 | Duration:  135 | Avg Loss: 0.13388 | Epsilon: 0.010
+Episode  433 | Reward:   116.0 | Duration:  116 | Avg Loss: 0.14928 | Epsilon: 0.010
+Episode  434 | Reward:   127.0 | Duration:  127 | Avg Loss: 0.13889 | Epsilon: 0.010
+Episode  435 | Reward:   138.0 | Duration:  138 | Avg Loss: 0.14317 | Epsilon: 0.010
+Episode  436 | Reward:   132.0 | Duration:  132 | Avg Loss: 0.15240 | Epsilon: 0.010
+Episode  437 | Reward:   130.0 | Duration:  130 | Avg Loss: 0.15690 | Epsilon: 0.010
+Episode  438 | Reward:   133.0 | Duration:  133 | Avg Loss: 0.13575 | Epsilon: 0.010
+Episode  439 | Reward:   138.0 | Duration:  138 | Avg Loss: 0.12202 | Epsilon: 0.010
+Episode  440 | Reward:   125.0 | Duration:  125 | Avg Loss: 0.14434 | Epsilon: 0.010
+Episode 440: Target network updated.
+Episode  441 | Reward:   128.0 | Duration:  128 | Avg Loss: 0.14926 | Epsilon: 0.010
+Episode  442 | Reward:   136.0 | Duration:  136 | Avg Loss: 0.13345 | Epsilon: 0.010
+Episode  443 | Reward:   121.0 | Duration:  121 | Avg Loss: 0.12464 | Epsilon: 0.010
+Episode  444 | Reward:   121.0 | Duration:  121 | Avg Loss: 0.15005 | Epsilon: 0.010
+Episode  445 | Reward:   123.0 | Duration:  123 | Avg Loss: 0.13855 | Epsilon: 0.010
+Episode  446 | Reward:   116.0 | Duration:  116 | Avg Loss: 0.15165 | Epsilon: 0.010
+Episode  447 | Reward:   132.0 | Duration:  132 | Avg Loss: 0.14949 | Epsilon: 0.010
+Episode  448 | Reward:   137.0 | Duration:  137 | Avg Loss: 0.16023 | Epsilon: 0.010
+Episode  449 | Reward:   127.0 | Duration:  127 | Avg Loss: 0.14782 | Epsilon: 0.010
+Episode  450 | Reward:   137.0 | Duration:  137 | Avg Loss: 0.13858 | Epsilon: 0.010
+Episode 450: Target network updated.
+Episode  451 | Reward:   115.0 | Duration:  115 | Avg Loss: 0.15081 | Epsilon: 0.010
+Episode  452 | Reward:   128.0 | Duration:  128 | Avg Loss: 0.14224 | Epsilon: 0.010
+Episode  453 | Reward:   128.0 | Duration:  128 | Avg Loss: 0.15591 | Epsilon: 0.010
+Episode  454 | Reward:   124.0 | Duration:  124 | Avg Loss: 0.16943 | Epsilon: 0.010
+Episode  455 | Reward:   125.0 | Duration:  125 | Avg Loss: 0.14729 | Epsilon: 0.010
+Episode  456 | Reward:   126.0 | Duration:  126 | Avg Loss: 0.13039 | Epsilon: 0.010
+Episode  457 | Reward:   127.0 | Duration:  127 | Avg Loss: 0.12925 | Epsilon: 0.010
+Episode  458 | Reward:   124.0 | Duration:  124 | Avg Loss: 0.14232 | Epsilon: 0.010
+Episode  459 | Reward:   131.0 | Duration:  131 | Avg Loss: 0.15646 | Epsilon: 0.010
+Episode  460 | Reward:   124.0 | Duration:  124 | Avg Loss: 0.12983 | Epsilon: 0.010
+Episode 460: Target network updated.
+Episode  461 | Reward:   135.0 | Duration:  135 | Avg Loss: 0.13906 | Epsilon: 0.010
+Episode  462 | Reward:   116.0 | Duration:  116 | Avg Loss: 0.14621 | Epsilon: 0.010
+Episode  463 | Reward:   133.0 | Duration:  133 | Avg Loss: 0.14271 | Epsilon: 0.010
+Episode  464 | Reward:   121.0 | Duration:  121 | Avg Loss: 0.16749 | Epsilon: 0.010
+Episode  465 | Reward:   117.0 | Duration:  117 | Avg Loss: 0.14353 | Epsilon: 0.010
+Episode  466 | Reward:   128.0 | Duration:  128 | Avg Loss: 0.14788 | Epsilon: 0.010
+Episode  467 | Reward:   117.0 | Duration:  117 | Avg Loss: 0.16281 | Epsilon: 0.010
+Episode  468 | Reward:   124.0 | Duration:  124 | Avg Loss: 0.17026 | Epsilon: 0.010
+Episode  469 | Reward:   127.0 | Duration:  127 | Avg Loss: 0.13908 | Epsilon: 0.010
+Episode  470 | Reward:   128.0 | Duration:  128 | Avg Loss: 0.14503 | Epsilon: 0.010
+Episode 470: Target network updated.
+Episode  471 | Reward:   133.0 | Duration:  133 | Avg Loss: 0.14830 | Epsilon: 0.010
+Episode  472 | Reward:   126.0 | Duration:  126 | Avg Loss: 0.14718 | Epsilon: 0.010
+Episode  473 | Reward:   132.0 | Duration:  132 | Avg Loss: 0.13713 | Epsilon: 0.010
+Episode  474 | Reward:   128.0 | Duration:  128 | Avg Loss: 0.16990 | Epsilon: 0.010
+Episode  475 | Reward:   124.0 | Duration:  124 | Avg Loss: 0.17402 | Epsilon: 0.010
+Episode  476 | Reward:   117.0 | Duration:  117 | Avg Loss: 0.13911 | Epsilon: 0.010
+Episode  477 | Reward:   118.0 | Duration:  118 | Avg Loss: 0.15867 | Epsilon: 0.010
+Episode  478 | Reward:   126.0 | Duration:  126 | Avg Loss: 0.15621 | Epsilon: 0.010
+Episode  479 | Reward:   118.0 | Duration:  118 | Avg Loss: 0.14222 | Epsilon: 0.010
+Episode  480 | Reward:   119.0 | Duration:  119 | Avg Loss: 0.11761 | Epsilon: 0.010
+Episode 480: Target network updated.
+Episode  481 | Reward:   115.0 | Duration:  115 | Avg Loss: 0.15053 | Epsilon: 0.010
+Episode  482 | Reward:   114.0 | Duration:  114 | Avg Loss: 0.14315 | Epsilon: 0.010
+Episode  483 | Reward:   116.0 | Duration:  116 | Avg Loss: 0.14004 | Epsilon: 0.010
+Episode  484 | Reward:   128.0 | Duration:  128 | Avg Loss: 0.14395 | Epsilon: 0.010
+Episode  485 | Reward:   112.0 | Duration:  112 | Avg Loss: 0.13675 | Epsilon: 0.010
+Episode  486 | Reward:   114.0 | Duration:  114 | Avg Loss: 0.14896 | Epsilon: 0.010
+Episode  487 | Reward:   120.0 | Duration:  120 | Avg Loss: 0.13835 | Epsilon: 0.010
+Episode  488 | Reward:   122.0 | Duration:  122 | Avg Loss: 0.15379 | Epsilon: 0.010
+Episode  489 | Reward:   120.0 | Duration:  120 | Avg Loss: 0.14553 | Epsilon: 0.010
+Episode  490 | Reward:   123.0 | Duration:  123 | Avg Loss: 0.16229 | Epsilon: 0.010
+Episode 490: Target network updated.
+Episode  491 | Reward:   126.0 | Duration:  126 | Avg Loss: 0.15912 | Epsilon: 0.010
+Episode  492 | Reward:   112.0 | Duration:  112 | Avg Loss: 0.14584 | Epsilon: 0.010
+Episode  493 | Reward:   111.0 | Duration:  111 | Avg Loss: 0.14960 | Epsilon: 0.010
+Episode  494 | Reward:   130.0 | Duration:  130 | Avg Loss: 0.15038 | Epsilon: 0.010
+Episode  495 | Reward:   124.0 | Duration:  124 | Avg Loss: 0.14554 | Epsilon: 0.010
+Episode  496 | Reward:   118.0 | Duration:  118 | Avg Loss: 0.14332 | Epsilon: 0.010
+Episode  497 | Reward:   113.0 | Duration:  113 | Avg Loss: 0.15316 | Epsilon: 0.010
+Episode  498 | Reward:   112.0 | Duration:  112 | Avg Loss: 0.16441 | Epsilon: 0.010
+Episode  499 | Reward:   123.0 | Duration:  123 | Avg Loss: 0.16823 | Epsilon: 0.010
+Episode  500 | Reward:   117.0 | Duration:  117 | Avg Loss: 0.16881 | Epsilon: 0.010
+Episode 500: Target network updated.
+Episode  501 | Reward:   119.0 | Duration:  119 | Avg Loss: 0.14731 | Epsilon: 0.010
+Episode  502 | Reward:   113.0 | Duration:  113 | Avg Loss: 0.14862 | Epsilon: 0.010
+Episode  503 | Reward:   120.0 | Duration:  120 | Avg Loss: 0.13225 | Epsilon: 0.010
+Episode  504 | Reward:   114.0 | Duration:  114 | Avg Loss: 0.16082 | Epsilon: 0.010
+Episode  505 | Reward:   117.0 | Duration:  117 | Avg Loss: 0.13755 | Epsilon: 0.010
+Episode  506 | Reward:   123.0 | Duration:  123 | Avg Loss: 0.14602 | Epsilon: 0.010
+Episode  507 | Reward:   115.0 | Duration:  115 | Avg Loss: 0.14903 | Epsilon: 0.010
+Episode  508 | Reward:   125.0 | Duration:  125 | Avg Loss: 0.14231 | Epsilon: 0.010
+Episode  509 | Reward:   124.0 | Duration:  124 | Avg Loss: 0.14087 | Epsilon: 0.010
+Episode  510 | Reward:   117.0 | Duration:  117 | Avg Loss: 0.13734 | Epsilon: 0.010
+Episode 510: Target network updated.
+Episode  511 | Reward:   114.0 | Duration:  114 | Avg Loss: 0.16464 | Epsilon: 0.010
+Episode  512 | Reward:   110.0 | Duration:  110 | Avg Loss: 0.14101 | Epsilon: 0.010
+Episode  513 | Reward:   119.0 | Duration:  119 | Avg Loss: 0.13736 | Epsilon: 0.010
+Episode  514 | Reward:   118.0 | Duration:  118 | Avg Loss: 0.17473 | Epsilon: 0.010
+Episode  515 | Reward:   117.0 | Duration:  117 | Avg Loss: 0.15200 | Epsilon: 0.010
+Episode  516 | Reward:   113.0 | Duration:  113 | Avg Loss: 0.12563 | Epsilon: 0.010
+Episode  517 | Reward:   120.0 | Duration:  120 | Avg Loss: 0.15322 | Epsilon: 0.010
+Episode  518 | Reward:   110.0 | Duration:  110 | Avg Loss: 0.14353 | Epsilon: 0.010
+Episode  519 | Reward:   128.0 | Duration:  128 | Avg Loss: 0.15133 | Epsilon: 0.010
+Episode  520 | Reward:   118.0 | Duration:  118 | Avg Loss: 0.12031 | Epsilon: 0.010
+Episode 520: Target network updated.
+Episode  521 | Reward:   121.0 | Duration:  121 | Avg Loss: 0.15553 | Epsilon: 0.010
+Episode  522 | Reward:   109.0 | Duration:  109 | Avg Loss: 0.14278 | Epsilon: 0.010
+Episode  523 | Reward:   120.0 | Duration:  120 | Avg Loss: 0.15819 | Epsilon: 0.010
+Episode  524 | Reward:   109.0 | Duration:  109 | Avg Loss: 0.13858 | Epsilon: 0.010
+Episode  525 | Reward:   124.0 | Duration:  124 | Avg Loss: 0.15309 | Epsilon: 0.010
+Episode  526 | Reward:   119.0 | Duration:  119 | Avg Loss: 0.14767 | Epsilon: 0.010
+Episode  527 | Reward:   108.0 | Duration:  108 | Avg Loss: 0.14751 | Epsilon: 0.010
+Episode  528 | Reward:   112.0 | Duration:  112 | Avg Loss: 0.14373 | Epsilon: 0.010
+Episode  529 | Reward:   106.0 | Duration:  106 | Avg Loss: 0.16755 | Epsilon: 0.010
+Episode  530 | Reward:   115.0 | Duration:  115 | Avg Loss: 0.17544 | Epsilon: 0.010
+Episode 530: Target network updated.
+Episode  531 | Reward:   113.0 | Duration:  113 | Avg Loss: 0.16082 | Epsilon: 0.010
+Episode  532 | Reward:   122.0 | Duration:  122 | Avg Loss: 0.14901 | Epsilon: 0.010
+Episode  533 | Reward:   121.0 | Duration:  121 | Avg Loss: 0.14330 | Epsilon: 0.010
+Episode  534 | Reward:   123.0 | Duration:  123 | Avg Loss: 0.14037 | Epsilon: 0.010
+Episode  535 | Reward:   131.0 | Duration:  131 | Avg Loss: 0.13693 | Epsilon: 0.010
+Episode  536 | Reward:   120.0 | Duration:  120 | Avg Loss: 0.14635 | Epsilon: 0.010
+Episode  537 | Reward:   124.0 | Duration:  124 | Avg Loss: 0.13531 | Epsilon: 0.010
+Episode  538 | Reward:   119.0 | Duration:  119 | Avg Loss: 0.17188 | Epsilon: 0.010
+Episode  539 | Reward:   115.0 | Duration:  115 | Avg Loss: 0.15508 | Epsilon: 0.010
+Episode  540 | Reward:   122.0 | Duration:  122 | Avg Loss: 0.16928 | Epsilon: 0.010
+Episode 540: Target network updated.
+Episode  541 | Reward:   129.0 | Duration:  129 | Avg Loss: 0.15089 | Epsilon: 0.010
+Episode  542 | Reward:   118.0 | Duration:  118 | Avg Loss: 0.14793 | Epsilon: 0.010
+Episode  543 | Reward:   120.0 | Duration:  120 | Avg Loss: 0.14330 | Epsilon: 0.010
+Episode  544 | Reward:   112.0 | Duration:  112 | Avg Loss: 0.15102 | Epsilon: 0.010
+Episode  545 | Reward:   111.0 | Duration:  111 | Avg Loss: 0.15534 | Epsilon: 0.010
+Episode  546 | Reward:   121.0 | Duration:  121 | Avg Loss: 0.13723 | Epsilon: 0.010
+Episode  547 | Reward:   123.0 | Duration:  123 | Avg Loss: 0.13360 | Epsilon: 0.010
+Episode  548 | Reward:   118.0 | Duration:  118 | Avg Loss: 0.14345 | Epsilon: 0.010
+Episode  549 | Reward:   113.0 | Duration:  113 | Avg Loss: 0.14392 | Epsilon: 0.010
+Episode  550 | Reward:   116.0 | Duration:  116 | Avg Loss: 0.14731 | Epsilon: 0.010
+Episode 550: Target network updated.
+Episode  551 | Reward:   120.0 | Duration:  120 | Avg Loss: 0.14412 | Epsilon: 0.010
+Episode  552 | Reward:   117.0 | Duration:  117 | Avg Loss: 0.15013 | Epsilon: 0.010
+Episode  553 | Reward:   109.0 | Duration:  109 | Avg Loss: 0.16414 | Epsilon: 0.010
+Episode  554 | Reward:   128.0 | Duration:  128 | Avg Loss: 0.14744 | Epsilon: 0.010
+Episode  555 | Reward:   110.0 | Duration:  110 | Avg Loss: 0.14681 | Epsilon: 0.010
+Episode  556 | Reward:   117.0 | Duration:  117 | Avg Loss: 0.13319 | Epsilon: 0.010
+Episode  557 | Reward:   113.0 | Duration:  113 | Avg Loss: 0.13229 | Epsilon: 0.010
+Episode  558 | Reward:   119.0 | Duration:  119 | Avg Loss: 0.13737 | Epsilon: 0.010
+Episode  559 | Reward:   118.0 | Duration:  118 | Avg Loss: 0.17370 | Epsilon: 0.010
+Episode  560 | Reward:   119.0 | Duration:  119 | Avg Loss: 0.15466 | Epsilon: 0.010
+Episode 560: Target network updated.
+Episode  561 | Reward:   113.0 | Duration:  113 | Avg Loss: 0.16232 | Epsilon: 0.010
+Episode  562 | Reward:   120.0 | Duration:  120 | Avg Loss: 0.15080 | Epsilon: 0.010
+Episode  563 | Reward:   114.0 | Duration:  114 | Avg Loss: 0.14713 | Epsilon: 0.010
+Episode  564 | Reward:   118.0 | Duration:  118 | Avg Loss: 0.12882 | Epsilon: 0.010
+Episode  565 | Reward:   108.0 | Duration:  108 | Avg Loss: 0.15320 | Epsilon: 0.010
+Episode  566 | Reward:   116.0 | Duration:  116 | Avg Loss: 0.13359 | Epsilon: 0.010
+Episode  567 | Reward:   125.0 | Duration:  125 | Avg Loss: 0.12718 | Epsilon: 0.010
+Episode  568 | Reward:   121.0 | Duration:  121 | Avg Loss: 0.13524 | Epsilon: 0.010
+Episode  569 | Reward:   121.0 | Duration:  121 | Avg Loss: 0.16135 | Epsilon: 0.010
+Episode  570 | Reward:   117.0 | Duration:  117 | Avg Loss: 0.15200 | Epsilon: 0.010
+Episode 570: Target network updated.
+Episode  571 | Reward:   112.0 | Duration:  112 | Avg Loss: 0.15300 | Epsilon: 0.010
+Episode  572 | Reward:   108.0 | Duration:  108 | Avg Loss: 0.12169 | Epsilon: 0.010
+Episode  573 | Reward:    12.0 | Duration:   12 | Avg Loss: 0.18417 | Epsilon: 0.010
+Episode  574 | Reward:   114.0 | Duration:  114 | Avg Loss: 0.14741 | Epsilon: 0.010
+Episode  575 | Reward:   114.0 | Duration:  114 | Avg Loss: 0.14989 | Epsilon: 0.010
+Episode  576 | Reward:    18.0 | Duration:   18 | Avg Loss: 0.17691 | Epsilon: 0.010
+Episode  577 | Reward:   123.0 | Duration:  123 | Avg Loss: 0.15817 | Epsilon: 0.010
+Episode  578 | Reward:   119.0 | Duration:  119 | Avg Loss: 0.13513 | Epsilon: 0.010
+Episode  579 | Reward:   111.0 | Duration:  111 | Avg Loss: 0.14241 | Epsilon: 0.010
+Episode  580 | Reward:   127.0 | Duration:  127 | Avg Loss: 0.14512 | Epsilon: 0.010
+Episode 580: Target network updated.
+Episode  581 | Reward:   114.0 | Duration:  114 | Avg Loss: 0.15503 | Epsilon: 0.010
+Episode  582 | Reward:    16.0 | Duration:   16 | Avg Loss: 0.16517 | Epsilon: 0.010
+Episode  583 | Reward:    14.0 | Duration:   14 | Avg Loss: 0.12628 | Epsilon: 0.010
+Episode  584 | Reward:    16.0 | Duration:   16 | Avg Loss: 0.14181 | Epsilon: 0.010
+Episode  585 | Reward:   111.0 | Duration:  111 | Avg Loss: 0.17291 | Epsilon: 0.010
+Episode  586 | Reward:    14.0 | Duration:   14 | Avg Loss: 0.16025 | Epsilon: 0.010
+Episode  587 | Reward:   110.0 | Duration:  110 | Avg Loss: 0.17652 | Epsilon: 0.010
+Episode  588 | Reward:    16.0 | Duration:   16 | Avg Loss: 0.12705 | Epsilon: 0.010
+Episode  589 | Reward:   119.0 | Duration:  119 | Avg Loss: 0.19516 | Epsilon: 0.010
+Episode  590 | Reward:   116.0 | Duration:  116 | Avg Loss: 0.18111 | Epsilon: 0.010
+Episode 590: Target network updated.
+Episode  591 | Reward:    16.0 | Duration:   16 | Avg Loss: 0.18313 | Epsilon: 0.010
+Episode  592 | Reward:   117.0 | Duration:  117 | Avg Loss: 0.16531 | Epsilon: 0.010
+Episode  593 | Reward:   120.0 | Duration:  120 | Avg Loss: 0.17206 | Epsilon: 0.010
+Episode  594 | Reward:    15.0 | Duration:   15 | Avg Loss: 0.11633 | Epsilon: 0.010
+Episode  595 | Reward:    18.0 | Duration:   18 | Avg Loss: 0.13725 | Epsilon: 0.010
+Episode  596 | Reward:   109.0 | Duration:  109 | Avg Loss: 0.17384 | Epsilon: 0.010
+Episode  597 | Reward:   117.0 | Duration:  117 | Avg Loss: 0.17954 | Epsilon: 0.010
+Episode  598 | Reward:   112.0 | Duration:  112 | Avg Loss: 0.18424 | Epsilon: 0.010
+Episode  599 | Reward:   107.0 | Duration:  107 | Avg Loss: 0.17671 | Epsilon: 0.010
+--- Training Complete ---
+--- Running 100 Test Episodes ---
+Average test duration: 113.89
+--- Recording Video ---
+C:\Users\Basem Elgalfy\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\gymnasium\wrappers\rendering.py:293: UserWarning: [33mWARN: Overwriting existing videos at D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\videos folder (try specifying a different `video_folder` for the `RecordVideo` wrapper if this is not desired)[0m
+  logger.warn(
+Video saved to 'videos' folder.

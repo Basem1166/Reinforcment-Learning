@@ -1,0 +1,11 @@
+--- Starting Training Loop ---
+Traceback (most recent call last):
+  File "D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\main.py", line 176, in <module>
+    main()
+  File "D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\main.py", line 96, in main
+    loss = agent.optimize_model()
+  File "D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\agent.py", line 62, in optimize_model
+    transitions = self.memory.sample(self.batch_size)
+  File "D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\model.py", line 64, in sample
+    return random.sample(self.memory, batch_size)
+NameError: name 'random' is not defined

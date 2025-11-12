@@ -1,0 +1,254 @@
+Detected continuous action space for Pendulum-v1.
+Applying discretization wrapper with 11 bins.
+--- Starting Training Loop ---
+Ep: 0 | Reward: -1712.93 | Duration: 200 | Avg Loss: 1.5056 | Epsilon: 0.997
+--- Episode 0: Target network updated. ---
+--- Episode 1: Target network updated. ---
+--- Episode 2: Target network updated. ---
+--- Episode 3: Target network updated. ---
+--- Episode 4: Target network updated. ---
+--- Episode 5: Target network updated. ---
+--- Episode 6: Target network updated. ---
+--- Episode 7: Target network updated. ---
+--- Episode 8: Target network updated. ---
+--- Episode 9: Target network updated. ---
+Ep: 10 | Reward: -1196.41 | Duration: 200 | Avg Loss: 0.7304 | Epsilon: 0.967
+--- Episode 10: Target network updated. ---
+--- Episode 11: Target network updated. ---
+--- Episode 12: Target network updated. ---
+--- Episode 13: Target network updated. ---
+--- Episode 14: Target network updated. ---
+--- Episode 15: Target network updated. ---
+--- Episode 16: Target network updated. ---
+--- Episode 17: Target network updated. ---
+--- Episode 18: Target network updated. ---
+--- Episode 19: Target network updated. ---
+Ep: 20 | Reward: -1125.00 | Duration: 200 | Avg Loss: 1.4709 | Epsilon: 0.939
+--- Episode 20: Target network updated. ---
+--- Episode 21: Target network updated. ---
+--- Episode 22: Target network updated. ---
+--- Episode 23: Target network updated. ---
+--- Episode 24: Target network updated. ---
+--- Episode 25: Target network updated. ---
+--- Episode 26: Target network updated. ---
+--- Episode 27: Target network updated. ---
+--- Episode 28: Target network updated. ---
+--- Episode 29: Target network updated. ---
+Ep: 30 | Reward: -1082.70 | Duration: 200 | Avg Loss: 1.5702 | Epsilon: 0.911
+--- Episode 30: Target network updated. ---
+--- Episode 31: Target network updated. ---
+--- Episode 32: Target network updated. ---
+--- Episode 33: Target network updated. ---
+--- Episode 34: Target network updated. ---
+--- Episode 35: Target network updated. ---
+--- Episode 36: Target network updated. ---
+--- Episode 37: Target network updated. ---
+--- Episode 38: Target network updated. ---
+--- Episode 39: Target network updated. ---
+Ep: 40 | Reward: -1096.31 | Duration: 200 | Avg Loss: 1.8521 | Epsilon: 0.884
+--- Episode 40: Target network updated. ---
+--- Episode 41: Target network updated. ---
+--- Episode 42: Target network updated. ---
+--- Episode 43: Target network updated. ---
+--- Episode 44: Target network updated. ---
+--- Episode 45: Target network updated. ---
+--- Episode 46: Target network updated. ---
+--- Episode 47: Target network updated. ---
+--- Episode 48: Target network updated. ---
+--- Episode 49: Target network updated. ---
+Ep: 50 | Reward: -970.11 | Duration: 200 | Avg Loss: 1.7795 | Epsilon: 0.858
+--- Episode 50: Target network updated. ---
+--- Episode 51: Target network updated. ---
+--- Episode 52: Target network updated. ---
+--- Episode 53: Target network updated. ---
+--- Episode 54: Target network updated. ---
+--- Episode 55: Target network updated. ---
+--- Episode 56: Target network updated. ---
+--- Episode 57: Target network updated. ---
+--- Episode 58: Target network updated. ---
+--- Episode 59: Target network updated. ---
+Ep: 60 | Reward: -882.02 | Duration: 200 | Avg Loss: 2.0906 | Epsilon: 0.833
+--- Episode 60: Target network updated. ---
+--- Episode 61: Target network updated. ---
+--- Episode 62: Target network updated. ---
+--- Episode 63: Target network updated. ---
+--- Episode 64: Target network updated. ---
+--- Episode 65: Target network updated. ---
+--- Episode 66: Target network updated. ---
+--- Episode 67: Target network updated. ---
+--- Episode 68: Target network updated. ---
+--- Episode 69: Target network updated. ---
+Ep: 70 | Reward: -1180.97 | Duration: 200 | Avg Loss: 1.9474 | Epsilon: 0.808
+--- Episode 70: Target network updated. ---
+--- Episode 71: Target network updated. ---
+--- Episode 72: Target network updated. ---
+--- Episode 73: Target network updated. ---
+--- Episode 74: Target network updated. ---
+--- Episode 75: Target network updated. ---
+--- Episode 76: Target network updated. ---
+--- Episode 77: Target network updated. ---
+--- Episode 78: Target network updated. ---
+--- Episode 79: Target network updated. ---
+Ep: 80 | Reward: -1245.11 | Duration: 200 | Avg Loss: 1.8433 | Epsilon: 0.784
+--- Episode 80: Target network updated. ---
+--- Episode 81: Target network updated. ---
+--- Episode 82: Target network updated. ---
+--- Episode 83: Target network updated. ---
+--- Episode 84: Target network updated. ---
+--- Episode 85: Target network updated. ---
+--- Episode 86: Target network updated. ---
+--- Episode 87: Target network updated. ---
+--- Episode 88: Target network updated. ---
+--- Episode 89: Target network updated. ---
+Ep: 90 | Reward: -637.00 | Duration: 200 | Avg Loss: 2.2020 | Epsilon: 0.761
+--- Episode 90: Target network updated. ---
+--- Episode 91: Target network updated. ---
+--- Episode 92: Target network updated. ---
+--- Episode 93: Target network updated. ---
+--- Episode 94: Target network updated. ---
+--- Episode 95: Target network updated. ---
+--- Episode 96: Target network updated. ---
+--- Episode 97: Target network updated. ---
+--- Episode 98: Target network updated. ---
+--- Episode 99: Target network updated. ---
+Ep: 100 | Reward: -745.51 | Duration: 200 | Avg Loss: 2.4780 | Epsilon: 0.738
+--- Episode 100: Target network updated. ---
+--- Episode 101: Target network updated. ---
+--- Episode 102: Target network updated. ---
+--- Episode 103: Target network updated. ---
+--- Episode 104: Target network updated. ---
+--- Episode 105: Target network updated. ---
+--- Episode 106: Target network updated. ---
+--- Episode 107: Target network updated. ---
+--- Episode 108: Target network updated. ---
+--- Episode 109: Target network updated. ---
+Ep: 110 | Reward: -784.69 | Duration: 200 | Avg Loss: 2.5590 | Epsilon: 0.716
+--- Episode 110: Target network updated. ---
+--- Episode 111: Target network updated. ---
+--- Episode 112: Target network updated. ---
+--- Episode 113: Target network updated. ---
+--- Episode 114: Target network updated. ---
+--- Episode 115: Target network updated. ---
+--- Episode 116: Target network updated. ---
+--- Episode 117: Target network updated. ---
+--- Episode 118: Target network updated. ---
+--- Episode 119: Target network updated. ---
+Ep: 120 | Reward: -626.10 | Duration: 200 | Avg Loss: 2.6503 | Epsilon: 0.695
+--- Episode 120: Target network updated. ---
+--- Episode 121: Target network updated. ---
+--- Episode 122: Target network updated. ---
+--- Episode 123: Target network updated. ---
+--- Episode 124: Target network updated. ---
+--- Episode 125: Target network updated. ---
+--- Episode 126: Target network updated. ---
+--- Episode 127: Target network updated. ---
+--- Episode 128: Target network updated. ---
+--- Episode 129: Target network updated. ---
+Ep: 130 | Reward: -882.18 | Duration: 200 | Avg Loss: 2.5225 | Epsilon: 0.675
+--- Episode 130: Target network updated. ---
+--- Episode 131: Target network updated. ---
+--- Episode 132: Target network updated. ---
+--- Episode 133: Target network updated. ---
+--- Episode 134: Target network updated. ---
+--- Episode 135: Target network updated. ---
+--- Episode 136: Target network updated. ---
+--- Episode 137: Target network updated. ---
+--- Episode 138: Target network updated. ---
+--- Episode 139: Target network updated. ---
+Ep: 140 | Reward: -839.83 | Duration: 200 | Avg Loss: 2.6095 | Epsilon: 0.655
+--- Episode 140: Target network updated. ---
+--- Episode 141: Target network updated. ---
+--- Episode 142: Target network updated. ---
+--- Episode 143: Target network updated. ---
+--- Episode 144: Target network updated. ---
+--- Episode 145: Target network updated. ---
+--- Episode 146: Target network updated. ---
+--- Episode 147: Target network updated. ---
+--- Episode 148: Target network updated. ---
+--- Episode 149: Target network updated. ---
+Ep: 150 | Reward: -544.27 | Duration: 200 | Avg Loss: 2.5271 | Epsilon: 0.635
+--- Episode 150: Target network updated. ---
+--- Episode 151: Target network updated. ---
+--- Episode 152: Target network updated. ---
+--- Episode 153: Target network updated. ---
+--- Episode 154: Target network updated. ---
+--- Episode 155: Target network updated. ---
+--- Episode 156: Target network updated. ---
+--- Episode 157: Target network updated. ---
+--- Episode 158: Target network updated. ---
+--- Episode 159: Target network updated. ---
+Ep: 160 | Reward: -388.02 | Duration: 200 | Avg Loss: 2.4090 | Epsilon: 0.616
+--- Episode 160: Target network updated. ---
+--- Episode 161: Target network updated. ---
+--- Episode 162: Target network updated. ---
+--- Episode 163: Target network updated. ---
+--- Episode 164: Target network updated. ---
+--- Episode 165: Target network updated. ---
+--- Episode 166: Target network updated. ---
+--- Episode 167: Target network updated. ---
+--- Episode 168: Target network updated. ---
+--- Episode 169: Target network updated. ---
+Ep: 170 | Reward: -378.88 | Duration: 200 | Avg Loss: 2.2461 | Epsilon: 0.598
+--- Episode 170: Target network updated. ---
+--- Episode 171: Target network updated. ---
+--- Episode 172: Target network updated. ---
+--- Episode 173: Target network updated. ---
+--- Episode 174: Target network updated. ---
+--- Episode 175: Target network updated. ---
+--- Episode 176: Target network updated. ---
+--- Episode 177: Target network updated. ---
+--- Episode 178: Target network updated. ---
+--- Episode 179: Target network updated. ---
+Ep: 180 | Reward: -337.60 | Duration: 200 | Avg Loss: 2.1451 | Epsilon: 0.581
+--- Episode 180: Target network updated. ---
+--- Episode 181: Target network updated. ---
+--- Episode 182: Target network updated. ---
+--- Episode 183: Target network updated. ---
+--- Episode 184: Target network updated. ---
+--- Episode 185: Target network updated. ---
+--- Episode 186: Target network updated. ---
+--- Episode 187: Target network updated. ---
+--- Episode 188: Target network updated. ---
+--- Episode 189: Target network updated. ---
+Ep: 190 | Reward: -501.88 | Duration: 200 | Avg Loss: 1.9640 | Epsilon: 0.563
+--- Episode 190: Target network updated. ---
+--- Episode 191: Target network updated. ---
+--- Episode 192: Target network updated. ---
+--- Episode 193: Target network updated. ---
+--- Episode 194: Target network updated. ---
+--- Episode 195: Target network updated. ---
+--- Episode 196: Target network updated. ---
+--- Episode 197: Target network updated. ---
+--- Episode 198: Target network updated. ---
+--- Episode 199: Target network updated. ---
+Ep: 200 | Reward: -374.85 | Duration: 200 | Avg Loss: 1.9058 | Epsilon: 0.547
+--- Episode 200: Target network updated. ---
+--- Episode 201: Target network updated. ---
+--- Episode 202: Target network updated. ---
+--- Episode 203: Target network updated. ---
+--- Episode 204: Target network updated. ---
+--- Episode 205: Target network updated. ---
+--- Episode 206: Target network updated. ---
+--- Episode 207: Target network updated. ---
+--- Episode 208: Target network updated. ---
+--- Episode 209: Target network updated. ---
+Ep: 210 | Reward: -371.59 | Duration: 200 | Avg Loss: 1.8209 | Epsilon: 0.530
+--- Episode 210: Target network updated. ---
+--- Episode 211: Target network updated. ---
+--- Episode 212: Target network updated. ---
+--- Episode 213: Target network updated. ---
+--- Episode 214: Target network updated. ---
+--- Episode 215: Target network updated. ---
+--- Episode 216: Target network updated. ---
+--- Episode 217: Target network updated. ---
+--- Episode 218: Target network updated. ---
+Traceback (most recent call last):
+  File "D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\main.py", line 259, in <module>
+    main()
+  File "D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\main.py", line 132, in main
+    loss = agent.optimize_model()
+  File "D:\University\MyProgramming\Reinforcment Learning\Reinforcment-Learning\Assignment2\agent.py", line 91, in optimize_model
+    target_q_values = reward_batch + (self.gamma * next_q_values * (1 - done_batch))
+  File "C:\Users\Basem Elgalfy\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\torch\_tensor.py", line 43, in wrapped
+    if has_torch_function(sargs):
+KeyboardInterrupt

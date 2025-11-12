@@ -237,7 +237,7 @@ def record_policy_video(policy, seed,size):
 # --- Main execution ---
 if __name__ == "__main__":
 
-    maze_seed = 1
+    maze_seed = 42
     size = 5
     
     
