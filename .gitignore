@@ -1,5 +1,3 @@
-*.pth
+
 wandb/*
 ./wandb/*
-./videos/*
-videos/*
