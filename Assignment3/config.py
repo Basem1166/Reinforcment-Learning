@@ -12,8 +12,8 @@ MODEL_TYPE = "SAC"
 ENV_CONFIG = {
     # Discrete examples: CartPole-v1, Acrobot-v1, MountainCar-v0
     # Continuous examples: Pendulum-v1, MountainCarContinuous-v0
-    "env_name": "MountainCar-v0", 
-    "total_timesteps": 50000, 
+    "env_name": "Pendulum-v1", 
+    "total_timesteps": 1000000, 
     "test_episodes": 100 
 }
 
@@ -33,7 +33,7 @@ HYPERPARAMETERS = {
     
     # PPO Specifics
     "ppo_clip": 0.2,          # Clipping range (epsilon)
-    "entropy_coef": 0.1,      # Entropy coefficient to encourage exploration
+    "entropy_coef": 0.2,      # Entropy coefficient to encourage exploration
     
     # Buffer settings
     "batch_size": 256,       
