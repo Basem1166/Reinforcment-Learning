@@ -3,6 +3,7 @@ import torch
 import numpy as np
 import time
 import wandb
+import os
 from gym.wrappers import RecordVideo
 from config import HYPERPARAMETERS, ENV_CONFIG, WANDB_CONFIG, MODEL_TYPE
 
@@ -47,14 +48,18 @@ def evaluate():
     
     # 4. Load Weights Dynamically
     # We assume you save files as "{model_type}_actor.pth" and "{model_type}_critic.pth"
-    actor_path = f"{MODEL_TYPE.lower()}_actor.pth"
-    critic_path = f"{MODEL_TYPE.lower()}_critic.pth"
+    actor_path = f"models/{MODEL_TYPE.lower()}_{ENV_CONFIG['env_name']}_actor.pth"
+    critic_path = f"models/{MODEL_TYPE.lower()}_{ENV_CONFIG['env_name']}_critic.pth"
     
     try:
         # SAC usually has 'policy' instead of 'actor', but we can standardize naming in the agent code
         # or handle the exception here.
         if MODEL_TYPE == "SAC":
-             agent.policy.load_state_dict(torch.load(f"sac_policy.pth"))
+                state_dict = torch.load(f"models/sac_policy_{ENV_CONFIG['env_name']}.pth", map_location='cpu')
+                result = agent.policy.load_state_dict(state_dict, strict=False)
+                print(f"Loaded SAC policy from: {os.path.abspath(f'models/sac_policy_{ENV_CONFIG['env_name']}.pth')}")
+                if getattr(result, 'missing_keys', None) or getattr(result, 'unexpected_keys', None):
+                    print(f"Note: missing_keys={getattr(result, 'missing_keys', [])}, unexpected_keys={getattr(result, 'unexpected_keys', [])}")
              # SAC doesn't strictly need critics for testing, just the policy
         else:
             agent.actor.load_state_dict(torch.load(actor_path))
@@ -82,6 +87,13 @@ def evaluate():
             if MODEL_TYPE == "SAC":
                 # SAC returns just the action
                 action = agent.get_action(state, evaluate=True)
+                # For continuous SAC: guard against NaNs/Infs and clip to bounds
+                if hasattr(env.action_space, 'low'):
+                    action = np.nan_to_num(action, nan=0.0, posinf=0.0, neginf=0.0)
+                    low = np.asarray(env.action_space.low, dtype=np.float32)
+                    high = np.asarray(env.action_space.high, dtype=np.float32)
+                    action = np.clip(action, low, high)
+                # For discrete SAC: action is already an int, no clipping needed
             elif MODEL_TYPE == "PPO":
                 # PPO returns (action, log_prob), we only need action for testing
                 action, _ = agent.get_action(state)
@@ -115,6 +127,11 @@ def evaluate():
         "test/std_duration": std_duration,
         "test/model_type": MODEL_TYPE
     })
+    wandb.log({
+        "test/episode_reward": total_reward,
+        "test/episode_duration": duration,
+        "test/episode_index": i,
+    }) 
     
     # 7. Upload Video
     video_path = f"./videos/{MODEL_TYPE}/{env_name}/test-agent-episode-0.mp4"
