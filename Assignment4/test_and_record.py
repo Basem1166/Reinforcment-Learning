@@ -9,20 +9,51 @@ from ppo_agent import PPOAgent
 from td3_agent import TD3Agent
 import config
 
-def test_and_record(algorithm, env_name, model_path, num_episodes=100, record_video=True):
-    """Test trained agent and optionally record video"""
-    
-    # Get configuration
-    config_map = {
-        ('sac', 'lunarlander'): config.SAC_LUNARLANDER,
-        ('sac', 'carracing'): config.SAC_CARRACING,
-        ('ppo', 'lunarlander'): config.PPO_LUNARLANDER,
-        ('ppo', 'carracing'): config.PPO_CARRACING,
-        ('td3', 'lunarlander'): config.TD3_LUNARLANDER,
-        ('td3', 'carracing'): config.TD3_CARRACING,
-    }
-    
-    cfg = config_map[(algorithm.lower(), env_name.lower())]
+
+def _get_config_for_model(algorithm: str, model_name: str):
+    """Infer environment + config from the checkpoint file name.
+
+    This allows a simpler CLI: you pass algorithm + model path only,
+    and we figure out which env config to use from `config.py`.
+    """
+    algo = algorithm.lower()
+    name_lower = model_name.lower()
+
+    if "lunarlander" in name_lower:
+        if algo == "sac":
+            cfg = config.SAC_LUNARLANDER
+        elif algo == "ppo":
+            cfg = config.PPO_LUNARLANDER
+        elif algo == "td3":
+            cfg = config.TD3_LUNARLANDER
+        else:
+            raise ValueError(f"Unknown algorithm: {algorithm}")
+    elif "carracing" in name_lower:
+        if algo == "sac":
+            cfg = config.SAC_CARRACING
+        elif algo == "ppo":
+            cfg = config.PPO_CARRACING
+        elif algo == "td3":
+            cfg = config.TD3_CARRACING
+        else:
+            raise ValueError(f"Unknown algorithm: {algorithm}")
+    else:
+        raise ValueError(
+            f"Could not infer environment from model name '{model_name}'. "
+            "Include 'LunarLander' or 'CarRacing' in the filename."
+        )
+
+    return cfg
+
+
+def test_and_record(algorithm, model_path, num_episodes=100, record_video=True):
+    """Test trained agent and optionally record video.
+
+    Environment is inferred from the model file name using config.
+    """
+
+    # Get configuration from model name
+    cfg = _get_config_for_model(algorithm, os.path.basename(model_path))
     env_cfg = cfg['env']
     hyperparams = cfg['hyperparameters']
     
@@ -150,25 +181,22 @@ def test_and_record(algorithm, env_name, model_path, num_episodes=100, record_vi
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Test trained agent')
-    parser.add_argument('--algorithm', type=str, required=True,
+    parser = argparse.ArgumentParser(description='Test trained agent (simple)')
+    # Positional args: algorithm and model path
+    parser.add_argument('algorithm', type=str,
                         choices=['sac', 'ppo', 'td3'],
-                        help='Algorithm to test')
-    parser.add_argument('--env', type=str, required=True,
-                        choices=['lunarlander', 'carracing'],
-                        help='Environment to test on')
-    parser.add_argument('--model', type=str, required=True,
-                        help='Path to model checkpoint')
+                        help='Algorithm used to train the model')
+    parser.add_argument('model', type=str,
+                        help='Path to model checkpoint. Env is inferred from the filename.')
     parser.add_argument('--episodes', type=int, default=100,
                         help='Number of test episodes')
     parser.add_argument('--no-video', action='store_true',
                         help='Disable video recording')
-    
+
     args = parser.parse_args()
-    
+
     test_and_record(
         algorithm=args.algorithm,
-        env_name=args.env,
         model_path=args.model,
         num_episodes=args.episodes,
         record_video=not args.no_video

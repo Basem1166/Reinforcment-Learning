@@ -11,6 +11,45 @@ def weights_init_(m):
         torch.nn.init.constant_(m.bias, 0)
 
 
+# ============= CarRacing Image Encoder =============
+
+class CarRacingEncoder(nn.Module):
+    """Simple CNN encoder for CarRacing-v3 (96x96x3 RGB).
+
+    Outputs a feature vector that can be fed into existing MLP policies/Q-nets.
+    """
+
+    def __init__(self, feature_dim: int = 256):
+        super().__init__()
+        # Input: (C=3, H=96, W=96)
+        self.conv = nn.Sequential(
+            nn.Conv2d(3, 32, kernel_size=8, stride=4),  # -> 32 x 23 x 23
+            nn.ReLU(inplace=True),
+            nn.Conv2d(32, 64, kernel_size=4, stride=2),  # -> 64 x 10 x 10
+            nn.ReLU(inplace=True),
+            nn.Conv2d(64, 64, kernel_size=3, stride=1),  # -> 64 x 8 x 8
+            nn.ReLU(inplace=True),
+        )
+
+        conv_out_dim = 64 * 8 * 8
+        self.fc = nn.Linear(conv_out_dim, feature_dim)
+
+        self.apply(weights_init_)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        # Expect input as (B, H, W, C) or (H, W, C); convert to (B, C, H, W)
+        if x.dim() == 3:  # (H, W, C)
+            x = x.permute(2, 0, 1).unsqueeze(0)
+        elif x.dim() == 4 and x.shape[-1] == 3:  # (B, H, W, C)
+            x = x.permute(0, 3, 1, 2)
+
+        x = x.float() / 255.0
+        x = self.conv(x)
+        x = x.view(x.size(0), -1)
+        x = F.relu(self.fc(x))
+        return x
+
+
 # ============= SAC Models =============
 
 class SACQNetwork(nn.Module):

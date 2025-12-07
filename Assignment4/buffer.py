@@ -1,17 +1,28 @@
 import numpy as np
 import torch
 
+
 class ReplayBuffer:
-    """Simple replay buffer for off-policy algorithms (SAC, TD3)"""
-    def __init__(self, obs_dim, action_dim, max_size=int(1e6)):
+    """Replay buffer that supports both vector and image observations.
+
+    For vector states, pass obs_shape as an int (dimension).
+    For image states (e.g., CarRacing 96x96x3), pass obs_shape as a tuple.
+    """
+
+    def __init__(self, obs_shape, action_dim, max_size=int(1e6)):
         self.max_size = max_size
         self.ptr = 0
         self.size = 0
 
-        self.states = np.zeros((max_size, obs_dim), dtype=np.float32)
+        if isinstance(obs_shape, int):
+            state_shape = (max_size, obs_shape)
+        else:
+            state_shape = (max_size, *obs_shape)
+
+        self.states = np.zeros(state_shape, dtype=np.float32)
         self.actions = np.zeros((max_size, action_dim), dtype=np.float32)
         self.rewards = np.zeros((max_size, 1), dtype=np.float32)
-        self.next_states = np.zeros((max_size, obs_dim), dtype=np.float32)
+        self.next_states = np.zeros(state_shape, dtype=np.float32)
         self.dones = np.zeros((max_size, 1), dtype=np.float32)
 
     def add(self, state, action, reward, next_state, done):
@@ -28,11 +39,11 @@ class ReplayBuffer:
         ind = np.random.randint(0, self.size, size=batch_size)
 
         return (
-            torch.FloatTensor(self.states[ind]).to(device),
-            torch.FloatTensor(self.actions[ind]).to(device),
-            torch.FloatTensor(self.rewards[ind]).to(device),
-            torch.FloatTensor(self.next_states[ind]).to(device),
-            torch.FloatTensor(self.dones[ind]).to(device)
+            torch.as_tensor(self.states[ind], dtype=torch.float32, device=device),
+            torch.as_tensor(self.actions[ind], dtype=torch.float32, device=device),
+            torch.as_tensor(self.rewards[ind], dtype=torch.float32, device=device),
+            torch.as_tensor(self.next_states[ind], dtype=torch.float32, device=device),
+            torch.as_tensor(self.dones[ind], dtype=torch.float32, device=device),
         )
 
     def __len__(self):

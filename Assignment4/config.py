@@ -19,13 +19,13 @@ ENVIRONMENTS = {
 
 # ============= Training Settings =============
 TRAINING = {
-    'total_timesteps': 1_000_000,      # Total training timesteps
+    'total_timesteps': 100_000,      # Total training timesteps
     'eval_frequency': 10_000,          # Evaluate every N timesteps
     'eval_episodes': 10,               # Number of evaluation episodes
     'save_frequency': 50_000,          # Save model every N timesteps
     'start_timesteps': 10_000,         # Random actions for exploration at start (SAC/TD3)
     'batch_size': 256,                 # Batch size for training
-    'buffer_size': 1_000_000,          # Replay buffer size (SAC/TD3)
+    'buffer_size': 50_000,          # Replay buffer size (SAC/TD3)
     'rollout_length': 2048,            # Rollout length for PPO
 }
 
