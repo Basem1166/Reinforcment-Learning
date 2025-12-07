@@ -19,6 +19,7 @@ ENVIRONMENTS = {
 
 # ============= Training Settings =============
 TRAINING = {
+
     'total_timesteps': 1_000_000,      # Total training timesteps
     'eval_frequency': 100_000,          # Evaluate every N timesteps
     'eval_episodes': 100,               # Number of evaluation episodes
