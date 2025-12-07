@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Models and Results
+models/*.pth
+!models/.gitkeep
+
+# Results
+results/*.csv
+results/*.txt
+results/*.png
+!results/.gitkeep
+
+# Videos
+videos/
+*.mp4
+*.avi
+
+# Wandb
+wandb/
+*.wandb
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
