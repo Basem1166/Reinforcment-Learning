@@ -89,13 +89,20 @@ def train_sac(env_name='lunarlander', use_wandb=True):
     
     for t in range(training_cfg['total_timesteps']):
         episode_timesteps += 1
-        
+
         # Select action
         if t < training_cfg['start_timesteps']:
             # Random exploration at the beginning
             action = env.action_space.sample()
         else:
-            action = agent.select_action(state, eval_mode=False)
+            if use_cnn_encoder:
+                # Encode image observation to feature vector before acting
+                with torch.no_grad():
+                    state_tensor = torch.as_tensor(state, dtype=torch.float32, device=device)
+                    feat = encoder(state_tensor).cpu().numpy()[0]
+                action = agent.select_action(feat, eval_mode=False)
+            else:
+                action = agent.select_action(state, eval_mode=False)
         
         # Execute action
         next_state, reward, terminated, truncated, _ = env.step(action)

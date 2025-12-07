@@ -45,7 +45,8 @@ class CarRacingEncoder(nn.Module):
 
         x = x.float() / 255.0
         x = self.conv(x)
-        x = x.view(x.size(0), -1)
+        # Use reshape instead of view to handle non-contiguous tensors
+        x = x.reshape(x.size(0), -1)
         x = F.relu(self.fc(x))
         return x
 
