@@ -20,12 +20,12 @@ ENVIRONMENTS = {
 # ============= Training Settings =============
 TRAINING = {
     'total_timesteps': 1_000_000,      # Total training timesteps
-    'eval_frequency': 10_000,          # Evaluate every N timesteps
-    'eval_episodes': 10,               # Number of evaluation episodes
+    'eval_frequency': 100_000,          # Evaluate every N timesteps
+    'eval_episodes': 100,               # Number of evaluation episodes
     'save_frequency': 50_000,          # Save model every N timesteps
-    'start_timesteps': 10_000,         # Random actions for exploration at start (SAC/TD3)
-    'batch_size': 256,                 # Batch size for training
-    'buffer_size': 1_000_000,          # Replay buffer size (SAC/TD3)
+    'start_timesteps': 1_000,         # Random actions for exploration at start (SAC/TD3)
+    'batch_size': 128,                 # Batch size for training
+    'buffer_size': 100_000,            # Replay buffer size (SAC/TD3)
     'rollout_length': 2048,            # Rollout length for PPO
 }
 
@@ -80,7 +80,8 @@ PPO_HYPERPARAMETERS = {
 # ============= TD3 Hyperparameters =============
 TD3_HYPERPARAMETERS = {
     # Learning rates
-    'lr': 3e-4,                        # Learning rate for all networks
+    'lr_actor': 1e-4,                  # Actor learning rate
+    'lr_critic': 1e-3,                 # Critic learning rate
     
     # Network architecture
     'hidden_dim': 256,                 # Hidden layer dimension
@@ -118,6 +119,9 @@ LUNARLANDER_TD3 = {
     **TD3_HYPERPARAMETERS,
     'expl_noise': 0.1,
     'policy_noise': 0.2,
+    'lr_actor': 1e-4,
+    'lr_critic': 1e-3,
+    'policy_freq': 2,
 }
 
 # CarRacing-v3 specific settings

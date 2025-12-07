@@ -16,7 +16,8 @@ class TD3Agent:
         # Hyperparameters
         self.gamma = hyperparameters.get('gamma', 0.99)
         self.tau = hyperparameters.get('tau', 0.005)
-        self.lr = hyperparameters.get('lr', 3e-4)
+        self.lr_actor = hyperparameters.get('lr_actor', hyperparameters.get('lr', 1e-4))
+        self.lr_critic = hyperparameters.get('lr_critic', hyperparameters.get('lr', 1e-3))
         self.policy_noise = hyperparameters.get('policy_noise', 0.2)
         self.noise_clip = hyperparameters.get('noise_clip', 0.5)
         self.policy_freq = hyperparameters.get('policy_freq', 2)
@@ -27,13 +28,13 @@ class TD3Agent:
         self.actor = TD3Actor(obs_dim, action_dim, self.hidden_dim, max_action).to(device)
         self.actor_target = TD3Actor(obs_dim, action_dim, self.hidden_dim, max_action).to(device)
         self.actor_target.load_state_dict(self.actor.state_dict())
-        self.actor_optimizer = optim.Adam(self.actor.parameters(), lr=self.lr)
+        self.actor_optimizer = optim.Adam(self.actor.parameters(), lr=self.lr_actor)
         
         # Twin Critic networks and targets
         self.critic = TD3Critic(obs_dim, action_dim, self.hidden_dim).to(device)
         self.critic_target = TD3Critic(obs_dim, action_dim, self.hidden_dim).to(device)
         self.critic_target.load_state_dict(self.critic.state_dict())
-        self.critic_optimizer = optim.Adam(self.critic.parameters(), lr=self.lr)
+        self.critic_optimizer = optim.Adam(self.critic.parameters(), lr=self.lr_critic)
         
         self.total_it = 0
     
