@@ -1,0 +1,8 @@
+Test Results for TD3 on LunarLander-v3
+==================================================
+Model: .\models\TD3_LunarLander-v3_best.pth
+Number of Episodes: 100
+Mean Reward: 287.99 ± 18.59
+Min Reward: 243.82
+Max Reward: 322.29
+Mean Episode Length: 157.92
