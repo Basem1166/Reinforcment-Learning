@@ -8,6 +8,7 @@ from sac_agent import SACAgent
 from ppo_agent import PPOAgent
 from td3_agent import TD3Agent
 import config
+import wandb
 
 
 def _get_config_for_model(algorithm: str, model_name: str):
@@ -56,6 +57,19 @@ def test_and_record(algorithm, model_path, num_episodes=100, record_video=True):
     cfg = _get_config_for_model(algorithm, os.path.basename(model_path))
     env_cfg = cfg['env']
     hyperparams = cfg['hyperparameters']
+
+    # WandB initialization
+    wandb.init(
+        project=config.WANDB["project"],
+        name=f"{algorithm.upper()}_{env_cfg['name']}_test",
+        config={
+            "algorithm": algorithm,
+            "environment": env_cfg['name'],
+            "hyperparameters": hyperparams,
+            "episodes": num_episodes,
+            "model_path": model_path
+        }
+    )
     
     # Create environment
     if record_video:
@@ -72,7 +86,7 @@ def test_and_record(algorithm, model_path, num_episodes=100, record_video=True):
         )
     else:
         env = gym.make(env_cfg['name'], continuous=env_cfg['continuous'])
-    
+     
     # Get environment info
     obs_dim = env.observation_space.shape[0]
     action_dim = env.action_space.shape[0]
@@ -121,6 +135,12 @@ def test_and_record(algorithm, model_path, num_episodes=100, record_video=True):
         episode_rewards.append(episode_reward)
         episode_lengths.append(episode_length)
         
+        wandb.log({
+        "episode": episode + 1,
+        "reward": episode_reward,
+        "episode_length": episode_length
+        })
+
         if (episode + 1) % 10 == 0:
             avg_reward = np.mean(episode_rewards[-10:])
             print(f"Episode {episode+1}/{num_episodes}, Avg Reward (last 10): {avg_reward:.2f}")
@@ -132,6 +152,26 @@ def test_and_record(algorithm, model_path, num_episodes=100, record_video=True):
     max_reward = np.max(episode_rewards)
     mean_length = np.mean(episode_lengths)
     
+    wandb.log({
+        "mean_reward": mean_reward,
+        "std_reward": std_reward,
+        "min_reward": min_reward,
+        "max_reward": max_reward,
+        "mean_length": mean_length
+    })
+
+    # Log videos to wandb if recorded
+    if record_video:
+        video_dir = f"videos/{algorithm}_{env_cfg['name']}_test"
+        if os.path.exists(video_dir):
+            for video_file in os.listdir(video_dir):
+                if video_file.endswith('.mp4'):
+                    video_path = os.path.join(video_dir, video_file)
+                    try:
+                        wandb.log({"test_video": wandb.Video(video_path, fps=30, format="mp4")})
+                    except Exception as e:
+                        print(f"Could not log video {video_path}: {e}")
+
     print("\n" + "="*50)
     print(f"Test Results for {algorithm.upper()} on {env_cfg['name']}")
     print("="*50)
@@ -201,3 +241,4 @@ if __name__ == "__main__":
         num_episodes=args.episodes,
         record_video=not args.no_video
     )
+

@@ -13,16 +13,16 @@ class PPOAgent:
         self.action_dim = action_dim
         
         # Hyperparameters
-        self.gamma = hyperparameters.get('gamma', 0.99)
-        self.gae_lambda = hyperparameters.get('gae_lambda', 0.95)
-        self.lr = hyperparameters.get('lr', 3e-4)
-        self.clip_epsilon = hyperparameters.get('clip_epsilon', 0.2)
-        self.value_loss_coef = hyperparameters.get('value_loss_coef', 0.5)
-        self.entropy_coef = hyperparameters.get('entropy_coef', 0.01)
-        self.max_grad_norm = hyperparameters.get('max_grad_norm', 0.5)
-        self.ppo_epochs = hyperparameters.get('ppo_epochs', 10)
-        self.mini_batch_size = hyperparameters.get('mini_batch_size', 64)
-        self.hidden_dim = hyperparameters.get('hidden_dim', 256)
+        self.gamma = hyperparameters.get('gamma', 0.99) # Discount factor
+        self.gae_lambda = hyperparameters.get('gae_lambda', 0.95) # GAE lambda
+        self.lr = hyperparameters.get('lr', 3e-4) # Learning rate
+        self.clip_epsilon = hyperparameters.get('clip_epsilon', 0.2) # Clipping epsilon
+        self.value_loss_coef = hyperparameters.get('value_loss_coef', 0.5) # Value loss coefficient: it balances the value loss in the total loss function
+        self.entropy_coef = hyperparameters.get('entropy_coef', 0.01) # Entropy coefficient: encourages exploration by penalizing certainty
+        self.max_grad_norm = hyperparameters.get('max_grad_norm', 0.5) # Max gradient norm for clipping: to prevent exploding gradients
+        self.ppo_epochs = hyperparameters.get('ppo_epochs', 10) # Number of PPO epochs per update
+        self.mini_batch_size = hyperparameters.get('mini_batch_size', 64) # Mini-batch size for PPO updates
+        self.hidden_dim = hyperparameters.get('hidden_dim', 256) # Hidden layer size for networks
         
         # Networks
         self.actor = PPOActor(obs_dim, action_dim, self.hidden_dim).to(device)
@@ -93,6 +93,7 @@ class PPOAgent:
             next_value = self.critic(next_state_tensor).cpu().item()
         
         # Compute advantages using GAE
+        # Advantage = Reward + Discounted Future Value - Current Value
         advantages = self.compute_gae(rewards, values, dones, next_value)
         
         # Convert to tensors
@@ -101,10 +102,11 @@ class PPOAgent:
         old_log_probs = torch.FloatTensor(old_log_probs).to(self.device)
         advantages = torch.FloatTensor(advantages).to(self.device)
         
-        # Normalize advantages
+        # Normalize advantages for better training stability
         advantages = (advantages - advantages.mean()) / (advantages.std() + 1e-8)
         
         # Compute returns
+        # Returns = Advantages + Values
         returns = advantages + torch.FloatTensor(values).to(self.device)
         
         # PPO update for multiple epochs

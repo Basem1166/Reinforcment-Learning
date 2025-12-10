@@ -20,7 +20,7 @@ ENVIRONMENTS = {
 # ============= Training Settings =============
 TRAINING = {
 
-    'total_timesteps': 1_000_000,      # Total training timesteps
+    'total_timesteps': 1_500_000,      # Total training timesteps
     'eval_frequency': 100_000,          # Evaluate every N timesteps
     'eval_episodes': 100,               # Number of evaluation episodes
     'save_frequency': 50_000,          # Save model every N timesteps
@@ -59,7 +59,7 @@ SAC_HYPERPARAMETERS = {
 # ============= PPO Hyperparameters =============
 PPO_HYPERPARAMETERS = {
     # Learning rates
-    'lr': 3e-4,                        # Learning rate
+    'lr': 2.5e-4,                        # Learning rate
     
     # Network architecture
     'hidden_dim': 256,                 # Hidden layer dimension
