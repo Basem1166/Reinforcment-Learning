@@ -32,7 +32,7 @@ class PPOAgent:
             dist = self.actor.get_distribution(state)
             action = dist.sample()
             log_prob = dist.log_prob(action)
-        
+        # Descretize action if needed for continuous action spaces
         if self.actor.is_continuous:
             log_prob = log_prob.sum(dim=-1)
             action_val = action.numpy()[0]

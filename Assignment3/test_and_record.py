@@ -3,7 +3,7 @@ import torch
 import numpy as np
 import time
 import wandb
-from gym.wrappers import RecordVideo
+from gymnasium.wrappers import RecordVideo
 from config import HYPERPARAMETERS, ENV_CONFIG, WANDB_CONFIG, MODEL_TYPE
 
 # Dynamic Imports based on configuration
@@ -98,9 +98,14 @@ def evaluate():
         duration = time.time() - start_time
         episode_durations.append(duration)
         episode_rewards.append(total_reward)
+
+        wandb.log({
+        "test/episode_reward": total_reward,
+        "test/episode_duration": duration,
+        "test/episode_index": i,
+    })
         
-        if (i+1) % 10 == 0:
-            print(f"Episode {i+1}: Reward={total_reward:.2f}, Duration={duration:.2f}s")
+        print(f"Episode {i+1}: Reward={total_reward:.2f}, Duration={duration:.2f}s")
 
     env.close()
 

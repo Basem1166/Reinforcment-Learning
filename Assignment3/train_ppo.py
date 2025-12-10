@@ -5,6 +5,7 @@ import wandb
 from ppo_agent import PPOAgent
 from config import HYPERPARAMETERS, ENV_CONFIG, WANDB_CONFIG
 
+
 def train():
     # 1. Initialize W&B
     wandb.init(
@@ -22,7 +23,7 @@ def train():
     
     # PPO Parameters
     total_timesteps = ENV_CONFIG["total_timesteps"]
-    batch_size = 2048 # PPO collects a large buffer before updating
+    batch_size = HYPERPARAMETERS["batch_size"] # PPO collects a large buffer before updating
     
     step = 0
     episode_count = 0
