@@ -20,7 +20,7 @@ ENVIRONMENTS = {
 # ============= Training Settings =============
 TRAINING = {
 
-    'total_timesteps': 1_000_000,      # Total training timesteps
+    'total_timesteps': 1_500_000,      # Total training timesteps
     'eval_frequency': 100_000,          # Evaluate every N timesteps
     'eval_episodes': 100,               # Number of evaluation episodes
     'save_frequency': 50_000,          # Save model every N timesteps
@@ -59,7 +59,7 @@ SAC_HYPERPARAMETERS = {
 # ============= PPO Hyperparameters =============
 PPO_HYPERPARAMETERS = {
     # Learning rates
-    'lr': 3e-4,                        # Learning rate
+    'lr': 2.5e-4,                        # Learning rate
     
     # Network architecture
     'hidden_dim': 256,                 # Hidden layer dimension
@@ -112,6 +112,7 @@ LUNARLANDER_SAC = {
 
 LUNARLANDER_PPO = {
     **PPO_HYPERPARAMETERS,
+    'lr': 2.5e-4,  
     'clip_epsilon': 0.2,
     'entropy_coef': 0.01,
 }
@@ -135,9 +136,15 @@ CARRACING_SAC = {
 
 CARRACING_PPO = {
     **PPO_HYPERPARAMETERS,
-    'lr': 1e-4,
-    'entropy_coef': 0.001,
+    'lr': 2.5e-4,
+    'entropy_coef': 0.01,
     'hidden_dim': 512,
+    'rollout_length': 4096,  # Longer rollouts for image-based task
+    'mini_batch_size': 256,
+    'total_timesteps': 375_000,   # Agent steps (1.5M env frames / frameskip=4)
+    'eval_frequency': 25_000,     # Evaluate every N agent steps
+    'eval_episodes': 10,           # Number of eval episodes
+    'save_frequency': 25_000,      # Save every N agent steps 
 }
 
 CARRACING_TD3 = {

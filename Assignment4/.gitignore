@@ -26,6 +26,7 @@ ENV/
 # Models and Results
 models/*.pth
 !models/.gitkeep
+!models/*best.pth
 
 # Results
 
