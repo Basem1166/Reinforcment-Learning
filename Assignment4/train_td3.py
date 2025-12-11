@@ -6,11 +6,17 @@ import argparse
 import os
 from td3_agent import TD3Agent
 from buffer import ReplayBuffer
-from models import CarRacingEncoder
+from gymnasium.wrappers import FrameStackObservation,GrayscaleObservation
 import config
+import cv2
 
 def train_td3(env_name='lunarlander', use_wandb=True):
-    """Train TD3 agent on specified environment"""
+    """Train TD3 agent on specified environment
+    
+    Args:
+        env_name: 'lunarlander' or 'carracing'
+        use_wandb: Whether to use Weights & Biases logging
+    """
     
     # Get configuration
     if env_name == 'lunarlander':
@@ -26,8 +32,17 @@ def train_td3(env_name='lunarlander', use_wandb=True):
     wandb_cfg = cfg['wandb']
     
     # Initialize environment
+    #if carRacing stack frames 4
+
+    
     env = gym.make(env_cfg['name'], continuous=env_cfg['continuous'])
     eval_env = gym.make(env_cfg['name'], continuous=env_cfg['continuous'])
+
+    if env_cfg['name'].lower().startswith("carracing"):
+        env = GrayscaleObservation(env)
+        env = FrameStackObservation(env, 4)
+        eval_env = GrayscaleObservation(eval_env)
+        eval_env = FrameStackObservation(eval_env, 4)
 
     # Device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -50,7 +65,6 @@ def train_td3(env_name='lunarlander', use_wandb=True):
         obs_dim = env.observation_space.shape[0]
         action_dim = env.action_space.shape[0]
         max_action = float(env.action_space.high[0])
-        encoder = None
 
     # Initialize agent
     agent = TD3Agent(obs_dim, action_dim, max_action, hyperparams, device)
