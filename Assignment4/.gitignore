@@ -28,15 +28,10 @@ models/*.pth
 !models/.gitkeep
 
 # Results
-results/*.csv
-results/*.txt
-results/*.png
-!results/.gitkeep
+
 
 # Videos
-videos/
-*.mp4
-*.avi
+
 
 # Wandb
 wandb/

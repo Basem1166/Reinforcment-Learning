@@ -2,3 +2,7 @@
 wandb/*
 ./wandb/*
 */wandb
+
+./videos/*
+videos/*
+*/videos/*
