@@ -112,6 +112,7 @@ LUNARLANDER_SAC = {
 
 LUNARLANDER_PPO = {
     **PPO_HYPERPARAMETERS,
+    'lr': 2.3e-4,  
     'clip_epsilon': 0.2,
     'entropy_coef': 0.01,
 }
