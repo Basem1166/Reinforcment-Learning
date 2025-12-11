@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.distributions import Normal
 import numpy as np
+from torchvision import models
 
 # Initialize weights for better training stability
 def weights_init_(m):
@@ -23,7 +24,7 @@ class CarRacingEncoder(nn.Module):
         super().__init__()
         # Input: (C=3, H=96, W=96)
         self.conv = nn.Sequential(
-            nn.Conv2d(3, 32, kernel_size=8, stride=4),  # -> 32 x 23 x 23
+            nn.Conv2d(4, 32, kernel_size=8, stride=4),  # -> 32 x 23 x 23
             nn.ReLU(inplace=True),
             nn.Conv2d(32, 64, kernel_size=4, stride=2),  # -> 64 x 10 x 10
             nn.ReLU(inplace=True),
@@ -37,17 +38,90 @@ class CarRacingEncoder(nn.Module):
         self.apply(weights_init_)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        # Expect input as (B, H, W, C) or (H, W, C); convert to (B, C, H, W)
-        if x.dim() == 3:  # (H, W, C)
-            x = x.permute(2, 0, 1).unsqueeze(0)
-        elif x.dim() == 4 and x.shape[-1] == 3:  # (B, H, W, C)
-            x = x.permute(0, 3, 1, 2)
+        # Handle different input formats from FrameStackObservation
+        # FrameStackObservation outputs: (num_frames, H, W) for single state
+        # Or (B, num_frames, H, W) for batch
+        
+        if x.dim() == 3:  # Single state: (num_frames, H, W)
+            x = x.unsqueeze(0)  # -> (1, num_frames, H, W)
+        elif x.dim() == 4:
+            # Check if we have (B, H, W, C) format instead of (B, C, H, W)
+            # If third dimension is much larger than second, it's likely (B, H, W, C)
+            if x.shape[1] > 4 and x.shape[3] <= 4:  # Likely (B, H, W, num_frames)
+                x = x.permute(0, 3, 1, 2)  # -> (B, num_frames, H, W)
 
         x = x.float() / 255.0
         x = self.conv(x)
         # Use reshape instead of view to handle non-contiguous tensors
         x = x.reshape(x.size(0), -1)
         x = F.relu(self.fc(x))
+        return x
+
+
+class PretrainedResNetEncoder(nn.Module):
+    """Pretrained ResNet18 encoder for CarRacing-v3 with frame averaging.
+    
+    Uses ImageNet-pretrained ResNet18 for better feature extraction.
+    Handles grayscale 96x96 input with 4-frame stacking.
+    """
+    
+    def __init__(self, feature_dim: int = 256, freeze_backbone: bool = False):
+        super().__init__()
+        # Load pretrained ResNet18
+        self.backbone = models.resnet18(weights=models.ResNet18_Weights.IMAGENET1K_V1)
+        
+        # Remove the final classification layer
+        self.backbone.fc = nn.Identity()
+        
+        # ResNet18 outputs 512D features
+        self.fc = nn.Linear(512, feature_dim)
+        
+        # Optionally freeze backbone
+        if freeze_backbone:
+            for param in self.backbone.parameters():
+                param.requires_grad = False
+        
+        self.apply(weights_init_)
+    
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """
+        Args:
+            x: Tensor of shape (num_frames, H, W) from FrameStackObservation
+               or (B, num_frames, H, W) from batched input
+        
+        Returns:
+            Features of shape (B, feature_dim) averaged across frames
+        """
+        # Handle single input case
+        if x.dim() == 3:  # (num_frames, H, W)
+            x = x.unsqueeze(0)  # -> (1, num_frames, H, W)
+        
+        batch_size = x.size(0)
+        num_frames = x.size(1)
+        
+        # Normalize to [0, 1]
+        x = x.float() / 255.0
+        
+        # Reshape to (batch_size * num_frames, H, W)
+        x = x.reshape(-1, x.size(2), x.size(3))
+        
+        # Convert grayscale to RGB by replicating channels
+        x = x.unsqueeze(1)  # -> (B*num_frames, 1, H, W)
+        x = x.repeat(1, 3, 1, 1)  # -> (B*num_frames, 3, H, W)
+        
+        # Resize to 224x224 for ResNet18
+        x = F.interpolate(x, size=(224, 224), mode='bilinear', align_corners=False)
+        
+        # Extract features via ResNet18
+        x = self.backbone(x)  # -> (B*num_frames, 512)
+        
+        # Project to feature_dim
+        x = self.fc(x)  # -> (B*num_frames, feature_dim)
+        
+        # Reshape back to (B, num_frames, feature_dim) and average across frames
+        x = x.reshape(batch_size, num_frames, -1)
+        x = x.mean(dim=1)  # -> (B, feature_dim)
+        
         return x
 
 
