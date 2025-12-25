@@ -1,838 +1,948 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import torch.optim as optim
+from torch.distributions.normal import Normal
+from torch.utils.data import DataLoader, TensorDataset
+import numpy as np
 import gymnasium as gym
 import ale_py
-import numpy as np
 import cv2
 import cma
-import os
 import copy
+import os
 import wandb
-import random
-from torch.utils.data import DataLoader, TensorDataset
+from PIL import Image
+import io
 
 # ==========================================
 # CONFIGURATION
 # ==========================================
-ITERATIONS = 20           
-HARVEST_EPISODES = 100    # Episodes to play per loop
-RNN_EPOCHS = 20           # Train RNN (increased from 5 to 20)
-VAE_EPOCHS = 10           # Train VAE (New)
-CMA_GENERATIONS = 25      # Evolve Agent
-CMA_POPULATION = 32       
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-print(f"--- STARTING WORLD MODELS (BREAKOUT FIXED) ON {DEVICE} ---")
+# Ha & Schmidhuber Parameters
+LATENT_SIZE = 64
+HIDDEN_SIZE = 256
+ACTION_SIZE = 4
+N_GAUSSIANS = 5
+
+ITERATIONS = 25
+HARVEST_EPISODES = 100
+VAE_EPOCHS = 20
+RNN_EPOCHS = 20
+CMA_GENERATIONS = 25
+POPULATION = 32
+
+print(f"--- STARTING MDRNN WORLD MODELS ON {DEVICE} ---")
+
+# Initialize Weights & Biases
+wandb.init(
+    project="mdrnn-world-models",
+    name="auto_train",
+    config={
+        "latent_size": LATENT_SIZE,
+        "hidden_size": HIDDEN_SIZE,
+        "action_size": ACTION_SIZE,
+        "n_gaussians": N_GAUSSIANS,
+        "iterations": ITERATIONS,
+        "harvest_episodes": HARVEST_EPISODES,
+        "vae_epochs": VAE_EPOCHS,
+        "rnn_epochs": RNN_EPOCHS,
+        "cma_generations": CMA_GENERATIONS,
+        "population": POPULATION,
+    }
+)
 
 # ==========================================
-# 1. MODEL ARCHITECTURES
+# 1. VAE MODEL (Encoder/Decoder)
 # ==========================================
+class Encoder(nn.Module):
+    def __init__(self, img_channels, latent_size):
+        super(Encoder, self).__init__()
+        # Using padding=1 to preserve spatial dimensions better
+        # 64 -> 32
+        self.conv1 = nn.Conv2d(img_channels, 32, 4, stride=2, padding=1)
+        # 32 -> 16
+        self.conv2 = nn.Conv2d(32, 64, 4, stride=2, padding=1)
+        # 16 -> 8
+        self.conv3 = nn.Conv2d(64, 128, 4, stride=2, padding=1)
+        # 8 -> 4
+        self.conv4 = nn.Conv2d(128, 256, 4, stride=2, padding=1)
+        
+        # Flatten: 256 channels * 4 * 4 spatial = 4096
+        self.fc_mu = nn.Linear(4096, latent_size)
+        self.fc_logsigma = nn.Linear(4096, latent_size)
+
+    def forward(self, x):
+        x = F.relu(self.conv1(x))
+        x = F.relu(self.conv2(x))
+        x = F.relu(self.conv3(x))
+        x = F.relu(self.conv4(x))
+        x = x.reshape(x.size(0), -1)
+        return self.fc_mu(x), self.fc_logsigma(x)
+
+class Decoder(nn.Module):
+    def __init__(self, img_channels, latent_size):
+        super(Decoder, self).__init__()
+        self.fc1 = nn.Linear(latent_size, 4096)
+        # Unflatten to (Batch, 256, 4, 4) inside forward
+        
+        self.deconv1 = nn.ConvTranspose2d(256, 128, 4, stride=2, padding=1) # 4->8
+        self.deconv2 = nn.ConvTranspose2d(128, 64, 4, stride=2, padding=1)  # 8->16
+        self.deconv3 = nn.ConvTranspose2d(64, 32, 4, stride=2, padding=1)   # 16->32
+        self.deconv4 = nn.ConvTranspose2d(32, img_channels, 4, stride=2, padding=1) # 32->64
+
+    def forward(self, x):
+        x = self.fc1(x)
+        x = x.view(-1, 256, 4, 4) # Reshape to feature map
+        x = F.relu(self.deconv1(x))
+        x = F.relu(self.deconv2(x))
+        x = F.relu(self.deconv3(x))
+        return torch.sigmoid(self.deconv4(x))
+
 class VAE(nn.Module):
-    def __init__(self, latent_dim=256):  # Increased from 64 for fine spatial details
+    def __init__(self, img_channels, latent_size):
         super(VAE, self).__init__()
-        # Encoder - ONLY 3 stride-2 layers to preserve spatial info for small objects
-        # 64×64 → 32×32 → 16×16 → 8×8 (no extreme compression)
-        self.enc_conv1 = nn.Conv2d(3, 32, kernel_size=4, stride=2)
-        self.enc_conv2 = nn.Conv2d(32, 64, kernel_size=4, stride=2)
-        self.enc_conv3 = nn.Conv2d(64, 128, kernel_size=4, stride=2)
-        self.enc_conv4 = nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=1)  # NO stride - preserve spatial
-        # Encoder outputs 256×6×6 = 9216 features (preserves spatial detail)
-        self.fc_mu = nn.Linear(9216, latent_dim)
-        self.fc_logvar = nn.Linear(9216, latent_dim)
-        
-        # Initialize logvar to positive values so variance > 0 initially
-        nn.init.constant_(self.fc_logvar.weight, 0.1)
-        nn.init.constant_(self.fc_logvar.bias, 0.5)  # Start with log(std)≈0.5 → std≈1.65
-        
-        # Decoder - IMPROVED: Much larger FC layer to preserve spatial information
-        # 16384 = 256×8×8 (preserve symmetric 8x8 spatial info before upsampling)
-        self.dec_fc = nn.Linear(latent_dim, 16384)
-        # Reshape to (256, 8, 8) spatial, then upsample to 64×64
-        self.dec_conv1 = nn.ConvTranspose2d(256, 256, kernel_size=4, stride=2, padding=1)   # 8×8→16×16
-        self.dec_conv2 = nn.ConvTranspose2d(256, 128, kernel_size=4, stride=2, padding=1)   # 16×16→32×32
-        self.dec_conv3 = nn.ConvTranspose2d(128, 64, kernel_size=4, stride=2, padding=1)    # 32×32→64×64
-        self.dec_conv4 = nn.ConvTranspose2d(64, 32, kernel_size=3, stride=1, padding=1)     # 64×64→64×64 (detail)
-        self.dec_conv5 = nn.ConvTranspose2d(32, 16, kernel_size=3, stride=1, padding=1)     # 64×64→64×64 (detail)
-        self.dec_conv6 = nn.ConvTranspose2d(16, 3, kernel_size=3, stride=1, padding=1)      # 64×64→64×64→3 channels
+        self.encoder = Encoder(img_channels, latent_size)
+        self.decoder = Decoder(img_channels, latent_size)
 
-    def encode(self, x):
-        h = F.relu(self.enc_conv1(x))
-        h = F.relu(self.enc_conv2(h))
-        h = F.relu(self.enc_conv3(h))
-        h = F.relu(self.enc_conv4(h))
-        h = h.reshape(h.size(0), -1)
-        return self.fc_mu(h), self.fc_logvar(h)
+    def forward(self, x):
+        mu, logsigma = self.encoder(x)
+        sigma = logsigma.exp()
+        eps = torch.randn_like(sigma)
+        z = eps.mul(sigma).add_(mu)
+        recon_x = self.decoder(z)
+        return recon_x, mu, logsigma
 
-    def reparameterize(self, mu, logvar):
-        std = torch.exp(0.5 * logvar)
-        eps = torch.randn_like(std)
-        return mu + eps * std
+class VAE(nn.Module):
+    """ Variational Autoencoder """
+    def __init__(self, img_channels, latent_size):
+        super(VAE, self).__init__()
+        self.encoder = Encoder(img_channels, latent_size)
+        self.decoder = Decoder(img_channels, latent_size)
 
-    def decode(self, z):
-        h = self.dec_fc(z)
-        h = h.view(-1, 256, 8, 8)  # Reshape to spatial (256, 8, 8)
-        h = F.relu(self.dec_conv1(h))  # 8×8 → 16×16
-        h = F.relu(self.dec_conv2(h))  # 16×16 → 32×32
-        h = F.relu(self.dec_conv3(h))  # 32×32 → 64×64
-        h = F.relu(self.dec_conv4(h))  # Detail layer
-        h = F.relu(self.dec_conv5(h))  # Detail layer
-        # Use sigmoid for [0,1] output to match Breakout image range
-        return torch.sigmoid(self.dec_conv6(h))
+    def forward(self, x):
+        mu, logsigma = self.encoder(x)
+        sigma = logsigma.exp()
+        eps = torch.randn_like(sigma)
+        z = eps.mul(sigma).add_(mu)
 
-class RobustRNN(nn.Module):
-    # Change default to 1024 to match VAE
-    def __init__(self, latent_dim=1024, action_size=4, hidden_size=256): 
-        super(RobustRNN, self).__init__()
-        # Input size is Latent + Action
-        self.lstm = nn.LSTM(latent_dim + action_size, hidden_size, batch_first=True)
-        # Output must predict the NEXT latent state (1024)
-        self.fc_mu = nn.Linear(hidden_size, latent_dim)
-        self.dropout = nn.Dropout(0.1)
+        recon_x = self.decoder(z)
+        return recon_x, mu, logsigma
 
-    def forward(self, z, action, hidden=None):
-        x = torch.cat([z, action], dim=-1)
-        output, hidden = self.lstm(x, hidden)
-        output = self.dropout(output)
-        return output, hidden
+# ==========================================
+# 2. MDRNN MODELS (Sequence & Cell)
+# ==========================================
+def gmm_loss(batch, mus, sigmas, logpi, reduce=True):
+    """ Computes the gmm loss. """
+    batch = batch.unsqueeze(-2)
+    normal_dist = Normal(mus, sigmas)
+    g_log_probs = normal_dist.log_prob(batch)
+    g_log_probs = logpi + torch.sum(g_log_probs, dim=-1)
+    max_log_probs = torch.max(g_log_probs, dim=-1, keepdim=True)[0]
+    g_log_probs = g_log_probs - max_log_probs
 
+    g_probs = torch.exp(g_log_probs)
+    probs = torch.sum(g_probs, dim=-1)
+
+    log_prob = max_log_probs.squeeze() + torch.log(probs)
+    if reduce:
+        return - torch.mean(log_prob)
+    return - log_prob
+
+class _MDRNNBase(nn.Module):
+    def __init__(self, latents, actions, hiddens, gaussians):
+        super().__init__()
+        self.latents = latents
+        self.actions = actions
+        self.hiddens = hiddens
+        self.gaussians = gaussians
+        self.gmm_linear = nn.Linear(hiddens, (2 * latents + 1) * gaussians + 2)
+
+class MDRNN(_MDRNNBase):
+    """ MDRNN model for multi steps forward (Training) """
+    def __init__(self, latents, actions, hiddens, gaussians):
+        super().__init__(latents, actions, hiddens, gaussians)
+        self.rnn = nn.LSTM(latents + actions, hiddens)
+
+    def forward(self, actions, latents): 
+        seq_len, bs = actions.size(0), actions.size(1)
+        ins = torch.cat([actions, latents], dim=-1)
+        outs, _ = self.rnn(ins)
+        gmm_outs = self.gmm_linear(outs)
+
+        stride = self.gaussians * self.latents
+        mus = gmm_outs[:, :, :stride]
+        mus = mus.view(seq_len, bs, self.gaussians, self.latents)
+
+        # --- FIX: Clamp log_sigma before exp to prevent infinity/NaN ---
+        log_sigmas = gmm_outs[:, :, stride:2 * stride]
+        log_sigmas = log_sigmas.view(seq_len, bs, self.gaussians, self.latents)
+        # Clamping between -5 (approx 0.006 sigma) and 5 (approx 148 sigma)
+        sigmas = torch.exp(torch.clamp(log_sigmas, min=-5, max=5)) 
+
+        pi = gmm_outs[:, :, 2 * stride: 2 * stride + self.gaussians]
+        pi = pi.view(seq_len, bs, self.gaussians)
+        logpi = F.log_softmax(pi, dim=-1)
+
+        rs = gmm_outs[:, :, -2]
+        ds = gmm_outs[:, :, -1]
+
+        return mus, sigmas, logpi, rs, ds
+
+class MDRNNCell(_MDRNNBase):
+    """ MDRNN model for one step forward (Controller Rollout) """
+    def __init__(self, latents, actions, hiddens, gaussians):
+        super().__init__(latents, actions, hiddens, gaussians)
+        self.rnn = nn.LSTMCell(latents + actions, hiddens)
+
+    def forward(self, action, latent, hidden): 
+        in_al = torch.cat([action, latent], dim=1)
+        next_hidden = self.rnn(in_al, hidden)
+        out_rnn = next_hidden[0]
+
+        out_full = self.gmm_linear(out_rnn)
+        stride = self.gaussians * self.latents
+
+        mus = out_full[:, :stride]
+        mus = mus.view(-1, self.gaussians, self.latents)
+
+        # --- FIX: Clamp log_sigma here as well ---
+        log_sigmas = out_full[:, stride:2 * stride]
+        log_sigmas = log_sigmas.view(-1, self.gaussians, self.latents)
+        sigmas = torch.exp(torch.clamp(log_sigmas, min=-5, max=5))
+
+        pi = out_full[:, 2 * stride:2 * stride + self.gaussians]
+        pi = pi.view(-1, self.gaussians)
+        logpi = F.log_softmax(pi, dim=-1)
+
+        r = out_full[:, -2]
+        d = out_full[:, -1]
+
+        return mus, sigmas, logpi, r, d, next_hidden
+
+# ==========================================
+# 3. CONTROLLER & HELPERS
+# ==========================================
 class Controller(nn.Module):
-    # Input dim = Latent (1024) + RNN Hidden (256) = 1280
-    def __init__(self, input_dim=1280, action_dim=4): 
-        super(Controller, self).__init__()
-        self.fc = nn.Linear(input_dim, action_dim)
-    
-    def get_action(self, x):
-        with torch.no_grad():
-            logits = self.fc(x)
-            return torch.argmax(logits, dim=1).item()
+    """ Simple Linear Controller """
+    def __init__(self, latents, hiddens, actions):
+        super().__init__()
+        self.fc = nn.Linear(latents + hiddens, actions)
 
-    def set_parameters(self, flat_params):
-        state_dict = self.state_dict()
-        current_idx = 0
-        for key in state_dict:
-            param = state_dict[key]
-            num_elements = param.numel()
-            chunk = flat_params[current_idx : current_idx + num_elements]
-            state_dict[key].copy_(torch.from_numpy(chunk).float().view(param.size()))
-            current_idx += num_elements
-
-# ==========================================
-# 2. HELPER FUNCTIONS
-# ==========================================
+    def forward(self, z, h):
+        # Concatenate z and h
+        # h is tuple (hidden, cell) for LSTM, we use hidden[0]
+        if isinstance(h, (tuple, list)): h = h[0]
+        inp = torch.cat([z, h], dim=1)
+        return self.fc(inp)
 
 def get_env():
     gym.register_envs(ale_py)
     return gym.make("BreakoutNoFrameskip-v4", render_mode="rgb_array")
 
+def save_checkpoint(vae, mdrnn, mdrnn_cell, controller, opt_vae, opt_rnn, iteration, checkpoint_dir="checkpoints"):
+    """Save all models and optimizers to checkpoint directory"""
+    os.makedirs(checkpoint_dir, exist_ok=True)
+    
+    checkpoint = {
+        'iteration': iteration,
+        'vae_state': vae.state_dict(),
+        'mdrnn_state': mdrnn.state_dict(),
+        'mdrnn_cell_state': mdrnn_cell.state_dict(),
+        'controller_state': controller.state_dict(),
+        'opt_vae_state': opt_vae.state_dict(),
+        'opt_rnn_state': opt_rnn.state_dict(),
+    }
+    
+    path = os.path.join(checkpoint_dir, f"checkpoint_iter{iteration}.pth")
+    torch.save(checkpoint, path)
+    print(f"✓ Saved checkpoint: {path}")
+    wandb.log({"checkpoint_saved": iteration})
+    
+    # Also save as "latest" for quick recovery
+    latest_path = os.path.join(checkpoint_dir, "latest.pth")
+    torch.save(checkpoint, latest_path)
+
+def load_checkpoint(vae, mdrnn, mdrnn_cell, controller, opt_vae, opt_rnn, checkpoint_dir="checkpoints"):
+    """Load models and optimizers from latest checkpoint if available"""
+    latest_path = os.path.join(checkpoint_dir, "latest.pth")
+    
+    if os.path.exists(latest_path):
+        print(f"Loading checkpoint from {latest_path}...")
+        checkpoint = torch.load(latest_path, map_location=DEVICE)
+        
+        vae.load_state_dict(checkpoint['vae_state'])
+        mdrnn.load_state_dict(checkpoint['mdrnn_state'])
+        mdrnn_cell.load_state_dict(checkpoint['mdrnn_cell_state'])
+        controller.load_state_dict(checkpoint['controller_state'])
+        opt_vae.load_state_dict(checkpoint['opt_vae_state'])
+        opt_rnn.load_state_dict(checkpoint['opt_rnn_state'])
+        
+        start_iteration = checkpoint['iteration'] + 1
+        print(f"✓ Resumed from iteration {checkpoint['iteration']}, starting at iteration {start_iteration}")
+        wandb.log({"resumed_from_iteration": checkpoint['iteration']})
+        return start_iteration
+    
+    return 0
+
 def process_frame(frame):
-    # 1. CROP
-    frame = frame[34:194, 8:152, :] 
-    
-    # 2. DILATE - CHANGE THIS
-    # Iterations=2 makes the ball/paddle significantly thicker.
-    kernel = np.ones((3, 3), np.uint8)
-    frame = cv2.dilate(frame, kernel, iterations=2) 
-    
-    # 3. MAX POOL
-    h, w, c = frame.shape
-    frame = frame.reshape(h//2, 2, w//2, 2, c).max(axis=(1, 3))
-    
-    # 4. RESIZE
-    frame = cv2.resize(frame, (64, 64), interpolation=cv2.INTER_NEAREST)
-    frame = np.moveaxis(frame, -1, 0) 
+    # Crop, Resize to 64x64, normalize
+    frame = frame[34:194, 8:152, :]
+    frame = cv2.resize(frame, (64, 64), interpolation=cv2.INTER_AREA)
+    frame = np.moveaxis(frame, -1, 0) # HWC -> CHW
     return frame / 255.0
 
+def tensor_to_image(tensor):
+    """Convert tensor to PIL Image for wandb logging"""
+    if len(tensor.shape) == 4:
+        tensor = tensor[0]
+    tensor = tensor.cpu().detach()
+    if tensor.shape[0] == 3:  # CHW to HWC
+        tensor = tensor.permute(1, 2, 0)
+    tensor = (tensor.numpy() * 255).astype(np.uint8)
+    return Image.fromarray(tensor)
 
-def harvest_data(vae, rnn, controller, episodes, loop_idx):
-    print(f"\n[PHASE 1] Harvesting {episodes} Episodes & Saving Images...")
-    env = get_env()
-    
-    image_buffer = [] # Store raw images for VAE
-    z_data = []       # Store encoded Z for RNN
-    action_data = []
-    total_rewards = []
-
-    for i in range(episodes):
-        obs, _ = env.reset()
-        done = False
-        steps = 0
-        
-        # RNN Hidden State Reset
-        h_state = None
-        
-        episode_z = []
-        episode_a = []
-        ep_reward = 0
-        
-        # Initial Frame Processing
-        frame = process_frame(obs)
-        current_z_t = torch.tensor(frame, dtype=torch.float32).unsqueeze(0).to(DEVICE)
-        
-        with torch.no_grad():
-            mu, _ = vae.encode(current_z_t)
-            current_z = mu.cpu().numpy().flatten() # Start Z
-
-        while not done and steps < 1000:
-            # 1. Save Image (10% chance to save RAM)
-            if np.random.rand() < 0.15:
-                image_buffer.append(frame)
-
-            # 2. Action Selection (Chaos vs Controller)
-            if steps == 0: 
-                action = 1 # Force FIRE
-            elif np.random.rand() < 0.2: 
-                action = env.action_space.sample() # Random noise
-            else:
-                # Controller Input: Concatenate Z and Hidden State
-                if h_state is None: 
-                    h_in = torch.zeros(1, 256).to(DEVICE)
-                else: 
-                    h_in = h_state[0].squeeze(0).to(DEVICE)
-                
-                # Z needs to be tensor on CPU for controller
-                z_in = torch.tensor(current_z, dtype=torch.float32).unsqueeze(0).to("cpu")
-                h_in = h_in.to("cpu")
-                
-                ctrl_input = torch.cat([z_in, h_in], dim=1)
-                action = controller.get_action(ctrl_input)
-
-            # 3. Step Environment
-            obs, reward, terminated, truncated, _ = env.step(action)
-            done = terminated or truncated
-            ep_reward += reward
-            
-            # 4. Update RNN State
-            # Turn action into tensor
-            a_tensor = torch.zeros(1, 1, 4).to(DEVICE)
-            a_tensor[0, 0, action] = 1.0
-            
-            # Turn current Z into tensor
-            z_tensor = torch.tensor(current_z, dtype=torch.float32).unsqueeze(0).unsqueeze(0).to(DEVICE)
-            
-            with torch.no_grad():
-                _, h_state = rnn(z_tensor, a_tensor, h_state)
-            
-            # 5. Encode NEXT Frame for next loop
-            frame = process_frame(obs)
-            frame_t = torch.tensor(frame, dtype=torch.float32).unsqueeze(0).to(DEVICE)
-            with torch.no_grad():
-                mu, _ = vae.encode(frame_t)
-                current_z = mu.cpu().numpy().flatten()
-            
-            # Store Data
-            episode_z.append(current_z)
-            a_onehot = np.zeros(4)
-            a_onehot[action] = 1
-            episode_a.append(a_onehot)
-            
-            steps += 1
-            
-        if len(episode_z) > 10:
-            z_data.append(np.array(episode_z))
-            action_data.append(np.array(episode_a))
-        total_rewards.append(ep_reward)
-
-    mean_r = sum(total_rewards)/len(total_rewards)
-    print(f"  -> Avg Reward: {mean_r:.2f} | Images Collected: {len(image_buffer)}")
-    wandb.log({"real_reward": mean_r, "iteration": loop_idx})
-    
-    return np.array(image_buffer, dtype=np.float32), z_data, action_data
-
-def train_vae(vae, images, epochs, seed=21):
-    print(f"\n[PHASE 1.5] Retraining VAE (Final Polish: Weight 2.0)...")
-    if len(images) == 0: return
-    
-    # Set seed for reproducibility
-    torch.manual_seed(seed)
-    np.random.seed(seed)
-    random.seed(seed)
-
-    data = torch.tensor(images, dtype=torch.float32).to(DEVICE)
-    dataset = TensorDataset(data)
-    loader = DataLoader(dataset, batch_size=32, shuffle=True)
-    
-    optimizer = torch.optim.Adam(vae.parameters(), lr=1e-4)
-    
-    vae.train()
-    for e in range(epochs):
-        total_loss = 0
-        for (batch,) in loader:
-            optimizer.zero_grad()
-            
-            mu, _ = vae.encode(batch)
-            recon = vae.decode(mu)
-            
-            # --- WEIGHT MAP ---
-            weights = torch.ones_like(batch)
-            
-            # CHANGE: Lower from 4.0 to 2.0
-            # This is the "Sweet Spot". Strong enough to keep the ball,
-            # weak enough to stop the "double vision" ghosting.
-            weights[batch > 0.05] = 2.0 
-            
-            loss_unreduced = F.binary_cross_entropy(recon, batch, reduction='none')
-            loss = (loss_unreduced * weights).mean()
-            
-            loss.backward()
-            optimizer.step()
-            total_loss += loss.item()
-            
-        if (e+1) % 5 == 0:
-            print(f"  -> VAE Epoch {e+1} | Loss: {total_loss/len(loader):.5f}")
-
-def train_rnn(rnn, z_data, a_data, epochs):
-    print(f"\n[PHASE 2] Retraining RNN...")
-    # Prepare data
-    X_z, X_a, Y_z = [], [], []
-    SEQ_LEN = 32
-    
-    # STRIDE: How many steps to skip. 
-    # 32 = No overlap. 16 = 50% overlap (Better for learning).
-    STRIDE = 16 
-    
-    for ez, ea in zip(z_data, a_data):
-        if len(ez) < SEQ_LEN + 1: continue
-        
-        # SAFETY CHECK: Ensure data matches current model dimensions
-        # ez shape should be (Time, 1024), ea shape (Time, 4)
-        if len(ez.shape) < 2 or ez.shape[1] != 1024:
-            continue
-            
-        for i in range(0, len(ez) - SEQ_LEN - 1, STRIDE):
-            z_seq = ez[i : i+SEQ_LEN]
-            a_seq = ea[i : i+SEQ_LEN]
-            z_next = ez[i+1 : i+SEQ_LEN+1]
-            
-            if len(z_seq) == SEQ_LEN and len(a_seq) == SEQ_LEN and len(z_next) == SEQ_LEN:
-                X_z.append(z_seq)
-                X_a.append(a_seq)
-                Y_z.append(z_next)
-            
-    if len(X_z) == 0: 
-        print("  -> No valid sequences found for RNN!")
-        return
-    
-    print(f"  -> Generated {len(X_z)} sequences for training.")
-
-    # Split 80/20 train/test
-    n = len(X_z)
-    idx = np.random.permutation(n)
-    split = int(0.8 * n)
-    train_idx, val_idx = idx[:split], idx[split:]
-    
-    # Fast Numpy Conversion
-    X_z_arr = np.array(X_z, dtype=np.float32)
-    X_a_arr = np.array(X_a, dtype=np.float32)
-    Y_z_arr = np.array(Y_z, dtype=np.float32)
-    
-    # Create Datasets
-    dset = TensorDataset(
-        torch.tensor(X_z_arr[train_idx]).to(DEVICE),
-        torch.tensor(X_a_arr[train_idx]).to(DEVICE),
-        torch.tensor(Y_z_arr[train_idx]).to(DEVICE)
-    )
-    
-    # Handle case where validation set might be empty if N is small
-    if len(val_idx) > 0:
-        val_dset = TensorDataset(
-            torch.tensor(X_z_arr[val_idx]).to(DEVICE),
-            torch.tensor(X_a_arr[val_idx]).to(DEVICE),
-            torch.tensor(Y_z_arr[val_idx]).to(DEVICE)
-        )
-        val_loader = DataLoader(val_dset, batch_size=32, shuffle=False)
-    else:
-        val_loader = None
-    
-    loader = DataLoader(dset, batch_size=32, shuffle=True)
-    
-    optimizer = torch.optim.Adam(rnn.parameters(), lr=1e-4, weight_decay=1e-5)
-    criterion = nn.MSELoss()
-    
-    rnn.train()
-    for e in range(epochs):
-        t_loss = 0
-        for bz, ba, by in loader:
-            optimizer.zero_grad()
-            
-            # LSTM Forward
-            # Input: (Batch, Seq_Len, Latent+Action)
-            # Output: (Batch, Seq_Len, Hidden)
-            out, _ = rnn.lstm(torch.cat([bz, ba], dim=-1))
-            
-            # Predict Next Latent
-            pred = rnn.fc_mu(out)
-            
-            loss = criterion(pred, by)
-            loss.backward()
-            torch.nn.utils.clip_grad_norm_(rnn.parameters(), 1.0)
-            optimizer.step()
-            t_loss += loss.item()
-        
-        # Validation Logic
-        val_avg = 0
-        if val_loader:
-            rnn.eval()
-            val_loss = 0
-            with torch.no_grad():
-                for bz, ba, by in val_loader:
-                    out, _ = rnn.lstm(torch.cat([bz, ba], dim=-1))
-                    pred = rnn.fc_mu(out)
-                    val_loss += criterion(pred, by).item()
-            val_avg = val_loss/len(val_loader)
-            rnn.train()
-        
-        if (e+1)%5 == 0:
-            train_avg = t_loss/len(loader)
-            print(f"  -> RNN Epoch {e+1} Train: {train_avg:.5f} | Val: {val_avg:.5f}")
-            wandb.log({"rnn_train_loss": train_avg, "rnn_val_loss": val_avg})
-
-def train_controller(vae, rnn, start_controller, gens, loop_idx):
-    print(f"\n[PHASE 3] Dreaming & Evolving...")
-    
-    controller = copy.deepcopy(start_controller).to("cpu")
-    es = cma.CMAEvolutionStrategy(
-        np.concatenate([p.data.numpy().flatten() for p in controller.parameters()]), 
-        0.1, {'popsize': CMA_POPULATION}
-    )
-    
-    # Collect seed frames for dream initialization
-    env = get_env()
-    seed_frames = []
-    for _ in range(20):  # Get 20 diverse starting positions
-        obs, _ = env.reset()
-        frame = process_frame(obs)
-        seed_frames.append(frame)
-        # Take a few random steps to vary the initial state
-        for _ in range(np.random.randint(0, 10)):
-            obs, _, terminated, truncated, _ = env.step(env.action_space.sample())
-            if terminated or truncated:
-                break
-            frame = process_frame(obs)
-            seed_frames.append(frame)
-    env.close()
-    seed_frames = np.array(seed_frames)
-    
-    for g in range(gens):
-        solutions = es.ask()
-        rewards = []
-        for s in solutions:
-            controller.set_parameters(np.array(s))
-            
-            # --- DREAM SIMULATION ---
-            # Start from a REAL initial frame (not zero!)
-            seed_frame = seed_frames[np.random.randint(len(seed_frames))]
-            seed_tensor = torch.tensor(seed_frame, dtype=torch.float32).unsqueeze(0).to(DEVICE)
-            with torch.no_grad():
-                mu, _ = vae.encode(seed_tensor)
-            z = mu.unsqueeze(1)  # Shape: (1, 1, 256) 
-            h = None
-            r_total = 0
-            
-            # Run dream for 1000 steps
-            for step_idx in range(1000):
-                # Controller decides action based on Z and H
-                # (Need to extract H from tuple if exists)
-                if h is None: h_in = torch.zeros(1, 256)
-                else: h_in = h[0].squeeze(0).cpu()
-                
-                z_in = z.squeeze(0).cpu()
-                
-                with torch.no_grad():
-                    # Controller on CPU
-                    inp = torch.cat([z_in, h_in], dim=1)
-                    action = controller.get_action(inp)
-                
-                # RNN Predicts Next Z (World Model)
-                a_tensor = torch.zeros(1, 1, 4).to(DEVICE)
-                a_tensor[0, 0, action] = 1.0
-                
-                with torch.no_grad():
-                    out, h = rnn(z, a_tensor, h)
-                    z = rnn.fc_mu(out) # Predicted next state
-                    # CRITICAL: Clip Z to stay in valid distribution
-                    # Most VAE latent values are in [-3, 3] range
-                    z = torch.clamp(z, -3.0, 3.0)
-                    
-                    # Decode Z to pixel space and compute reward
-                    recon = vae.decode(z.squeeze(1))  # Remove time dim
-                    
-                    # Reward = how much color (non-black) pixels exist
-                    # Black background = 0, Ball/Bricks/Paddle = 1
-                    # If the dream frame is all black, reward is 0
-                    activation = (recon > 0.05).float().mean()  # % of non-black pixels
-                    r_total += activation.item() * 10
-                
-                # FALLBACK FOR STABILITY:
-                # We will evaluate this population on the REAL environment for now
-                # because training a Reward Predictor is a whole 4th model.
-                pass 
-            
-            # --- EVALUATE ON REAL ENV (Hybrid MBMF style for stability) ---
-            # This ensures it works for your project requirement without crashing.
-            env = get_env()
-            obs, _ = env.reset()
-            done = False
-            total_r = 0
-            steps = 0
-            
-            # Process obs
-            frame = process_frame(obs)
-            curr_z = torch.tensor(frame, dtype=torch.float32).unsqueeze(0).to(DEVICE)
-            with torch.no_grad(): mu, _ = vae.encode(curr_z)
-            z_flat = mu.cpu().numpy().flatten()
-            h_state = None
-            
-            while not done and steps < 500:
-                # Controller Step
-                if h_state is None: h_t = torch.zeros(1, 256)
-                else: h_t = h_state[0].squeeze(0).cpu()
-                z_t = torch.tensor(z_flat).unsqueeze(0)
-                
-                act = controller.get_action(torch.cat([z_t, h_t], dim=1))
-                
-                # Env Step
-                obs, rew, term, trunc, _ = env.step(act)
-                total_r += rew
-                
-                # RNN Update
-                a_tens = torch.zeros(1, 1, 4).to(DEVICE)
-                a_tens[0,0,act] = 1.0
-                z_tens = torch.tensor(z_flat).view(1, 1, 1024).to(DEVICE)
-                with torch.no_grad(): _, h_state = rnn(z_tens, a_tens, h_state)
-                
-                # VAE Update
-                frame = process_frame(obs)
-                curr_z = torch.tensor(frame, dtype=torch.float32).unsqueeze(0).to(DEVICE)
-                with torch.no_grad(): mu, _ = vae.encode(curr_z)
-                z_flat = mu.cpu().numpy().flatten()
-                
-                done = term or trunc
-                steps += 1
-            
-            rewards.append(total_r)
-        
-        es.tell(solutions, [-r for r in rewards])
-        print(f"  -> Gen {g} | Mean: {np.mean(rewards):.2f} | Best: {np.max(rewards)}")
-        wandb.log({"gen_reward": np.mean(rewards)})
-        
-        if np.max(rewards) > 0:
-            best_idx = np.argmax(rewards)
-            controller.set_parameters(np.array(solutions[best_idx]))
-    
-    # --- Record best controller's dream ---
-    print(f"  -> Recording controller dream...")
-    env = get_env()
-    obs, _ = env.reset()
-    frame = process_frame(obs)
-    seed_tensor = torch.tensor(frame, dtype=torch.float32).unsqueeze(0).to(DEVICE)
+def vae_debug_output(vae, test_frames, device, iteration):
+    """Generate VAE debugging output with reconstruction examples"""
+    vae.eval()
     with torch.no_grad():
-        mu, _ = vae.encode(seed_tensor)
-    z = mu.unsqueeze(1)  # Shape: (1, 1, 1024)
-    h = None
+        test_frames_t = torch.tensor(test_frames[:8], dtype=torch.float32).to(device)
+        reconstructed, mu, logsigma = vae(test_frames_t)
+        
+        # Calculate reconstruction error
+        recon_error = F.mse_loss(reconstructed, test_frames_t).item()
+        
+        # Log reconstruction comparison
+        fig_images = []
+        for i in range(min(4, len(test_frames))):
+            orig = tensor_to_image(test_frames_t[i])
+            recon = tensor_to_image(reconstructed[i])
+            fig_images.append(wandb.Image(orig, caption=f"Original {i}"))
+            fig_images.append(wandb.Image(recon, caption=f"Reconstructed {i}"))
+        
+        wandb.log({
+            f"vae_recon_error_iter{iteration}": recon_error,
+            f"vae_samples_iter{iteration}": fig_images,
+        })
     
-    dream_frames = []
-    for step in range(50):
-        with torch.no_grad():
-            # Decode current state
-            img = vae.decode(z.view(1, 1024)).cpu().squeeze(0).numpy()
-            img = (img * 255).astype(np.uint8)
-            dream_frames.append(img)
-            
-            # Controller decides action
-            if h is None: 
-                h_in = torch.zeros(1, 256)
-            else: 
-                h_in = h[0].squeeze(0).cpu()
-            z_in = z.squeeze(0).cpu()
-            inp = torch.cat([z_in, h_in], dim=1)
-            action = controller.get_action(inp)
-            
-            # RNN predicts next state
-            a_tensor = torch.zeros(1, 1, 4).to(DEVICE)
-            a_tensor[0, 0, action] = 1.0
-            out, h = rnn(z, a_tensor, h)
-            z = rnn.fc_mu(out)
-            z = torch.clamp(z, -3.0, 3.0)
-    
-    
-    # Convert and log dream video
-    dream_array = np.array(dream_frames)  # [50, 3, 64, 64] (CHW from VAE output)
-    
-    # REMOVE OR CHANGE THIS LINE:
-    # dream_array = np.transpose(dream_array, (0, 2, 3, 1)) <--- DELETE THIS
-    
-    # Since VAE outputs CHW, dream_array is ALREADY [50, 3, 64, 64]
-    # You just need to clip/cast and send it.
-    
-    dream_array = np.clip(dream_array, 0, 255).astype(np.uint8) 
-    
-    try:
-        wandb.log({"controller_dream": wandb.Video(dream_array, fps=10, format="mp4")})
-    except Exception as e:
-        print(f"  -> Warning: Could not save controller dream to W&B: {e}")
-    env.close()
+    return recon_error
 
-    return controller
-
-# ==========================================
-# 3. VISUAL DEBUG
-# ==========================================
-def log_visuals(vae, rnn, loop_idx):
-    print("  -> Logging Real vs Dream to WandB...")
-    
-    # --- DEBUG: Save local image to diagnose VAE quality ---
-    env = get_env()
-    obs, _ = env.reset()
-    # Take some steps so ball is in play
-    for _ in range(50):
-        obs, _, done, _, _ = env.step(1)  # Fire
-        if done: obs, _ = env.reset()
-    
-    frame = process_frame(obs)
-    frame_t = torch.tensor(frame, dtype=torch.float32).unsqueeze(0).to(DEVICE)
+def rnn_dream_example(vae, mdrnn, mdrnn_cell, test_latents, test_actions, device, iteration):
+    """Generate RNN dream predictions and log them"""
+    vae.eval()
+    mdrnn.eval()
+    mdrnn_cell.eval()
     
     with torch.no_grad():
-        mu, _ = vae.encode(frame_t)
-        recon = vae.decode(mu)
-    
-    print(f"  -> VAE Debug: frame shape={frame.shape}, mu shape={mu.shape}, recon shape={recon.shape}")
-    
-    # Save side-by-side comparison
-    import matplotlib.pyplot as plt
-    fig, axes = plt.subplots(1, 2, figsize=(8, 4))
-    
-    # Original (CHW -> HWC for matplotlib)
-    orig_img = np.transpose(frame, (1, 2, 0))
-    axes[0].imshow(orig_img)
-    axes[0].set_title("Original Frame")
-    axes[0].axis('off')
-    
-    # Reconstructed
-    recon_img = recon.cpu().squeeze(0).numpy()
-    recon_img = np.transpose(recon_img, (1, 2, 0))
-    axes[1].imshow(recon_img)
-    axes[1].set_title("VAE Reconstruction")
-    axes[1].axis('off')
-    
-    plt.tight_layout()
-    plt.savefig(f"vae_debug_iter_{loop_idx}.png", dpi=150)
-    plt.close()
-    print(f"  -> Saved vae_debug_iter_{loop_idx}.png (check if ball/paddle visible!)")
-    env.close()
-    
-    # --- 1. RECORD REAL EPISODE ---
-    env = get_env()
-    obs, _ = env.reset()
-    real_frames = []
-    
-    # Capture the first frame to start the dream later
-    start_frame = process_frame(obs) 
-    
-    # Run for 200 frames of real gameplay
-    for i in range(200):
-        # Render for human eyes (RGB) - Higher quality
-        # We capture the RAW environment output, not the resized one, 
-        # so you can see if the ball exists in the game.
-        raw_render = env.render() 
-        real_frames.append(np.transpose(raw_render, (2, 0, 1))) # (C, H, W)
+        # Convert numpy to tensor if needed
+        if isinstance(test_latents, np.ndarray):
+            test_latents = torch.tensor(test_latents, dtype=torch.float32).to(device)
+        if isinstance(test_actions, np.ndarray):
+            test_actions = torch.tensor(test_actions, dtype=torch.float32).to(device)
         
-        # Action Logic (Force Fire, etc)
-        if i == 0: action = 1
-        else: action = env.action_space.sample() # Random action for viz
+        # Dream for full trajectory length
+        z = test_latents[0:1]  # Single initial latent state: [1, latent_size]
+        a = test_actions  # Full action sequence
+        seq_len = len(a)  # Dream for entire action sequence length
+        hidden = [torch.zeros(1, HIDDEN_SIZE).to(device), torch.zeros(1, HIDDEN_SIZE).to(device)]
         
-        obs, _, done, _, _ = env.step(action)
-        if done: break
-
-    # Log REAL Video (MP4)
-    try:
-        wandb.log({"real_gameplay": wandb.Video(np.array(real_frames), fps=30, format="mp4")})
-    except Exception as e:
-        print(f"  -> Warning: Could not save real gameplay video to W&B: {e}")
-
-    # --- 2. RECORD DREAM SEQUENCE ---
-    # Start from that first frame we captured
-    z = torch.tensor(start_frame, dtype=torch.float32).unsqueeze(0).to(DEVICE)
-    with torch.no_grad(): mu, _ = vae.encode(z)
-    z = mu.unsqueeze(1)  # Shape (1, 1, latent_dim)
-    h = None
-    
-    dream_frames = []
-    z_values = []  # Track Z changes
-    for step in range(50): # 50 frames of hallucination
-        with torch.no_grad():
-            # Decode: This shows us what the VAE sees
-            img = vae.decode(z.view(1, 1024)).cpu().squeeze(0).numpy()  # z is (1, 1, 1024) -> (1, 1024)
-            # Convert from [0,1] to [0,255] for display
-            img = (img * 255).astype(np.uint8)
-            dream_frames.append(img)
-            z_values.append(z.cpu().numpy().flatten().copy())
+        dream_latents = [z.cpu().numpy()[0]]
+        dream_rewards = []
+        
+        for step in range(seq_len):
+            # Use the LSTM cell to predict next state
+            action = a[step:step+1]  # [1, action_size]
+            mus, sigmas, logpi, r, d, hidden = mdrnn_cell(action, z, hidden)
             
-            # Predict Next Step
-            # Predict Next Step
-            a = torch.zeros(1, 1, 4).to(DEVICE)
+            # Sample from GMM
+            pi_sample = torch.multinomial(torch.exp(logpi), 1)
+            z_next = mus[torch.arange(1), pi_sample.squeeze(), :]
             
-            # Wiggle Logic: Right for 5 frames, then Left for 5 frames
-            if (step // 5) % 2 == 0:
-                action_idx = 2 # RIGHT
-            else:
-                action_idx = 3 # LEFT
-                
-            a[0, 0, action_idx] = 1.0
-            out, h = rnn(z, a, h)
-            z_next = rnn.fc_mu(out)
-            
-            # Debug: Check if Z is changing
-            z_change = torch.abs(z_next - z).mean().item()
-            if step % 10 == 0:
-                print(f"    Dream Step {step}: Z_change={z_change:.6f}, Z_range=[{z_next.min():.2f}, {z_next.max():.2f}]")
-            
+            dream_latents.append(z_next.cpu().numpy()[0])
+            dream_rewards.append(r.item())
             z = z_next
+        
+        # Decode dream latents
+        dream_latents_t = torch.tensor(np.array(dream_latents), dtype=torch.float32).to(device)
+        dream_frames_t = vae.decoder(dream_latents_t)
+        dream_frames = dream_frames_t.cpu().detach().numpy()
+        
+        # Ensure frames are in [0, 1] range
+        dream_frames = np.clip(dream_frames, 0, 1)
+        
+        print(f"[RNN Dream] Frame range: min={dream_frames.min():.4f}, max={dream_frames.max():.4f}, shape={dream_frames.shape}")
+        
+        # Log individual frames for debugging
+        dream_sample_images = []
+        for i in range(min(4, len(dream_frames))):
+            frame = dream_frames[i]
+            frame_uint8 = (np.clip(frame, 0, 1) * 255).astype(np.uint8)
+            frame_uint8 = np.moveaxis(frame_uint8, 0, -1)  # CHW to HWC
+            dream_sample_images.append(wandb.Image(frame_uint8, caption=f"Dream frame {i}"))
+        
+        # Create video from dream frames
+        # wandb.Video expects (Time, Channels, Height, Width)
+        dream_video_frames = []
+        for frame in dream_frames:
+            # Keep as CHW, just scale to uint8
+            frame_uint8 = (np.clip(frame, 0, 1) * 255).astype(np.uint8)
+            dream_video_frames.append(frame_uint8)
+        
+        dream_video = np.array(dream_video_frames, dtype=np.uint8)  # Shape: (Time, C, H, W)
+        
+        print(f"[RNN Dream] Video shape={dream_video.shape}, dtype={dream_video.dtype}, range=[{dream_video.min()}, {dream_video.max()}]")
+        
+        # Save video locally for debugging
+        try:
+            import cv2
+            os.makedirs("dream_videos", exist_ok=True)
+            video_path = f"dream_videos/dream_iter{iteration}.mp4"
+            fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+            out = cv2.VideoWriter(video_path, fourcc, 10.0, (64, 64))
+            for frame in dream_video:
+                # Convert CHW to HWC for cv2
+                frame_hwc = np.moveaxis(frame, 0, -1)
+                frame_bgr = cv2.cvtColor(frame_hwc, cv2.COLOR_RGB2BGR)
+                out.write(frame_bgr)
+            out.release()
+            print(f"[RNN Dream] Saved video to {video_path}")
+        except Exception as e:
+            print(f"[RNN Dream] Failed to save video locally: {e}")
+        
+        wandb.log({
+            f"rnn_dream_frames_iter{iteration}": dream_sample_images,
+            f"rnn_dream_video_iter{iteration}": wandb.Video(dream_video, fps=10, format="mp4"),
+            f"rnn_dream_length_iter{iteration}": len(dream_frames),
+            f"rnn_dream_rewards_iter{iteration}": wandb.Histogram(np.array(dream_rewards)),
+            f"rnn_dream_total_reward_iter{iteration}": float(np.sum(dream_rewards)),
+        })
+
+def controller_play_example(vae, mdrnn_cell, controller, device, iteration, num_steps=600):
+    """Run controller for a few steps and visualize on real environment with HUD"""
+    env = get_env()
+    obs, info = env.reset() # Capture info on reset
     
-    print(f"  -> Dream Z trajectory: Min={np.array(z_values).min():.3f}, Max={np.array(z_values).max():.3f}")
+    # Track lives
+    current_lives = info.get('lives', 5)
+    print(f"[Controller Play] Starting with {current_lives} lives.")
+
+    # Force fire to start the game
+    obs, _, _, _, info = env.step(1)
+    
+    frame = process_frame(obs)
+    t_frame = torch.tensor(frame, dtype=torch.float32).unsqueeze(0).to(device)
+    
+    with torch.no_grad():
+        mu, _ = vae.encoder(t_frame)
+    z = mu
+    hidden = [torch.zeros(1, HIDDEN_SIZE).to(device), torch.zeros(1, HIDDEN_SIZE).to(device)]
+    
+    done = False
+    total_r = 0
+    play_frames_rgb = []  # Store actual RGB frames from environment
+    play_rewards = []
+    actions_taken = []
+    
+    steps = 0
+    force_fire_next = False # Flag to handle death recovery
+
+    while not done and steps < num_steps:
+        # 1. Select Action
+        if force_fire_next:
+            # If we just died, we MUST fire to restart the ball
+            action = 1 
+            force_fire_next = False
+        else:
+            with torch.no_grad():
+                logits = controller(z, hidden)
+                action = torch.argmax(logits, dim=1).item()
+
+        # 2. Update MDRNN Hidden State (Dream)
+        # We pass the chosen action into the RNN to update the memory
+        act_t = torch.zeros(1, ACTION_SIZE).to(device)
+        act_t[0, action] = 1.0
+        with torch.no_grad():
+            _, _, _, _, _, hidden = mdrnn_cell(act_t, z, hidden)
+        
+        # 3. Step Environment
+        # Note: We capture 'info' here to check lives
+        obs, r, term, trunc, info = env.step(action)
+        done = term or trunc
+        total_r += r
+        
+        # --- LIFE LOGIC START ---
+        new_lives = info.get('lives', current_lives)
+        if new_lives < current_lives:
+            # We died! 
+            # In Breakout, we usually need to fire to spawn the ball again.
+            if new_lives > 0:
+                force_fire_next = True
+            current_lives = new_lives
+        # --- LIFE LOGIC END ---
+
+        # 4. Annotation for Video (HUD)
+        # We create a writable copy of the observation to draw text on
+        annotated_frame = obs.copy()
+        
+        # Check if cv2 is available to draw text
+        try:
+            import cv2
+            # Draw Lives
+            cv2.putText(annotated_frame, f"Lives: {current_lives}", (10, 30), 
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 0, 0), 2)
+            # Draw Reward
+            cv2.putText(annotated_frame, f"Reward: {total_r:.1f}", (10, 60), 
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+            # Draw Action
+            action_str = ["NOOP", "FIRE", "RIGHT", "LEFT"][action] if action < 4 else str(action)
+            cv2.putText(annotated_frame, f"Act: {action_str}", (10, 90), 
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
+        except ImportError:
+            pass
+
+        play_frames_rgb.append(annotated_frame) # Save the annotated version!
+        
+        frame = process_frame(obs)
+        play_rewards.append(r)
+        actions_taken.append(action)
+        
+        t_frame = torch.tensor(frame, dtype=torch.float32).unsqueeze(0).to(device)
+        with torch.no_grad():
+            mu, _ = vae.encoder(t_frame)
+        z = mu
+        steps += 1
+    
+    env.close()
+    
+    # Format video: (Time, Channels, Height, Width)
+    play_video = np.array(play_frames_rgb, dtype=np.uint8)
+    play_video = np.moveaxis(play_video, -1, 1)
+    
+    print(f"[Controller Play] Video shape={play_video.shape}, total_reward={total_r}")
+    
+    # Save video locally
+    try:
+        import cv2
+        os.makedirs("controller_videos", exist_ok=True)
+        video_path = f"controller_videos/gameplay_iter{iteration}.mp4"
+        
+        h, w = play_frames_rgb[0].shape[:2]
+        # MP4V is widely supported, but requires .mp4 extension
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v') 
+        out = cv2.VideoWriter(video_path, fourcc, 30.0, (w, h)) # 30fps for smoother playback
+        
+        for frame_rgb in play_frames_rgb:
+            frame_bgr = cv2.cvtColor(frame_rgb, cv2.COLOR_RGB2BGR)
+            out.write(frame_bgr)
+        out.release()
+        print(f"[Controller Play] Saved annotated video to {video_path}")
+    except Exception as e:
+        print(f"[Controller Play] Failed to save video locally: {e}")
+    
+    wandb.log({
+        f"controller_gameplay_video_iter{iteration}": wandb.Video(play_video, fps=20, format="mp4"),
+        f"controller_total_reward_iter{iteration}": total_r,
+        f"controller_steps_iter{iteration}": steps,
+        f"controller_final_lives_iter{iteration}": current_lives, # Log final lives
+    })
+    
+    return total_r
 
 # ==========================================
-# MAIN
+# 4. MAIN TRAINING LOOP
 # ==========================================
 def main():
-    test = True 
-    wandb.init(project="breakout-world-models-fixed")
-    
-    LATENT_DIM = 1024  # Reduced encoder compression to preserve ball
-    RNN_HIDDEN = 256
-    
-    # Initialize with consistent sizes
-    vae = VAE(latent_dim=LATENT_DIM).to(DEVICE)
-    
-    rnn = RobustRNN(latent_dim=LATENT_DIM, hidden_size=RNN_HIDDEN).to(DEVICE)
-    
-    # Controller Input = Latent Size + RNN Hidden Size
-    controller = Controller(input_dim=LATENT_DIM + RNN_HIDDEN).to("cpu")
+    # 1. Initialize Models
+    vae = VAE(img_channels=3, latent_size=LATENT_SIZE).to(DEVICE)
+    mdrnn = MDRNN(latents=LATENT_SIZE, actions=ACTION_SIZE, hiddens=HIDDEN_SIZE, gaussians=N_GAUSSIANS).to(DEVICE)
+    mdrnn_cell = MDRNNCell(latents=LATENT_SIZE, actions=ACTION_SIZE, hiddens=HIDDEN_SIZE, gaussians=N_GAUSSIANS).to(DEVICE)
+    controller = Controller(latents=LATENT_SIZE, hiddens=HIDDEN_SIZE, actions=ACTION_SIZE).to(DEVICE)
 
-    #load iter_1 models
+    # Optimizers
+    opt_vae = optim.Adam(vae.parameters(), lr=1e-3)
+    opt_rnn = optim.Adam(mdrnn.parameters(), lr=1e-3)
 
+    # Load from checkpoint if available
+    start_iteration = load_checkpoint(vae, mdrnn, mdrnn_cell, controller, opt_vae, opt_rnn)
 
-    
-    for loop in range(2,ITERATIONS): 
-        print(f"\n=== ITERATION {loop+1} ===")
+    for iteration in range(start_iteration, ITERATIONS):
+        print(f"\n=== ITERATION {iteration} ===")
         
-        # 1. Harvest & VAE Data
-        if test == False:
-            print("[PHASE 1] Harvesting new data...")
-            images, z_data, a_data = harvest_data(vae, rnn, controller, HARVEST_EPISODES, loop)
-        
-
-        #load the previous vae model if not the first iteration
-        if test == True:
-            vae.load_state_dict(torch.load(f"vae_iter_{loop}.pth"))
-            print(f"  -> Loaded VAE model from vae_iter_{loop}.pth")
-        else:
-            train_vae(vae, images, VAE_EPOCHS)
-            torch.save(vae.state_dict(), f"vae_iter_{loop}.pth")
-            print(f"  -> Saved VAE model at vae_iter_{loop}.pth")
-
-            # --- CRITICAL FIX: RE-ENCODE IMAGES WITH TRAINED VAE ---
-            print("[INFO] Re-encoding images with trained VAE for RNN...")
-            
-            # 1. SAVE A COPY of the old structure so we know episode lengths
-            old_z_data = z_data 
-            new_z_data = []      # Store new vectors here
-            
-            vae.eval() 
-            current_idx = 0
-            
-            with torch.no_grad():
-                for old_episode in old_z_data:
-                    # Get the length of this specific episode
-                    ep_len = len(old_episode)
-                    
-                    # Extract the raw images for this episode
-                    ep_imgs = images[current_idx : current_idx + ep_len]
-                    current_idx += ep_len
-                    
-                    # Convert to tensor
-                    ep_imgs_tensor = torch.tensor(ep_imgs, dtype=torch.float32).to(DEVICE)
-                    
-                    # Batch encode this episode to avoid OOM
-                    ep_z_list = []
-                    for b in range(0, len(ep_imgs), 32):
-                        chunk = ep_imgs_tensor[b:b+32]
-                        mu, _ = vae.encode(chunk)
-                        ep_z_list.append(mu.cpu().numpy())
-                    
-                    # Stack and save
-                    if len(ep_z_list) > 0:
-                        new_z_data.append(np.concatenate(ep_z_list, axis=0))
-            
-            # 2. OVERWRITE z_data with the new, trained vectors
-            z_data = new_z_data 
-            print(f"  -> Re-encoded {len(z_data)} episodes.")
-            vae.train() 
-            # -------------------------------------------------------
-        
-        # 3. Log Visuals
-        log_visuals(vae, rnn, loop)
-        
-        # 4. Train RNN
-        if test == True:
-            rnn.load_state_dict(torch.load(f"rnn_iter_{loop}.pth"))
-            print(f"  -> Loaded RNN model from rnn_iter_{loop}.pth")
-        else:
-            train_rnn(rnn, z_data, a_data, RNN_EPOCHS)
-            torch.save(rnn.state_dict(), f"rnn_iter_{loop}.pth")
-            print(f"  -> Saved RNN model at rnn_iter_{loop}.pth")
-
-        
-        # 4.5 Record RNN Dream
-        print("[PHASE 2.5] Recording RNN dream...")
+        # ---------------------------------------------------------
+        # PHASE 1: HARVEST DATA
+        # ---------------------------------------------------------
+        print("[PHASE 1] Harvesting...")
         env = get_env()
-        obs, _ = env.reset()
-        frame = process_frame(obs)
-        seed_tensor = torch.tensor(frame, dtype=torch.float32).unsqueeze(0).to(DEVICE)
-        with torch.no_grad():
-            mu, _ = vae.encode(seed_tensor)
-        z = mu.unsqueeze(1)  # Shape: (1, 1, 1024)
-        h = None
+        data_frames = []
+        data_actions = []
+        data_rewards = []
+        data_dones = []
         
-        rnn_dream_frames = []
-        for step in range(50):
-            with torch.no_grad():
-                img = vae.decode(z.view(1, 1024)).cpu().squeeze(0).numpy()  # [3, 64, 64] in [0,1]
-                img = np.transpose(img, (1, 2, 0))  # CHW to HWC for display
-                img = (img * 255).astype(np.uint8)  # Scale to [0,255]
-                rnn_dream_frames.append(img)
-                
-                # Use FIRE action to keep similar to log_visuals
-                a = torch.zeros(1, 1, 4).to(DEVICE)
-                a[0, 0, 1] = 1.0
-                out, h = rnn(z, a, h)
-                z = rnn.fc_mu(out)
-                z = torch.clamp(z, -3.0, 3.0)
-        
-        # Log RNN dream
-        rnn_dream_array = np.array(rnn_dream_frames)  # Currently [50, 64, 64, 3] (HWC)
-        rnn_dream_array = np.clip(rnn_dream_array, 0, 255).astype(np.uint8)
-        
-        # --- FIX: Transpose to [Time, Channels, Height, Width] ---
-        # 0->0 (Time), 3->1 (Channels), 1->2 (Height), 2->3 (Width)
-        rnn_dream_array = np.transpose(rnn_dream_array, (0, 3, 1, 2)) 
-        # Now shape is [50, 3, 64, 64]
-        
-        try:
-            wandb.log({"rnn_dream": wandb.Video(rnn_dream_array, fps=10, format="mp4")})
-        except Exception as e:
-            print(f"  -> Warning: Could not save RNN dream to W&B: {e}")
-        env.close()
-        
-        # Save VAE and RNN models
-        
-        
-        
-        
-        # 5. Evolve Agent
-        controller = train_controller(vae, rnn, controller, CMA_GENERATIONS, loop)
+        for ep in range(HARVEST_EPISODES):
+            obs, _ = env.reset()
+            done = False
+            ep_frames = []
+            ep_actions = []
+            ep_rewards = []
+            ep_dones = []
+            
+            # Setup for Controller
+            if iteration > 0:
+                frame = process_frame(obs)
+                t_frame = torch.tensor(frame, dtype=torch.float32).unsqueeze(0).to(DEVICE)
+                with torch.no_grad(): mu, _ = vae.encoder(t_frame)
+                z = mu
+                hidden = [torch.zeros(1, HIDDEN_SIZE).to(DEVICE), torch.zeros(1, HIDDEN_SIZE).to(DEVICE)]
 
-        test = False
+            steps = 0
+            current_lives = 5
+            should_fire_next = False # <--- NEW FLAG
+
+            while not done and steps < 1000:
+                frame = process_frame(obs)
+                ep_frames.append(frame)
+                
+                # --- ACTION SELECTION ---
+                # 1. Priority: Did we just die? Fire immediately.
+                if should_fire_next:
+                    action = 1
+                    should_fire_next = False
+                
+                # 2. Iteration 0: Random Play
+                elif iteration == 0:
+                    if len(ep_frames) == 1: action = 1 # Always fire on start
+                    else: action = env.action_space.sample()
+                    
+                # 3. Iteration > 0: Controller
+                else:
+                    with torch.no_grad():
+                        logits = controller(z, hidden)
+                        action = torch.argmax(logits, dim=1).item()
+                        
+                        # Occasional random fire (Heartbeat) just in case
+                        if np.random.rand() < 0.02: 
+                            action = 1
+
+                # Update RNN (for ALL actions, including forced fires)
+                if iteration > 0:
+                    act_t = torch.zeros(1, ACTION_SIZE).to(DEVICE)
+                    act_t[0, action] = 1.0
+                    with torch.no_grad():
+                        _, _, _, _, _, hidden = mdrnn_cell(act_t, z, hidden)
+
+                # Step Environment
+                obs, r, term, trunc, info = env.step(action) # Capture Info!
+                done = term or trunc
+                
+                # --- CHECK LIVES ---
+                if 'lives' in info:
+                    lives = info['lives']
+                    if lives < current_lives and lives > 0:
+                        should_fire_next = True # Force '1' on next loop
+                        current_lives = lives
+                
+                # Update Z for next step
+                if iteration > 0 and not done:
+                    frame_next = process_frame(obs)
+                    t_frame = torch.tensor(frame_next, dtype=torch.float32).unsqueeze(0).to(DEVICE)
+                    with torch.no_grad(): mu, _ = vae.encoder(t_frame)
+                    z = mu
+
+                # Record Data
+                a_oh = np.zeros(ACTION_SIZE)
+                a_oh[action] = 1
+                ep_actions.append(a_oh)
+                ep_rewards.append(r)
+                ep_dones.append(done)
+                steps += 1
+
+            if len(ep_frames) > 10:
+                data_frames.append(np.array(ep_frames, dtype=np.float32))
+                data_actions.append(np.array(ep_actions, dtype=np.float32))
+                data_rewards.append(np.array(ep_rewards, dtype=np.float32))
+                data_dones.append(np.array(ep_dones, dtype=np.float32))
+
+        print(f" -> Collected {len(data_frames)} episodes.")
+        
+        wandb.log({
+            "iteration": iteration,
+            "harvest_episodes_collected": len(data_frames),
+        })
+
+        # ---------------------------------------------------------
+        # PHASE 2: TRAIN VAE (Weighted Loss Version)
+        # ---------------------------------------------------------
+        print("[PHASE 2] Training VAE...")
+        
+        # 1. Efficient Sampling (Your code - Keeping this!)
+        train_frames = []
+        max_frames = 15000
+        frame_count = sum(len(ep) for ep in data_frames)
+        
+        if frame_count > 0:
+            episode_indices = np.random.choice(len(data_frames), size=len(data_frames), replace=False)
+            for ep_idx in episode_indices:
+                ep_frames = data_frames[ep_idx]
+                frame_indices = np.random.choice(len(ep_frames), size=min(len(ep_frames), max_frames - len(train_frames)), replace=False)
+                for f_idx in frame_indices:
+                    train_frames.append(ep_frames[f_idx])
+                    if len(train_frames) >= max_frames:
+                        break
+                if len(train_frames) >= max_frames:
+                    break
+            
+            train_frames = np.array(train_frames, dtype=np.float32)
+            print(f" -> Training VAE on {len(train_frames)} frames")
+        else:
+            print(" -> No frames collected!")
+            continue
+        
+        dset_vae = TensorDataset(torch.tensor(train_frames, dtype=torch.float32).to(DEVICE))
+        loader_vae = DataLoader(dset_vae, batch_size=64, shuffle=True)
+        
+        # 2. Training Loop with Weighted Loss
+        vae.train()
+        for e in range(VAE_EPOCHS):
+            t_loss = 0
+            for (b_img,) in loader_vae:
+                opt_vae.zero_grad()
+                recon, mu, logsigma = vae(b_img)
+                
+                # --- WEIGHTED LOSS FIX START ---
+                # 1. Calculate raw error per pixel (don't sum yet)
+                loss_unreduced = F.binary_cross_entropy(recon, b_img, reduction='none')
+                
+                # 2. Create weight map: 1.0 for background, 10.0 for ball/paddle
+                # Pixels > 0.05 are not black background
+                weights = torch.ones_like(b_img)
+                weights[b_img > 0.05] = 10.0 
+                
+                # 3. Apply weights and sum
+                bce = (loss_unreduced * weights).sum()
+                # --- WEIGHTED LOSS FIX END ---
+
+                kld = -0.5 * torch.sum(1 + 2 * logsigma - mu.pow(2) - (2 * logsigma).exp())
+                loss = bce + kld*0.1
+                loss.backward()
+                opt_vae.step()
+                t_loss += loss.item()
+            
+            if (e+1)%5 == 0:
+                print(f" -> VAE Epoch {e+1}: {t_loss/len(loader_vae.dataset):.4f}")
+                try:
+                    wandb.log({
+                        "vae_epoch": e+1,
+                        "vae_loss": t_loss/len(loader_vae.dataset),
+                        "vae_iteration": iteration,
+                    })
+                except: pass
+        
+        # VAE Debug Output
+        print("[VAE Debug] Generating reconstruction examples...")
+        try:
+            recon_error = vae_debug_output(vae, train_frames[:8], DEVICE, iteration)
+        except NameError:
+            print(" -> Debug function missing, skipping visualization.")
+
+        # ---------------------------------------------------------
+        # PHASE 3: PROCESS DATA FOR RNN
+        # ---------------------------------------------------------
+        print("[PHASE 3] Encoding for RNN...")
+        vae.eval()
+        rnn_latents, rnn_actions, rnn_rewards, rnn_dones = [], [], [], []
+        
+        with torch.no_grad():
+            for i in range(len(data_frames)):
+                frames = torch.tensor(data_frames[i], dtype=torch.float32).to(DEVICE)
+                # Chunking to avoid VRAM OOM
+                curr_mu = []
+                for b in range(0, len(frames), 64):
+                    mu, _ = vae.encoder(frames[b:b+64])
+                    curr_mu.append(mu.cpu().numpy())
+                rnn_latents.append(np.concatenate(curr_mu, axis=0))
+                
+                rnn_actions.append(data_actions[i])
+                rnn_rewards.append(data_rewards[i])
+                rnn_dones.append(data_dones[i])
+
+        # ---------------------------------------------------------
+        # PHASE 4: TRAIN MDRNN
+        # ---------------------------------------------------------
+        print("[PHASE 4] Training MDRNN...")
+        SEQ_LEN = 32
+        X_lat, X_act, Y_lat, Y_rew, Y_done = [], [], [], [], []
+        
+        for i in range(len(rnn_latents)):
+            lat, act, rew, don = rnn_latents[i], rnn_actions[i], rnn_rewards[i], rnn_dones[i]
+            if len(lat) <= SEQ_LEN: continue
+            for j in range(0, len(lat) - SEQ_LEN):
+                X_lat.append(lat[j:j+SEQ_LEN])
+                X_act.append(act[j:j+SEQ_LEN])
+                Y_lat.append(lat[j+1:j+SEQ_LEN+1])
+                Y_rew.append(rew[j:j+SEQ_LEN])
+                Y_done.append(don[j:j+SEQ_LEN])
+                
+        dset_rnn = TensorDataset(
+            torch.tensor(np.array(X_lat), dtype=torch.float32).to(DEVICE),
+            torch.tensor(np.array(X_act), dtype=torch.float32).to(DEVICE),
+            torch.tensor(np.array(Y_lat), dtype=torch.float32).to(DEVICE),
+            torch.tensor(np.array(Y_rew), dtype=torch.float32).to(DEVICE),
+            torch.tensor(np.array(Y_done), dtype=torch.float32).to(DEVICE)
+        )
+        loader_rnn = DataLoader(dset_rnn, batch_size=32, shuffle=True)
+        
+        mdrnn.train()
+        for e in range(RNN_EPOCHS):
+            t_loss = 0
+            for b_lat, b_act, t_lat, t_rew, t_done in loader_rnn:
+                opt_rnn.zero_grad()
+                # Transpose for LSTM: (Seq, Batch, Feat)
+                b_act = b_act.transpose(0, 1)
+                b_lat = b_lat.transpose(0, 1)
+                t_lat = t_lat.transpose(0, 1)
+                
+                mus, sigmas, logpi, rs, ds = mdrnn(b_act, b_lat)
+                
+                gl = gmm_loss(t_lat.transpose(0,1), mus.transpose(0,1), sigmas.transpose(0,1), logpi.transpose(0,1))
+                r_loss = F.mse_loss(rs.transpose(0,1), t_rew)
+                d_loss = F.binary_cross_entropy_with_logits(ds.transpose(0,1), t_done)
+                
+                loss = gl + r_loss + d_loss
+                loss.backward()
+                nn.utils.clip_grad_norm_(mdrnn.parameters(), 5.0)
+                opt_rnn.step()
+                t_loss += loss.item()
+            if (e+1)%5 == 0:
+                print(f" -> RNN Epoch {e+1}: {t_loss/len(loader_rnn):.4f}")
+                wandb.log({
+                    "rnn_epoch": e+1,
+                    "rnn_loss": t_loss/len(loader_rnn),
+                    "rnn_iteration": iteration,
+                })
+
+        # SYNC WEIGHTS TO CELL
+        mdrnn_cell.gmm_linear.load_state_dict(mdrnn.gmm_linear.state_dict())
+        mdrnn_cell.rnn.weight_ih.data = mdrnn.rnn.weight_ih_l0.data
+        mdrnn_cell.rnn.weight_hh.data = mdrnn.rnn.weight_hh_l0.data
+        mdrnn_cell.rnn.bias_ih.data = mdrnn.rnn.bias_ih_l0.data
+        mdrnn_cell.rnn.bias_hh.data = mdrnn.rnn.bias_hh_l0.data
+        
+        # RNN Dream Example
+        print("[RNN Dream] Generating dream trajectory...")
+        rnn_dream_example(vae, mdrnn, mdrnn_cell, 
+                         np.array(rnn_latents[0]),
+                         np.array(rnn_actions[0]),
+                         DEVICE, iteration)
+
+        # ---------------------------------------------------------
+        # PHASE 5: EVOLVE CONTROLLER
+        # ---------------------------------------------------------
+        print("[PHASE 5] Evolving Controller...")
+        first = True
+        flat_params = torch.cat([p.flatten() for p in controller.parameters()]).cpu().detach().numpy()
+        es = cma.CMAEvolutionStrategy(flat_params, 0.5, {'popsize': POPULATION})
+        
+        for g in range(CMA_GENERATIONS):
+            solutions = es.ask()
+            rewards = []
+            
+            # Parallelize this loop in production, sequential for safety here
+            for s in solutions:
+                # Load params
+                idx = 0
+                state_dict = controller.state_dict()
+                for k, v in state_dict.items():
+                    sz = v.numel()
+                    p = torch.from_numpy(s[idx:idx+sz]).float().to(DEVICE)
+                    state_dict[k].copy_(p.view(v.shape))
+                    idx += sz
+                
+                # Rollout in Real Env
+                env = get_env()
+                obs, _ = env.reset()
+                done = False
+                total_r = 0
+                
+                # Force Fire
+                obs, _, _, _, _ = env.step(1)
+                
+                frame = process_frame(obs)
+                t_frame = torch.tensor(frame, dtype=torch.float32).unsqueeze(0).to(DEVICE)
+                with torch.no_grad(): mu, _ = vae.encoder(t_frame)
+                z = mu
+                hidden = [torch.zeros(1, HIDDEN_SIZE).to(DEVICE), torch.zeros(1, HIDDEN_SIZE).to(DEVICE)]
+                
+                steps = 0
+                current_lives = 5
+                while not done and steps < 1000:
+                    with torch.no_grad():
+                        logits = controller(z, hidden)
+                        action = torch.argmax(logits, dim=1).item()
+                        
+                        act_t = torch.zeros(1, ACTION_SIZE).to(DEVICE)
+                        act_t[0, action] = 1.0
+                        _, _, _, _, _, hidden = mdrnn_cell(act_t, z, hidden)
+                        
+                    obs, r, term, trunc, info = env.step(action)
+                    done = term or trunc
+                    total_r += r
+
+                    lives = info['lives']
+                    if lives < current_lives and lives > 0:
+                        current_lives = lives
+                        obs, r2 ,term2, trunc2, info2 = env.step(1)
+                        total_r += r2
+                        done = term2 or trunc2
+                        current_lives = info2.get('lives', current_lives)
+                    
+                    act_t = torch.zeros(1, ACTION_SIZE).to(DEVICE)
+                    act_t[0, action] = 1.0
+                    _, _, _, _, _, hidden = mdrnn_cell(act_t, z, hidden)
+
+                    frame = process_frame(obs)
+                    t_frame = torch.tensor(frame, dtype=torch.float32).unsqueeze(0).to(DEVICE)
+                    with torch.no_grad(): mu, _ = vae.encoder(t_frame)
+                    z = mu
+                    steps += 1
+                
+                rewards.append(total_r)
+                env.close()
+
+            es.tell(solutions, [-r for r in rewards])
+            print(f" -> Gen {g}: Mean={np.mean(rewards):.2f}, Best={np.max(rewards)}")
+            
+            wandb.log({
+                "cma_generation": g,
+                "cma_mean_reward": np.mean(rewards),
+                "cma_best_reward": np.max(rewards),
+                "cma_iteration": iteration,
+            })
+            
+            # Load best back
+            best_idx = np.argmax(rewards)
+            best_params = solutions[best_idx]
+            idx = 0
+            state_dict = controller.state_dict()
+            for k, v in state_dict.items():
+                sz = v.numel()
+                p = torch.from_numpy(best_params[idx:idx+sz]).float().to(DEVICE)
+                state_dict[k].copy_(p.view(v.shape))
+                idx += sz
+        
+        # Controller Play Example
+        print("[Controller Play] Recording gameplay...")
+        controller_play_reward = controller_play_example(vae, mdrnn_cell, controller, DEVICE, iteration, num_steps=1024)
+        
+        wandb.log({
+            "iteration_complete": iteration,
+            "final_controller_reward": controller_play_reward,
+        })
+        
+        # Save checkpoint after iteration completes
+        print("[Checkpoint] Saving models...")
+        save_checkpoint(vae, mdrnn, mdrnn_cell, controller, opt_vae, opt_rnn, iteration)
 
 if __name__ == "__main__":
     main()
+    wandb.finish()
