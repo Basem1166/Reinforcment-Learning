@@ -3,6 +3,7 @@ import numpy as np
 from collections import deque
 from gymnasium.wrappers.atari_preprocessing import AtariPreprocessing
 from gymnasium.wrappers import RecordVideo
+from gymnasium.wrappers import FrameStackObservation
 import ale_py  # make sure ale-py is installed
 from collections import deque
 
@@ -47,7 +48,7 @@ def make_env(record=False, video_dir="videos"):
         screen_size=80
     )
 
-    env = FrameStack(env, k=3)  # stack 3 frames
+    env = FrameStackObservation(env, 3)  # stack 3 frames
 
     if record:
         env = RecordVideo(

@@ -7,6 +7,7 @@ from mdrnn import MDRNN
 from controller import Controller
 from config import Config
 import os
+import matplotlib.pyplot as plt
 
 cfg = Config()
 device = cfg.DEVICE if torch.cuda.is_available() else "cpu"
@@ -14,7 +15,7 @@ os.makedirs(cfg.CHECKPOINT_DIR, exist_ok=True)
 os.makedirs(cfg.VIDEO_DIR, exist_ok=True)
 
 # ---------------- Initialize env & models ----------------
-env = make_env(record=cfg.RECORD_VIDEO, video_dir=cfg.VIDEO_DIR)
+env = make_env(record=False, video_dir=cfg.VIDEO_DIR)  # No video recording during training
 vae = VAE(z_dim=cfg.LATENT_DIM).to(device)
 mdrnn = MDRNN(action_dim=env.action_space.n, hidden_size=cfg.RNN_HIDDEN, latent_dim=cfg.LATENT_DIM).to(device)
 controller = Controller(action_dim=env.action_space.n, hidden_size=cfg.CONTROLLER_HIDDEN,
@@ -92,6 +93,12 @@ for ep in range(cfg.TOTAL_EPISODES_CONTROLLER):
 
         obs, reward, terminated, truncated, info = env.step(action)
         done = terminated or truncated
+        
+        # Update hidden state from MDRNN
+        a_onehot = torch.zeros(1, env.action_space.n, device=device)
+        a_onehot[0, action] = 1
+        _, _, _, h = mdrnn(z, a_onehot, h)
+        
         ep_reward += reward
         steps += 1
 
@@ -100,13 +107,27 @@ for ep in range(cfg.TOTAL_EPISODES_CONTROLLER):
 
     if ep % cfg.CHECKPOINT_FREQ == 0:
         torch.save(controller.state_dict(), f"{cfg.CHECKPOINT_DIR}/controller_{ep}.pt")
-
-# ---------------- Evaluation ----------------
-wandb.init(project="eval-spaceinvaders")
-vae.load_state_dict(torch.load(f"{cfg.CHECKPOINT_DIR}/world_model_{cfg.TOTAL_EPISODES_WM-10}.pt", map_location=device)["vae"])
-controller.load_state_dict(torch.load(f"{cfg.CHECKPOINT_DIR}/controller_{cfg.TOTAL_EPISODES_CONTROLLER-10}.pt", map_location=device))
-
+# Show VAE example output
+print("\n=== VAE Example Output ===")
 eval_env = make_env(record=True, video_dir=cfg.VIDEO_DIR)
+obs, info = eval_env.reset()
+obs_t = torch.tensor(obs, dtype=torch.float32).unsqueeze(0).to(device) / 255.0
+recon, mu, logvar = vae(obs_t)
+
+# Visualize VAE reconstructions (take first frame from stack)
+fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+axes[0].imshow(obs[0], cmap='gray')  # First frame of stacked frames
+axes[0].set_title("Original")
+axes[0].axis("off")
+
+axes[1].imshow(recon[0, 0].detach().cpu().numpy(), cmap='gray')  # Reconstructed
+axes[1].set_title("Reconstructed")
+axes[1].axis("off")
+plt.tight_layout()
+plt.savefig(f"{cfg.VIDEO_DIR}/vae_example.png")
+plt.close()
+print(f"VAE example saved to {cfg.VIDEO_DIR}/vae_example.png")
+
 print("=== Evaluation ===")
 for ep in range(cfg.EVAL_EPISODES):
     obs, info = eval_env.reset()
@@ -123,6 +144,12 @@ for ep in range(cfg.EVAL_EPISODES):
 
         obs, reward, terminated, truncated, info = eval_env.step(action)
         done = terminated or truncated
+        
+        # Update hidden state from MDRNN
+        a_onehot = torch.zeros(1, eval_env.action_space.n, device=device)
+        a_onehot[0, action] = 1
+        _, _, _, h = mdrnn(z, a_onehot, h)
+        
         total_reward += reward
         steps += 1
 
