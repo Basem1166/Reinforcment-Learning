@@ -44,7 +44,7 @@ def make_env(record=False, video_dir="videos"):
         grayscale_obs=True,
         scale_obs=True,
         frame_skip=1,
-        screen_size=84
+        screen_size=80
     )
 
     env = FrameStack(env, k=3)  # stack 3 frames

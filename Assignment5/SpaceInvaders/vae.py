@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class VAE(nn.Module):
-    def __init__(self, z_dim=128, input_channels=3, input_size=84):
+    def __init__(self, z_dim=128, input_channels=3, input_size=80):
         super().__init__()
         self.z_dim = z_dim
         self.input_channels = input_channels
@@ -36,7 +36,7 @@ class VAE(nn.Module):
             nn.ReLU(),
             nn.ConvTranspose2d(64, 32, kernel_size=4, stride=2, padding=1),  # -> 32 x 40 x 40
             nn.ReLU(),
-            nn.ConvTranspose2d(32, input_channels, kernel_size=5, stride=2, padding=2, output_padding=1),  # -> 3 x 84 x 84
+            nn.ConvTranspose2d(32, input_channels, kernel_size=4, stride=2, padding=1),  # -> 3 x 80 x 80
             nn.Sigmoid()
         )
 
